@@ -1,0 +1,26 @@
+#include "RawMsg.h"
+#include <string.h>
+
+DATES_NS_BEGIN
+
+//////////////////////////////////////////////////////////////////
+RawMsg::RawMsg(const U32 length, const U8* msg)
+: length(length)
+{
+    memcpy(data, msg, length);
+}
+
+//////////////////////////////////////////////////////////////////
+U32 RawMsg::getLength() const
+{
+    return length;
+}
+
+//////////////////////////////////////////////////////////////////
+const U8* RawMsg::getData() const
+{
+    return data;
+}
+
+
+DATES_NS_END
