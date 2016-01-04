@@ -1,57 +1,66 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+SET(BII_LIB_TYPE STATIC)
 
-PROJECT(dates)
+ADD_BII_TARGETS()
 
-MACRO(source_group_by_dir source_files)
-	SET(sgbd_cur_dir ${CMAKE_CURRENT_SOURCE_DIR})
-	FOREACH(sgbd_file ${${source_files}})
-		STRING(REGEX REPLACE ${sgbd_cur_dir}/\(.*\) \\1 sgbd_fpath ${sgbd_file})
-		STRING(REGEX REPLACE "\(.*\)/.*" \\1 sgbd_group_name ${sgbd_fpath})
-		STRING(COMPARE EQUAL ${sgbd_fpath} ${sgbd_group_name} sgbd_nogroup)
-		IF(MSVC)
-			string(REPLACE "/" "\\" sgbd_group_name ${sgbd_group_name})
-		ENDIF(MSVC)
-		IF(sgbd_nogroup)
-			SET(sgbd_group_name "\\")
-		ENDIF(sgbd_nogroup)
-		SOURCE_GROUP(${sgbd_group_name} FILES ${sgbd_file})
-	ENDFOREACH(sgbd_file)
-ENDMACRO(source_group_by_dir)
+IF(APPLE)
+     TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11 -stdlib=libc++")
+ELSEIF (WIN32 OR UNIX)
+     TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11")
+ENDIF(APPLE)
 
-SET(CMAKE_CXX_FLAGS -std=c++11)
+###############################################################################
+#      HELP                                                                   #
+###############################################################################
+#
+# This CMakeLists.txt file helps defining your block builds
+# To learn more visit http://docs.biicode.com/c++.html
+#
+# To include published cmake scripts:
+#   1. INCLUDE(user/block/myrecipe) # include myrecipe.cmake from remote user/block
+#   2. Remember to execute bii find
+#   Example:
+#      INCLUDE(biicode/cmake/tools) # Include tools.cmake file from cmake block from "biicode" user
+#      ACTIVATE_CPP11(INTERFACE ${BII_BLOCK_TARGET})
+#
+# Useful variables:
+#   To be modified BEFORE the call to ADD_BII_TARGETS()
+#     ${BII_LIB_SRC}  File list to create the library
+#
+#   To be modified AFTER the call to ADD_BII_TARGETS()
+#     ${BII_BLOCK_TARGET}  Interface (no files) target for convenient configuration of all
+#                          targets in this block, as the rest of targets always depend on it
+#                          has name in the form "user_block_interface"
+#     ${BII_LIB_TARGET}  Target library name, usually in the form "user_block". May not exist
+#                        if BII_LIB_SRC is empty
+#     ${BII_BLOCK_TARGETS} List of all targets defined in this block
+#     ${BII_BLOCK_EXES} List of executables targets defined in this block
+#     ${BII_exe_name_TARGET}: Executable target (e.g. ${BII_main_TARGET}. You can also use
+#                            directly the name of the executable target (e.g. user_block_main)
+#
+# > EXAMPLE: Add include directories to all targets of this block
+#
+#    TARGET_INCLUDE_DIRECTORIES(${BII_BLOCK_TARGET} INTERFACE myincludedir)
+#
+# > EXAMPLE: Link with pthread:
+#
+#    TARGET_LINK_LIBRARIES(${BII_BLOCK_TARGET} INTERFACE pthread)
+#        or link against library:
+#    TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC pthread)
+#
+#    NOTE:  This can be also done adding pthread to ${BII_LIB_DEPS}
+#            BEFORE calling ADD_BIICODE_TARGETS()
+#
+# > EXAMPLE: how to activate C++11
+#
+#    IF(APPLE)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11 -stdlib=libc++")
+#    ELSEIF (WIN32 OR UNIX)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11")
+#    ENDIF(APPLE)
+#
+# > EXAMPLE: Set properties to target
+#
+#    SET_TARGET_PROPERTIES(${BII_BLOCK_TARGET} PROPERTIES COMPILE_DEFINITIONS "IOV_MAX=255")
+#
 
-INCLUDE_DIRECTORIES( 
-"${CMAKE_CURRENT_SOURCE_DIR}/include"
-"${CMAKE_CURRENT_SOURCE_DIR}/test"
-"${CMAKE_CURRENT_SOURCE_DIR}/3th/include"
-)
-
-IF(MSVC)
-  ADD_DEFINITIONS( -D_CRT_SECURE_NO_WARNINGS )
-    ADD_DEFINITIONS(-DMSVC_VMG_ENABLED) #  /Z7)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /vmg")
-ENDIF(MSVC)
-
-FILE(GLOB_RECURSE all_files 
-include/*.h
-include/*.hpp
-include/*.hxx
-include/*.tcc
-src/*.cpp
-src/*.cc
-src/*.cxx
-test/*.h
-test/*.hpp
-test/*.hxx
-test/*.tcc
-test/*.cpp
-)
-
-source_group_by_dir(all_files)
-message(STATUS "CMAKE_CURRENT_SOURCE_DIR are: ${CMAKE_CURRENT_SOURCE_DIR}")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/3th/lib")
-
-add_executable(dates ${all_files})
-
-target_link_libraries(dates gtest pthread) 
 
