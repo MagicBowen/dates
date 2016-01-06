@@ -9,8 +9,8 @@ using MsgId = U16;
 namespace SUT
 {
     const MsgId EVENT_HELLO = 0;
-    const MsgId EVENT_REQUEST = 1;
-    const MsgId EVENT_REPLY = 2;
+    const MsgId EVENT_PING = 1;
+    const MsgId EVENT_PONG = 2;
 
     struct Header
     {
@@ -23,16 +23,16 @@ namespace SUT
         char   data[16];
     };
 
-    struct Request
+    struct Ping
     {
         Header header;
-        U32 cmd;
+        U32 request;
     };
 
-    struct Reply
+    struct Pong
     {
         Header header;
-        U32 status;
+        U32 reply;
     };
 }
 

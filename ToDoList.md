@@ -4,7 +4,8 @@ TO DO LSIT:
 - [x]: bii-code
 - [x]: cmake for lib and test
 - [x]: second test
-- [ ]: refactor commander to ping
+- [x]: refactor commander to ping
+- [ ]: refactor msgs
 - [ ]: refactor sut
 - [ ]: asyn receive test
 - [ ]: thread destory

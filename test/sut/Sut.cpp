@@ -22,10 +22,10 @@ void Sut::receive(const MsgId id, const void* data, const U32 length)
         send(EVENT_HELLO, &msg, sizeof(msg));
         break;
 
-    case EVENT_REQUEST:
-        Reply reply;
-        reply.status = ((const Request*)(data))->cmd;
-        send(EVENT_REPLY, &reply, sizeof(reply));
+    case EVENT_PING:
+        Pong pong;
+        pong.reply = ((const Ping*)(data))->request;
+        send(EVENT_PONG, &pong, sizeof(pong));
         break;
 
     default:

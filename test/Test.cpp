@@ -32,8 +32,8 @@ namespace
         }
     DEF_FAKE_MSG_END
 
-    DEF_FAKE_MSG(EVENT_REQUEST, Request);
-    DEF_FAKE_MSG(EVENT_REPLY,   Reply);
+    DEF_FAKE_MSG(EVENT_PING, Ping);
+    DEF_FAKE_MSG(EVENT_PONG,   Pong);
 
     DEF_FAKE_SYSTEM_BEGIN(Neighbor)
         COULD_SEND(Hello);
@@ -41,8 +41,8 @@ namespace
     DEF_FAKE_SYSTEM_END
 
     DEF_FAKE_SYSTEM_BEGIN(Commander)
-        COULD_SEND(Request);
-        COULD_RECV(Reply);
+        COULD_SEND(Ping);
+        COULD_RECV(Pong);
     DEF_FAKE_SYSTEM_END
 
 }
@@ -78,14 +78,14 @@ TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
 
 TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
 {
-    commander.send([](FAKE(Request)& request)
+    commander.send([](FAKE(Ping)& ping)
             {
-                request.cmd = 1;
+                ping.request = 1;
             });
 
-    commander.recv([](const FAKE(Reply)& reply)
+    commander.recv([](const FAKE(Pong)& pong)
             {
-                ASSERT_EQ(1, reply.status);
+                ASSERT_EQ(1, pong.reply);
             });
 }
 
