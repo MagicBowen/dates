@@ -9,7 +9,7 @@ DATES_NS_BEGIN
 void FakeSystemBase::onTimeOut(const char* msgName) const
 {
     ERR_LOG("System[%s] wait msg[%s] timeout!!!", getName(), msgName);
-    throw(1);
+    throw("Fatal: receive msg timeout!");
 }
 
 void FakeSystemBase::onMsgSend(const char* msgName, const MsgId msgId) const

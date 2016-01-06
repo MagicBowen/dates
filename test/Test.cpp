@@ -63,7 +63,7 @@ protected:
     FakeCommander commander;
 };
 
-TEST_F(DatesTest, should_receive_sut_msg_when_send_msg_to_sut)
+TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
 {
     neighbor.send([](FAKE(Hello)& hello)
             {
@@ -75,6 +75,20 @@ TEST_F(DatesTest, should_receive_sut_msg_when_send_msg_to_sut)
                 ASSERT_TRUE(strcmp("Who are you?", hello.getWords()) == 0);
             });
 }
+
+TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
+{
+    commander.send([](FAKE(Request)& request)
+            {
+                request.cmd = 1;
+            });
+
+    commander.recv([](const FAKE(Reply)& reply)
+            {
+                ASSERT_EQ(1, reply.status);
+            });
+}
+
 
 int main(int argc, char* argv[])
 {

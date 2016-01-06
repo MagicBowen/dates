@@ -23,6 +23,9 @@ void Sut::receive(const MsgId id, const void* data, const U32 length)
         break;
 
     case EVENT_REQUEST:
+        Reply reply;
+        reply.status = ((const Request*)(data))->cmd;
+        send(EVENT_REPLY, &reply, sizeof(reply));
         break;
 
     default:

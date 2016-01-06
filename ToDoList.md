@@ -1,9 +1,11 @@
 TO DO LSIT:
 ***
 
-- [ ]: bii-code
-- [ ]: cmake for lib and test
-- [ ]: second test
+- [x]: bii-code
+- [x]: cmake for lib and test
+- [x]: second test
+- [ ]: refactor commander to ping
+- [ ]: refactor sut
 - [ ]: asyn receive test
 - [ ]: thread destory
 - [ ]: wait timer config
@@ -12,5 +14,6 @@ TO DO LSIT:
 - [ ]: multi fake system: duplicate msg id; Address of system;
 - [ ]: DatesFrame::run() refact
 - [ ]: decouple from test framework;
+- [ ]: integrate with msgcc
 - [ ]: tutorial
 
