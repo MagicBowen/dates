@@ -1,6 +1,6 @@
 #include "details/FakeSystemBase.h"
 #include "base/log.h"
-#include "DatesFrame.h"
+#include "details/DatesSender.h"
 #include "details/RawMsg.h"
 
 DATES_NS_BEGIN
@@ -23,7 +23,7 @@ void FakeSystemBase::onMsgRecv(const char* msgName, const MsgId msgId) const
 
 void FakeSystemBase::send(const MsgId id, const U32 length, void* msg) const
 {
-    DatesFrame::getInstance().send(id, RawMsg(length, (U8*)msg));
+    DatesSender::send(id, RawMsg(length, (U8*)msg));
 }
 
 DATES_NS_END
