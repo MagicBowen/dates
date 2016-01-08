@@ -4,6 +4,7 @@
 #include "FakeSystem.h"
 #include "DatesFrame.h"
 #include "sut/SyncSut.h"
+#include "sut/AsyncSut.h"
 #include <string>
 
 USING_DATES_NS
@@ -46,18 +47,18 @@ struct SyncTest : public testing::Test
     void SetUp()
     {
         DatesFrame::syncRun(
-                    [](const MsgId id, const RawMsg& msg)
+                    [this](const MsgId id, const RawMsg& msg)
                     {
-                        SyncSut::receive(id, msg.getData(), msg.getLength());
+                        sut.receive(id, msg.getData(), msg.getLength());
                     });
     }
 
 protected:
     FakeNeighbor neighbor;
-    FakeCommander commander;
+    SyncSut sut;
 };
 
-TEST_F(SyncTest, should_receive_hello_from_sut_when_say_hello_to_sut)
+TEST_F(SyncTest, should_sync_receive_hello_from_sut_when_say_hello_to_sync_sut)
 {
     neighbor.send([](FAKE(Hello)& hello)
             {
@@ -70,17 +71,49 @@ TEST_F(SyncTest, should_receive_hello_from_sut_when_say_hello_to_sut)
             });
 }
 
-TEST_F(SyncTest, should_receive_resply_msg_when_send_request_to_sut)
+/////////////////////////////////////////////////////////
+struct AsyncTest : public testing::Test
 {
-    const U32 PAYLOAD = 1;
+    void SetUp()
+    {
+        DatesFrame::syncRun(
+                    [this](const MsgId id, const RawMsg& msg)
+                    {
+                        sut.receive(id, msg.getData(), msg.getLength());
+                    });
+    }
 
-    commander.send([=](FAKE(Ping)& ping)
+protected:
+    FakeCommander commander;
+    AsyncSut sut;
+    const U32 PAYLOAD{1};
+};
+
+TEST_F(AsyncTest, should_async_receive_pong_msg_when_send_ping_to_async_sut)
+{
+    commander.send([this](FAKE(Ping)& ping)
             {
                 ping.request = PAYLOAD;
             });
 
-    commander.recv([=](const FAKE(Pong)& pong)
+    commander.recv([this](const FAKE(Pong)& pong)
             {
                 ASSERT_EQ(PAYLOAD, pong.reply);
             });
 }
+
+/////////////////////////////////////////////////////////
+int main(int argc, char* argv[])
+{
+    try
+    {
+        testing::InitGoogleTest(&argc, argv);
+        return RUN_ALL_TESTS();
+    }
+    catch(std::exception& e)
+    {
+        std::cout << "FATAL: exception occur, [" << e.what() << "]!" << std::endl;
+        return -1;
+    }
+}
+
