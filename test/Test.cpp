@@ -52,7 +52,7 @@ struct DatesTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::run(
+        DatesFrame::syncRun(
                     [](const MsgId id, const RawMsg& msg)
                     {
                         Sut::receive(id, msg.getData(), msg.getLength());

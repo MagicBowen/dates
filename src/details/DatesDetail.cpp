@@ -1,4 +1,6 @@
 #include "DatesFrame.h"
+#include "base/Singleton.h"
+#include "base/NullPtr.h"
 #include "details/DatesReceiver.h"
 #include "details/DatesSender.h"
 #include "details/MsgQueue.h"
@@ -9,7 +11,7 @@ DATES_NS_BEGIN
 
 namespace
 {
-    struct DatesDetail
+    DEF_SINGLETON(DatesDetail)
     {
     //        OVERRIDE(~DatesFrameImpl())
     //        {
@@ -48,23 +50,21 @@ namespace
         std::unique_ptr<std::thread> t;
         bool stop{true};
     };
-
-    DatesDetail dates;
 }
 
 void DatesSender::send(const MsgId id, const RawMsg& msg)
 {
-    dates.send(id, msg);
+    DatesDetail::getInstance().send(id, msg);
 }
 
 void DatesReceiver::recv(const MsgId id, const RawMsg& msg)
 {
-    dates.recv(id, msg);
+    DatesDetail::getInstance().recv(id, msg);
 }
 
-void DatesFrame::run(const Sender& sender, Receiver* receiver)
+void DatesFrame::syncRun(const Sender& sender)
 {
-    dates.run(sender, receiver);
+    DatesDetail::getInstance().run(sender, __null_ptr__);
 }
 
 DATES_NS_END
