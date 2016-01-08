@@ -12,7 +12,7 @@ USING_SUT_NS
 /////////////////////////////////////////////////////////
 namespace
 {
-    DEF_FAKE_MSG_BEGIN(EVENT_HELLO, Hello)
+    __def_fake_msg_begin(EVENT_HELLO, Hello)
         void fill(const char* words)
         {
             strcpy(data, words);
@@ -22,21 +22,21 @@ namespace
         {
             return data;
         }
-    DEF_FAKE_MSG_END
+    __def_fake_msg_end
 
-    DEF_FAKE_SYSTEM_BEGIN(Neighbor)
-        COULD_SEND(Hello);
-        COULD_RECV(Hello);
-    DEF_FAKE_SYSTEM_END
+    __def_fake_sys_begin(Neighbor)
+        __could_send(Hello);
+        __could_recv(Hello);
+    __def_fake_sys_end
 
     /////////////////////////////////////////////////////
-    DEF_FAKE_MSG(EVENT_PING,   Ping);
-    DEF_FAKE_MSG(EVENT_PONG,   Pong);
+    __def_fake_msg(EVENT_PING,   Ping);
+    __def_fake_msg(EVENT_PONG,   Pong);
 
-    DEF_FAKE_SYSTEM_BEGIN(Commander)
-        COULD_SEND(Ping);
-        COULD_RECV(Pong);
-    DEF_FAKE_SYSTEM_END
+    __def_fake_sys_begin(Commander)
+        __could_send(Ping);
+        __could_recv(Pong);
+    __def_fake_sys_end
 
 }
 

@@ -9,7 +9,7 @@
 DATES_NS_BEGIN
 
 ////////////////////////////////////////////////////////
-#define DEF_FAKE_MSG_BEGIN(ID, MSG)         \
+#define __def_fake_msg_begin(ID, MSG)       \
 struct FAKE(MSG) : FakeMsgDetail<MSG>       \
 {                                           \
     static const char* getName()            \
@@ -21,12 +21,12 @@ struct FAKE(MSG) : FakeMsgDetail<MSG>       \
         return ID;                          \
     }
 
-#define DEF_FAKE_MSG_END                  };
+#define __def_fake_msg_end                  };
 
 /////////////////////////////////////////////////////////
-#define DEF_FAKE_MSG(ID, MSG)               \
-DEF_FAKE_MSG_BEGIN(ID, MSG)                 \
-DEF_FAKE_MSG_END
+#define __def_fake_msg(ID, MSG)               \
+__def_fake_msg_begin(ID, MSG)                 \
+__def_fake_msg_end
 
 DATES_NS_END
 

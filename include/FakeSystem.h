@@ -9,7 +9,7 @@ DATES_NS_BEGIN
 ///////////////////////////////////////////////////////////////
 #define CHECKER_TYPE(MSG) std::function<void (const MSG&)>
 
-#define COULD_RECV(MSG)                             \
+#define __could_recv(MSG)                           \
 void check(const CHECKER_TYPE(FAKE(MSG))& checker,  \
             const FAKE(MSG)& msg)                   \
 {                                                   \
@@ -19,7 +19,7 @@ void check(const CHECKER_TYPE(FAKE(MSG))& checker,  \
 ////////////////////////////////////////////////////////
 #define BUILDER_TYPE(MSG) std::function<void (MSG&)>
 
-#define COULD_SEND(MSG)                             \
+#define __could_send(MSG)                           \
 void build(const BUILDER_TYPE(FAKE(MSG))& builder,  \
             FAKE(MSG)& msg)                         \
 {                                                   \
@@ -27,7 +27,7 @@ void build(const BUILDER_TYPE(FAKE(MSG))& builder,  \
 }
 
 ////////////////////////////////////////////////////////
-#define DEF_FAKE_SYSTEM_BEGIN(SYSTEM)               \
+#define __def_fake_sys_begin(SYSTEM)                \
 struct FAKE(SYSTEM) : FakeSystemDetail<FAKE(SYSTEM)>\
 {                                                   \
 private:                                            \
@@ -37,7 +37,7 @@ private:                                            \
     }                                               \
 public:
 
-#define DEF_FAKE_SYSTEM_END         };
+#define __def_fake_sys_end                          };
 
 DATES_NS_END
 
