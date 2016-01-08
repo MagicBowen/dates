@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "sut/Msgs.h"
+#include "sut/Events.h"
 #include "FakeMsg.h"
 #include "FakeSystem.h"
 #include "DatesFrame.h"

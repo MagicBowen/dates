@@ -1,5 +1,6 @@
 #include "sut/Sut.h"
 #include "base/log.h"
+#include "Events.h"
 #include <string.h>
 
 namespace SUT
@@ -11,7 +12,7 @@ Sut& Sut::getInstance()
     return instance;
 }
 
-void Sut::receive(const MsgId id, const void* data, const U32 length)
+void Sut::receive(const EventId id, const void* data, const U32 length)
 {
     switch(id)
     {
