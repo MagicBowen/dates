@@ -7,12 +7,9 @@
 namespace SUT
 {
 
-void send(const EventId, const void* data, const U32 length);
-
 struct Sut
 {
-    static Sut& getInstance();
-    void receive(const EventId, const void* data, const U32 length);
+    static void receive(const EventId, const void* data, const U32 length);
 };
 
 }

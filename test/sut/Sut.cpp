@@ -6,11 +6,7 @@
 namespace SUT
 {
 
-Sut& Sut::getInstance()
-{
-    static Sut instance;
-    return instance;
-}
+extern void send(const EventId, const void* data, const U32 length);
 
 void Sut::receive(const EventId id, const void* data, const U32 length)
 {

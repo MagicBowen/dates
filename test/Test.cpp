@@ -54,7 +54,7 @@ struct DatesTest : public testing::Test
         DatesFrame::getInstance().run(
                     [](const MsgId id, const RawMsg& msg)
                     {
-                        Sut::getInstance().receive(id, msg.getData(), msg.getLength());
+                        Sut::receive(id, msg.getData(), msg.getLength());
                     });
     }
 
