@@ -32,6 +32,10 @@ namespace
                 stop = false;
                 t.reset(new std::thread([this]{while(!stop){(*(this->receiver))();}}));
             }
+            else
+            {
+                MsgQueue::getInstance().setWaitTime(0);
+            }
         }
 
         void recv(const MsgId id, const RawMsg& msg)

@@ -38,7 +38,7 @@ namespace
             SYNCHRONIZED(mutex)
             {
                 cond.wait_for(LOCKER(mutex).getLocker(),
-                              std::chrono::seconds(WAIT_SECONDS),
+                              std::chrono::seconds(waitSeconds),
                               [&](){return find(consumer.getMsgId());});
 
                 if(!find(consumer.getMsgId()))
@@ -46,6 +46,11 @@ namespace
 
                 return doConsume(consumer);
             }
+        }
+
+        OVERRIDE(void setWaitTime(const U32 seconds))
+        {
+            waitSeconds = seconds;
         }
 
     private:
@@ -74,6 +79,7 @@ namespace
         std::map<MsgId, const RawMsg*> msgs;
         std::condition_variable cond;
         std::mutex mutex;
+        U32 waitSeconds{WAIT_SECONDS};
     };
 }
 

@@ -15,6 +15,7 @@ DEFINE_ROLE(MsgQueue)
 
     ABSTRACT(void insert(const MsgId, const RawMsg&));
     ABSTRACT(void consume(const MsgConsumer&));
+    ABSTRACT(void setWaitTime(const U32 seconds));
 };
 
 DATES_NS_END
