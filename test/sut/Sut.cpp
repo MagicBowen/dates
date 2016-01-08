@@ -11,7 +11,7 @@ namespace
 {
     void handleHello(const Hello& event)
     {
-        if(strcmp(event.data, "Hi") != 0)  return;
+        if(strcmp(event.data, "Hey!") != 0)  return;
 
         Hello rsp;
         rsp.header.id = EVENT_HELLO;
@@ -27,23 +27,28 @@ namespace
         pong.reply = event.request;
         send(EVENT_PONG, &pong, sizeof(pong));
     }
-}
 
-//////////////////////////////////////////////////////////
-#define EVENT_HANDLE_BEGIN() switch(id){
-#define EVENT_HANDLE_END()                      \
-default: ERR_LOG("SUT received unrecognized msg(%d)", id); }
-#define EVENT_HANDLE(ID, EVENT)                 \
-case ID: handle##EVENT(*(const EVENT*)(data));  \
-break;
+    template<typename DEST>
+    const DEST& cast_event(const void *data)
+    {
+        return *(reinterpret_cast<const DEST*>(data));
+    }
+}
 
 //////////////////////////////////////////////////////////
 void Sut::receive(const EventId id, const void* data, const U32 length)
 {
-    EVENT_HANDLE_BEGIN()
-        EVENT_HANDLE(EVENT_HELLO, Hello)
-        EVENT_HANDLE(EVENT_PING,  Ping)
-    EVENT_HANDLE_END()
+    switch(id)
+    {
+    case EVENT_HELLO:
+        handleHello(cast_event<Hello>(data));
+        break;
+    case EVENT_PING:
+        handlePing(cast_event<Ping>(data));
+        break;
+    default:
+        ERR_LOG("SUT received unrecognized event(%d)", id);
+    }
 }
 
 SUT_NS_END

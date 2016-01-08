@@ -67,7 +67,7 @@ TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
 {
     neighbor.send([](FAKE(Hello)& hello)
             {
-                hello.fill("Hi");
+                hello.fill("Hey!");
             });
 
     neighbor.recv([](const FAKE(Hello)& hello)
@@ -78,14 +78,16 @@ TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
 
 TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
 {
-    commander.send([](FAKE(Ping)& ping)
+    const U32 PYLOAD = 1;
+
+    commander.send([=](FAKE(Ping)& ping)
             {
-                ping.request = 1;
+                ping.request = PYLOAD;
             });
 
-    commander.recv([](const FAKE(Pong)& pong)
+    commander.recv([=](const FAKE(Pong)& pong)
             {
-                ASSERT_EQ(1, pong.reply);
+                ASSERT_EQ(PYLOAD, pong.reply);
             });
 }
 

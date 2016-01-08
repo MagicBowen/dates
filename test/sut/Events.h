@@ -1,7 +1,7 @@
 #ifndef HE88AAE58_7D7F_4533_9909_AF9C0360C0AC
 #define HE88AAE58_7D7F_4533_9909_AF9C0360C0AC
 
-#include "SUT.h"
+#include "sut_ns.h"
 #include "base/BaseTypes.h"
 #include "EventId.h"
 
