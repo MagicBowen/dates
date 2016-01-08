@@ -6,7 +6,7 @@
 
 SUT_NS_BEGIN
 
-struct Sut
+struct SyncSut
 {
     static void receive(const EventId, const void* data, const U32 length);
 };

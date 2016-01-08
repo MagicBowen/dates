@@ -1,7 +1,7 @@
 #ifndef H1DC20EDF_DCB1_4EE0_A64C_3EE38DDB31DE
 #define H1DC20EDF_DCB1_4EE0_A64C_3EE38DDB31DE
 
-#include "sut_ns.h"
+#include <sut/sut.h>
 #include "EventId.h"
 
 SUT_NS_BEGIN

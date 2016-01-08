@@ -1,4 +1,4 @@
-#include "sut/Sut.h"
+#include <sut/SyncSut.h>
 #include "base/log.h"
 #include "Events.h"
 #include "OssSender.h"
@@ -35,7 +35,7 @@ namespace
 }
 
 //////////////////////////////////////////////////////////
-void Sut::receive(const EventId id, const void* data, const U32 length)
+void SyncSut::receive(const EventId id, const void* data, const U32 length)
 {
     switch(id)
     {

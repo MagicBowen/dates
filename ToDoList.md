@@ -10,7 +10,7 @@ TO DO LSIT:
 - [ ]: refactor DatesFrame
 - [ ]: asyn receive test
 - [ ]: thread destory
-- [ ]: wait timer config
+- [x]: wait timer config
 - [ ]: msg refact, non-copy
 - [ ]: msg refact, msg id ?
 - [ ]: multi fake system: duplicate msg id; Address of system;

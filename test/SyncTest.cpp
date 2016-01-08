@@ -3,7 +3,7 @@
 #include "FakeMsg.h"
 #include "FakeSystem.h"
 #include "DatesFrame.h"
-#include "sut/Sut.h"
+#include "sut/SyncSut.h"
 #include <string>
 
 USING_DATES_NS
@@ -41,14 +41,14 @@ namespace
 }
 
 /////////////////////////////////////////////////////////
-struct DatesTest : public testing::Test
+struct SyncTest : public testing::Test
 {
     void SetUp()
     {
         DatesFrame::syncRun(
                     [](const MsgId id, const RawMsg& msg)
                     {
-                        Sut::receive(id, msg.getData(), msg.getLength());
+                        SyncSut::receive(id, msg.getData(), msg.getLength());
                     });
     }
 
@@ -57,7 +57,7 @@ protected:
     FakeCommander commander;
 };
 
-TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
+TEST_F(SyncTest, should_receive_hello_from_sut_when_say_hello_to_sut)
 {
     neighbor.send([](FAKE(Hello)& hello)
             {
@@ -70,33 +70,17 @@ TEST_F(DatesTest, should_receive_hello_from_sut_when_say_hello_to_sut)
             });
 }
 
-TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
+TEST_F(SyncTest, should_receive_resply_msg_when_send_request_to_sut)
 {
-    const U32 PYLOAD = 1;
+    const U32 PAYLOAD = 1;
 
     commander.send([=](FAKE(Ping)& ping)
             {
-                ping.request = PYLOAD;
+                ping.request = PAYLOAD;
             });
 
     commander.recv([=](const FAKE(Pong)& pong)
             {
-                ASSERT_EQ(PYLOAD, pong.reply);
+                ASSERT_EQ(PAYLOAD, pong.reply);
             });
 }
-
-/////////////////////////////////////////////////////////
-int main(int argc, char* argv[])
-{
-    try
-    {
-        testing::InitGoogleTest(&argc, argv);
-        return RUN_ALL_TESTS();
-    }
-    catch(std::exception& e)
-    {
-        std::cout << "FATAL: exception occur, [" << e.what() << "]!" << std::endl;
-        return -1;
-    }
-}
-
