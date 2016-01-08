@@ -4,14 +4,13 @@
 #include "base/BaseTypes.h"
 #include "EventId.h"
 
-namespace SUT
-{
+SUT_NS_BEGIN
 
 struct Sut
 {
     static void receive(const EventId, const void* data, const U32 length);
 };
 
-}
+SUT_NS_END
 
 #endif

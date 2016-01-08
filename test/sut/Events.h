@@ -1,11 +1,11 @@
 #ifndef HE88AAE58_7D7F_4533_9909_AF9C0360C0AC
 #define HE88AAE58_7D7F_4533_9909_AF9C0360C0AC
 
+#include "SUT.h"
 #include "base/BaseTypes.h"
 #include "EventId.h"
 
-namespace SUT
-{
+SUT_NS_BEGIN
 
 const EventId EVENT_HELLO = 0;
 const EventId EVENT_PING = 1;
@@ -34,6 +34,6 @@ struct Pong
     U32 reply;
 };
 
-}
+SUT_NS_END
 
 #endif

@@ -5,7 +5,7 @@ TO DO LSIT:
 - [x]: cmake for lib and test
 - [x]: second test
 - [x]: refactor commander to ping
-- [ ]: refactor msgs
+- [x]: refactor msgs
 - [ ]: refactor sut
 - [ ]: asyn receive test
 - [ ]: thread destory

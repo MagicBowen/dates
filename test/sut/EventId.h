@@ -1,13 +1,13 @@
 #ifndef H000820EC_CB05_439E_BE36_4190407D53D8
 #define H000820EC_CB05_439E_BE36_4190407D53D8
 
+#include "SUT.h"
 #include "base/BaseTypes.h"
 
-namespace SUT
-{
+SUT_NS_BEGIN
 
 using EventId = U16;
 
-}
+SUT_NS_END
 
 #endif

@@ -8,7 +8,7 @@
 #include <string>
 
 USING_DATES_NS
-using namespace SUT;
+USING_SUT_NS
 
 namespace SUT
 {
