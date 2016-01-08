@@ -3,22 +3,13 @@
 #include "FakeMsg.h"
 #include "FakeSystem.h"
 #include "DatesFrame.h"
-#include "details/RawMsg.h"
-#include "details/DatesReceiver.h"
 #include "sut/Sut.h"
 #include <string>
 
 USING_DATES_NS
 USING_SUT_NS
 
-namespace SUT
-{
-    void send(const MsgId id, const void* data, const U32 length)
-    {
-        DatesReceiver::recv(id, RawMsg(length, (U8*)data));
-    }
-}
-
+/////////////////////////////////////////////////////////
 namespace
 {
     DEF_FAKE_MSG_BEGIN(EVENT_HELLO, Hello)
@@ -33,13 +24,14 @@ namespace
         }
     DEF_FAKE_MSG_END
 
-    DEF_FAKE_MSG(EVENT_PING, Ping);
-    DEF_FAKE_MSG(EVENT_PONG,   Pong);
-
     DEF_FAKE_SYSTEM_BEGIN(Neighbor)
         COULD_SEND(Hello);
         COULD_RECV(Hello);
     DEF_FAKE_SYSTEM_END
+
+    /////////////////////////////////////////////////////
+    DEF_FAKE_MSG(EVENT_PING,   Ping);
+    DEF_FAKE_MSG(EVENT_PONG,   Pong);
 
     DEF_FAKE_SYSTEM_BEGIN(Commander)
         COULD_SEND(Ping);
@@ -48,6 +40,7 @@ namespace
 
 }
 
+/////////////////////////////////////////////////////////
 struct DatesTest : public testing::Test
 {
     void SetUp()
@@ -92,6 +85,7 @@ TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
             });
 }
 
+/////////////////////////////////////////////////////////
 int main(int argc, char* argv[])
 {
     try

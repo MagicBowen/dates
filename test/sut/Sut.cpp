@@ -1,11 +1,10 @@
 #include "sut/Sut.h"
 #include "base/log.h"
 #include "Events.h"
+#include "OssSender.h"
 #include <string.h>
 
 SUT_NS_BEGIN
-
-extern void send(const EventId, const void* data, const U32 length);
 
 namespace
 {
@@ -18,14 +17,14 @@ namespace
 
         strcpy(rsp.data, "Who are you?");
 
-        send(EVENT_HELLO, &rsp, sizeof(rsp));
+        OssSender::send(EVENT_HELLO, &rsp, sizeof(rsp));
     }
 
     void handlePing(const Ping& event)
     {
         Pong pong;
         pong.reply = event.request;
-        send(EVENT_PONG, &pong, sizeof(pong));
+        OssSender::send(EVENT_PONG, &pong, sizeof(pong));
     }
 
     template<typename DEST>
