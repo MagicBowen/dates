@@ -1,6 +1,6 @@
 #include "DatesFrame.h"
 #include "base/log.h"
-#include "MsgQueue.h"
+#include "details/MsgQueue.h"
 #include <thread>
 #include <memory>
 

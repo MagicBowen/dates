@@ -2,8 +2,7 @@
 #define H26660305_7596_4C04_89EB_2384963F2EB5
 
 #include "base/Role.h"
-#include "base/dates.h"
-#include "MsgId.h"
+#include "details/MsgId.h"
 
 DATES_NS_BEGIN
 

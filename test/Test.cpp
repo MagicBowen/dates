@@ -3,7 +3,7 @@
 #include "FakeMsg.h"
 #include "FakeSystem.h"
 #include "DatesFrame.h"
-#include "RawMsg.h"
+#include "details/RawMsg.h"
 #include "sut/Sut.h"
 #include <string>
 
@@ -90,7 +90,6 @@ TEST_F(DatesTest, should_receive_resply_msg_when_send_request_to_sut)
                 ASSERT_EQ(PYLOAD, pong.reply);
             });
 }
-
 
 int main(int argc, char* argv[])
 {

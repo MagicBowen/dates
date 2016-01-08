@@ -1,10 +1,9 @@
 #ifndef H18F78CFE_4245_4B74_A331_726361D95A6B
 #define H18F78CFE_4245_4B74_A331_726361D95A6B
 
-#include "base/dates.h"
 #include "base/Role.h"
 #include "base/BaseTypes.h"
-#include "MsgId.h"
+#include "details/MsgId.h"
 
 DATES_NS_BEGIN
 

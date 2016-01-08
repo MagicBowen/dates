@@ -1,7 +1,6 @@
-#include "MsgQueue.h"
-#include "MsgId.h"
-#include "RawMsg.h"
-#include "MsgConsumer.h"
+#include "details/MsgQueue.h"
+#include "details/RawMsg.h"
+#include "details/MsgConsumer.h"
 #include "base/Synchronization.h"
 #include <map>
 #include <condition_variable>

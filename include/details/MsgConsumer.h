@@ -1,8 +1,8 @@
 #ifndef H1A930699_4C11_46B6_A574_31D7DB370F23
 #define H1A930699_4C11_46B6_A574_31D7DB370F23
 
-#include "base/dates.h"
-#include "MsgId.h"
+#include "details/dates.h"
+#include "details/MsgId.h"
 
 DATES_NS_BEGIN
 

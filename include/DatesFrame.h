@@ -1,10 +1,9 @@
 #ifndef H6C9783B3_A46F_489B_9EE5_B208C5DCDBD2
 #define H6C9783B3_A46F_489B_9EE5_B208C5DCDBD2
 
-#include "base/dates.h"
 #include "base/Role.h"
 #include "base/NullPtr.h"
-#include "MsgId.h"
+#include "details/MsgId.h"
 #include <functional>
 
 DATES_NS_BEGIN
