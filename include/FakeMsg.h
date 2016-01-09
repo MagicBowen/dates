@@ -28,6 +28,10 @@ struct FAKE(MSG) : FakeMsgDetail<MSG>       \
 __def_fake_msg_begin(ID, MSG)                 \
 __def_fake_msg_end
 
+/////////////////////////////////////////////////////////
+#define DUMMY_SEND_MSG(NAME) [](FAKE(NAME)& terminate){}
+#define DUMMY_RECV_MSG(NAME) [](const FAKE(NAME)& terminate){}
+
 DATES_NS_END
 
 #endif

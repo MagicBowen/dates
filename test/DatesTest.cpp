@@ -131,13 +131,9 @@ protected:
 
 TEST_F(AsyncTest, shoud_stop_dates_and_sut_when_send_terminate_msg)
 {
-    commander.send([this](FAKE(Terminate)& terminate)
-            {
-            });
+    commander.send(DUMMY_SEND_MSG(Terminate));
 
-    commander.recv([this](const FAKE(Terminate)& terminate)
-            {
-            });
+    commander.recv(DUMMY_RECV_MSG(Terminate));
 }
 
 TEST_F(AsyncTest, should_receive_pong_msg_when_send_ping_to_async_sut)
@@ -152,13 +148,9 @@ TEST_F(AsyncTest, should_receive_pong_msg_when_send_ping_to_async_sut)
                 ASSERT_EQ(PAYLOAD, pong.reply);
             });
 
-    commander.send([this](FAKE(Terminate)& terminate)
-            {
-            });
+    commander.send(DUMMY_SEND_MSG(Terminate));
 
-    commander.recv([this](const FAKE(Terminate)& terminate)
-            {
-            });
+    commander.recv(DUMMY_RECV_MSG(Terminate));
 }
 
 /////////////////////////////////////////////////////////
