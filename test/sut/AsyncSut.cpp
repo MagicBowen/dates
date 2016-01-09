@@ -1,5 +1,5 @@
 #include "AsyncSut.h"
-#include "sut/Events.h"
+#include "sut/msgs.h"
 #include "definition.h"
 
 SUT_NS_BEGIN
@@ -16,7 +16,7 @@ AsyncSut::~AsyncSut()
 
 void AsyncSut::run()
 {
-    U8 buffer[MAX_MSG_LENGTH] = {0};
+    static U8 buffer[MAX_MSG_LENGTH] = {0};
 
     while(true)
     {

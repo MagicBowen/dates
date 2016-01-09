@@ -1,7 +1,7 @@
 #include "details/FakeSystemBase.h"
-#include "base/log.h"
 #include "details/DatesSender.h"
-#include "details/RawMsg.h"
+#include "base/Event.h"
+#include "base/log.h"
 
 DATES_NS_BEGIN
 
@@ -11,19 +11,19 @@ void FakeSystemBase::onTimeOut(const char* msgName) const
     throw("Fatal: receive msg timeout!");
 }
 
-void FakeSystemBase::onMsgSend(const char* msgName, const MsgId msgId) const
+void FakeSystemBase::onMsgSend(const char* msgName, const EventId id) const
 {
-    INFO_LOG("System[%s] send msg[%s : %d]!", getName(), msgName, msgId);
+    INFO_LOG("System[%s] send msg[%s : %d]!", getName(), msgName, id);
 }
 
-void FakeSystemBase::onMsgRecv(const char* msgName, const MsgId msgId) const
+void FakeSystemBase::onMsgRecv(const char* msgName, const EventId id) const
 {
-    INFO_LOG("System[%s] recv msg[%s : %d]!", getName(), msgName, msgId);
+    INFO_LOG("System[%s] recv msg[%s : %d]!", getName(), msgName, id);
 }
 
-void FakeSystemBase::send(const MsgId id, const U32 length, void* msg) const
+void FakeSystemBase::send(const Event& event) const
 {
-    DatesSender::send(id, RawMsg(length, (U8*)msg));
+    DatesSender::send(event);
 }
 
 DATES_NS_END

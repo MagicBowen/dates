@@ -1,7 +1,8 @@
 #ifndef H1BE6A19E_9E50_4436_A8C8_A78E6EAFA10B
 #define H1BE6A19E_9E50_4436_A8C8_A78E6EAFA10B
 
-#include "EventId.h"
+#include "sut.h"
+#include "base/EventId.h"
 #include "base/Role.h"
 #include "base/Status.h"
 

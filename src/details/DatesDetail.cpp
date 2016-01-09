@@ -3,7 +3,7 @@
 #include "base/NullPtr.h"
 #include "details/DatesReceiver.h"
 #include "details/DatesSender.h"
-#include "details/MsgQueue.h"
+#include "details/EventQueue.h"
 #include <thread>
 
 DATES_NS_BEGIN
@@ -31,14 +31,14 @@ namespace
             t = new std::thread([=]{this->receiver();});
         }
 
-        void recv(const MsgId id, const RawMsg& msg)
+        void recv(const Event& event)
         {
-            MsgQueue::getInstance().insert(id, msg);
+            EventQueue::getInstance().insert(event);
         }
 
-        void send(const MsgId id, const RawMsg& msg)
+        void send(const Event& event)
         {
-            sender(id, msg);
+            sender(event);
         }
 
     private:
@@ -56,25 +56,25 @@ namespace
     };
 }
 
-void DatesSender::send(const MsgId id, const RawMsg& msg)
+void DatesSender::send(const Event& event)
 {
-    DatesDetail::getInstance().send(id, msg);
+    DatesDetail::getInstance().send(event);
 }
 
-void DatesReceiver::recv(const MsgId id, const RawMsg& msg)
+void DatesReceiver::recv(const Event& event)
 {
-    DatesDetail::getInstance().recv(id, msg);
+    DatesDetail::getInstance().recv(event);
 }
 
 void DatesFrame::syncRun(const Sender& sender)
 {
-    MsgQueue::getInstance().setWaitTime(0);
+    EventQueue::getInstance().setWaitTime(0);
     DatesDetail::getInstance().syncRun(sender);
 }
 
 void DatesFrame::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
 {
-    MsgQueue::getInstance().setWaitTime(waitTime);
+    EventQueue::getInstance().setWaitTime(waitTime);
     DatesDetail::getInstance().asyncRun(sender, receiver);
 }
 

@@ -1,11 +1,13 @@
 #include "gtest/gtest.h"
-#include "sut/Events.h"
+#include "sut/msgs.h"
 #include "FakeMsg.h"
 #include "FakeSystem.h"
 #include "DatesFrame.h"
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/DatesReceiver.h"
+#include "base/Event.h"
+#include "base/EventId.h"
 #include "definition.h"
 #include <string>
 
@@ -52,9 +54,9 @@ struct SyncTest : public testing::Test
     void SetUp()
     {
         DatesFrame::syncRun(
-                    [this](const MsgId id, const RawMsg& msg)
+                    [this](const Event& event)
                     {
-                        sut.receive(id, msg.getData(), msg.getLength());
+                        sut.receive(event.getEventId(), event.getMsg(), event.getLength());
                     });
     }
 
@@ -99,22 +101,23 @@ struct AsyncTest : public testing::Test
     void SetUp()
     {
         DatesFrame::asyncRun(
-                    [this](const MsgId id, const RawMsg& msg)
+                    [this](const Event& event)
                     {
-                        U8* data = const_cast<U8*>(msg.getData());
-                        ((Header*)data)->id = id;
-                        client.send(SUT_ADDR, SUT_PORT, data, msg.getLength());
+                        U8* data = static_cast<U8*>(event.getMsg());
+                        ((Header*)data)->id = event.getEventId();
+                        client.send(SUT_ADDR, SUT_PORT, data, event.getLength());
                     },
                     [this]()
                     {
-                        static U8 buffer[MAX_MSG_LENGTH] = {0};
                         while(true)
                         {
-                            S32 r = client.receive(buffer, MAX_MSG_LENGTH);
+                            auto msg = new U8[MAX_MSG_LENGTH];
+
+                            S32 r = client.receive(msg, MAX_MSG_LENGTH);
                             if(r <= 0) break;
 
-                            EventId id = ((Header*)buffer)->id;
-                            DatesReceiver::recv(id, *(new RawMsg((U32)r, buffer)));
+                            EventId id = ((Header*)msg)->id;
+                            DatesReceiver::recv(Event(id, (U32)r, msg));
                             if(EVENT_TERMINATE == id) return;
                         }
                     });

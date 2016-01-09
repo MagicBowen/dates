@@ -1,6 +1,6 @@
 #include "sut/SutBase.h"
 #include "base/log.h"
-#include "Events.h"
+#include "msgs.h"
 #include <string.h>
 
 SUT_NS_BEGIN

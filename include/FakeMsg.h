@@ -2,9 +2,9 @@
 #define H05B2224D_B926_4FC0_A936_67B52B8A98DE
 
 #include "base/BaseTypes.h"
+#include "base/EventId.h"
 #include "details/FakeMsgDetail.h"
 #include "details/FakeName.h"
-#include "details/MsgId.h"
 
 DATES_NS_BEGIN
 
@@ -16,7 +16,7 @@ struct FAKE(MSG) : FakeMsgDetail<MSG>       \
     {                                       \
         return #MSG;                        \
     }                                       \
-    static MsgId getId()                    \
+    static EventId getId()                  \
     {                                       \
         return ID;                          \
     }

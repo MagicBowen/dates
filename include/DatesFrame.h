@@ -1,14 +1,15 @@
 #ifndef H6C9783B3_A46F_489B_9EE5_B208C5DCDBD2
 #define H6C9783B3_A46F_489B_9EE5_B208C5DCDBD2
 
-#include "details/MsgId.h"
+#include "details/dates.h"
+#include "base/EventId.h"
 #include <functional>
+
+struct Event;
 
 DATES_NS_BEGIN
 
-struct RawMsg;
-
-using Sender = std::function<void (const MsgId, const RawMsg&)>;
+using Sender = std::function<void (const Event&)>;
 using Receiver = std::function<void ()>;
 
 struct DatesFrame
