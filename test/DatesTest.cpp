@@ -5,6 +5,7 @@
 #include "DatesFrame.h"
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
+#include "details/DatesReceiver.h"
 #include <string>
 
 USING_DATES_NS
@@ -76,10 +77,24 @@ struct AsyncTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::syncRun(
+        DatesFrame::asyncRun(
                     [this](const MsgId id, const RawMsg& msg)
                     {
-                        sut.receive(id, msg.getData(), msg.getLength());
+                        U8* data = const_cast<U8*>(msg.getData());
+                        ((Header*)data)->id = id;
+                        client.send("127.0.0.1", 5001, data, msg.getLength());
+                    },
+                    [this]()
+                    {
+                        while(true)
+                        {
+                            U8 buffer[1024] = {0};
+                            S16 r = client.receive(buffer, 1024);
+                            if(r > 0)
+                            {
+                                DatesReceiver::recv(((Header*)buffer)->id, RawMsg((U32)r, buffer));
+                            }
+                        }
                     });
     }
 
@@ -87,6 +102,7 @@ protected:
     FakeCommander commander;
     AsyncSut sut;
     const U32 PAYLOAD{1};
+    UdpClient client{5002};
 };
 
 TEST_F(AsyncTest, should_async_receive_pong_msg_when_send_ping_to_async_sut)

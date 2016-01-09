@@ -70,16 +70,10 @@ namespace
         }
 
     private:
-        enum
-        {
-            WAIT_SECONDS = 5
-        };
-
-    private:
         std::map<MsgId, const RawMsg*> msgs;
         std::condition_variable cond;
         std::mutex mutex;
-        U32 waitSeconds{WAIT_SECONDS};
+        U32 waitSeconds{0};
     };
 }
 

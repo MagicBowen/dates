@@ -13,28 +13,14 @@ namespace
 {
     DEF_SINGLETON(DatesDetail)
     {
-    //        OVERRIDE(~DatesFrameImpl())
-    //        {
-    //            if(__notnull__(receiver))
-    //            {
-    //                stop = true; // Exist danger!!!
-    //                t->join();
-    //            }
-    //        }
-    //
-        void run(const Sender& sender, Receiver* receiver)
+        void run(const Sender& sender, const Receiver* receiver)
         {
             this->sender = sender;
             this->receiver = receiver;
 
             if(__notnull__(receiver))
             {
-                stop = false;
-                t.reset(new std::thread([this]{while(!stop){(*(this->receiver))();}}));
-            }
-            else
-            {
-                MsgQueue::getInstance().setWaitTime(0);
+                t.reset(new std::thread([this]{while(true){(*(this->receiver))();}}));
             }
         }
 
@@ -50,9 +36,8 @@ namespace
 
     private:
         Sender sender;
-        Receiver* receiver{__null_ptr__};
+        const Receiver* receiver{__null_ptr__};
         std::unique_ptr<std::thread> t;
-        bool stop{true};
     };
 }
 
@@ -69,6 +54,12 @@ void DatesReceiver::recv(const MsgId id, const RawMsg& msg)
 void DatesFrame::syncRun(const Sender& sender)
 {
     DatesDetail::getInstance().run(sender, __null_ptr__);
+}
+
+void DatesFrame::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
+{
+    MsgQueue::getInstance().setWaitTime(waitTime);
+    DatesDetail::getInstance().run(sender, &receiver);
 }
 
 DATES_NS_END

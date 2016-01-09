@@ -14,6 +14,7 @@ using Receiver = std::function<void ()>;
 struct DatesFrame
 {
     static void syncRun(const Sender&);
+    static void asyncRun(const Sender&, const Receiver&, const U32 waitTime = 5);
 };
 
 DATES_NS_END

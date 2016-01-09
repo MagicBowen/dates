@@ -38,9 +38,7 @@ void SutBase::handleHello(const Hello& event)
 
     Hello rsp;
     rsp.header.id = EVENT_HELLO;
-
     strcpy(rsp.data, "Who are you?");
-
     send(EVENT_HELLO, &rsp, sizeof(rsp));
 }
 
@@ -48,6 +46,7 @@ void SutBase::handleHello(const Hello& event)
 void SutBase::handlePing(const Ping& event)
 {
     Pong pong;
+    pong.header.id = EVENT_PONG;
     pong.reply = event.request;
     send(EVENT_PONG, &pong, sizeof(pong));
 }
