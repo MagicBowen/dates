@@ -6,7 +6,7 @@
 
 struct UdpClient
 {
-    UdpClient(U16 bindPort);
+    UdpClient(const char* ip, const U16 port);
     ~UdpClient();
 
     S32 send(const char* dstIp, const U16 dstPort, const void* data, const U16 length);

@@ -5,8 +5,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-UdpClient::UdpClient(U16 bindPort)
-: servAddr("127.0.0.1", bindPort)
+UdpClient::UdpClient(const char* ip, const U16 port)
+: servAddr(ip, port)
 {
     servSocket = socket(PF_INET, SOCK_DGRAM, 0);
     bind(servSocket, (struct sockaddr *)&servAddr.getAddr(), sizeof(sockaddr_in));

@@ -6,6 +6,7 @@
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/DatesReceiver.h"
+#include "definition.h"
 #include <string>
 
 USING_DATES_NS
@@ -102,14 +103,14 @@ struct AsyncTest : public testing::Test
                     {
                         U8* data = const_cast<U8*>(msg.getData());
                         ((Header*)data)->id = id;
-                        client.send("127.0.0.1", 5001, data, msg.getLength());
+                        client.send(SUT_ADDR, SUT_PORT, data, msg.getLength());
                     },
                     [this]()
                     {
-                        static U8 buffer[1024] = {0};
+                        static U8 buffer[MAX_MSG_LENGTH] = {0};
                         while(true)
                         {
-                            S32 r = client.receive(buffer, 1024);
+                            S32 r = client.receive(buffer, MAX_MSG_LENGTH);
                             if(r <= 0) break;
 
                             EventId id = ((Header*)buffer)->id;
@@ -125,7 +126,7 @@ protected:
 
     // Normally, the ASYNC_SUT should be global,
     // and terminated once after all tests completed!
-    UdpClient client{5002};
+    UdpClient client{DATES_ADDR, DATES_PORT};
     AsyncSut sut;
 };
 

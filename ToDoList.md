@@ -7,9 +7,9 @@ TO DO LSIT:
 - [x]: refactor commander to ping
 - [x]: refactor msgs
 - [x]: refactor sut
-- [ ]: refactor DatesFrame
-- [ ]: asyn receive test
-- [ ]: thread destory
+- [x]: refactor DatesFrame
+- [x]: asyn receive test
+- [x]: thread destory
 - [x]: wait timer config
 - [ ]: msg refact, non-copy
 - [ ]: msg refact, msg id ?

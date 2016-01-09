@@ -1,10 +1,11 @@
 #include "AsyncSut.h"
 #include "sut/Events.h"
+#include "definition.h"
 
 SUT_NS_BEGIN
 
 AsyncSut::AsyncSut()
-: client(5001), t(new std::thread([this]{run();}))
+: client(SUT_ADDR, SUT_PORT), t(new std::thread([this]{run();}))
 {
 }
 
@@ -15,11 +16,11 @@ AsyncSut::~AsyncSut()
 
 void AsyncSut::run()
 {
-    U8 buffer[1024] = {0};
+    U8 buffer[MAX_MSG_LENGTH] = {0};
 
     while(true)
     {
-        S32 r = client.receive(buffer, 1024);
+        S32 r = client.receive(buffer, MAX_MSG_LENGTH);
 
         if(r <= 0) break;
 
@@ -30,7 +31,7 @@ void AsyncSut::run()
 
 void AsyncSut::doSend(const void* data, const U32 length)
 {
-    client.send("127.0.0.1", 5002, data, length);
+    client.send(DATES_ADDR, DATES_PORT, data, length);
 }
 
 SUT_NS_END
