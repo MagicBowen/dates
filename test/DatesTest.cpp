@@ -32,12 +32,15 @@ namespace
     __def_fake_sys_end
 
     /////////////////////////////////////////////////////
-    __def_fake_msg(EVENT_PING,   Ping);
-    __def_fake_msg(EVENT_PONG,   Pong);
+    __def_fake_msg(EVENT_PING,      Ping);
+    __def_fake_msg(EVENT_PONG,      Pong);
+    __def_fake_msg(EVENT_TERMINATE, Terminate);
 
     __def_fake_sys_begin(Commander)
         __could_send(Ping);
         __could_recv(Pong);
+        __could_send(Terminate);
+        __could_recv(Terminate);
     __def_fake_sys_end
 
 }
@@ -56,10 +59,11 @@ struct SyncTest : public testing::Test
 
 protected:
     FakeNeighbor neighbor;
+    FakeCommander commander;
     SyncSut sut;
 };
 
-TEST_F(SyncTest, should_sync_receive_hello_from_sut_when_say_hello_to_sync_sut)
+TEST_F(SyncTest, should_receive_hello_from_sut_when_say_hello_to_sync_sut)
 {
     neighbor.send([](FAKE(Hello)& hello)
             {
@@ -71,6 +75,22 @@ TEST_F(SyncTest, should_sync_receive_hello_from_sut_when_say_hello_to_sync_sut)
                 ASSERT_TRUE(strcmp("Who are you?", hello.getWords()) == 0);
             });
 }
+
+TEST_F(SyncTest, should_receive_pong_msg_when_send_ping_to_sync_sut)
+{
+    const U32 PAYLOAD = 1;
+
+    commander.send([=](FAKE(Ping)& ping)
+            {
+                ping.request = PAYLOAD;
+            });
+
+    commander.recv([=](const FAKE(Pong)& pong)
+            {
+                ASSERT_EQ(PAYLOAD, pong.reply);
+            });
+}
+
 
 /////////////////////////////////////////////////////////
 struct AsyncTest : public testing::Test
@@ -86,26 +106,41 @@ struct AsyncTest : public testing::Test
                     },
                     [this]()
                     {
+                        static U8 buffer[1024] = {0};
                         while(true)
                         {
-                            U8 buffer[1024] = {0};
-                            S16 r = client.receive(buffer, 1024);
-                            if(r > 0)
-                            {
-                                DatesReceiver::recv(((Header*)buffer)->id, RawMsg((U32)r, buffer));
-                            }
+                            S32 r = client.receive(buffer, 1024);
+                            if(r <= 0) break;
+
+                            EventId id = ((Header*)buffer)->id;
+                            DatesReceiver::recv(id, *(new RawMsg((U32)r, buffer)));
+                            if(EVENT_TERMINATE == id) return;
                         }
                     });
     }
 
 protected:
     FakeCommander commander;
-    AsyncSut sut;
     const U32 PAYLOAD{1};
+
+    // Normally, the ASYNC_SUT should be global,
+    // and terminated once after all tests completed!
     UdpClient client{5002};
+    AsyncSut sut;
 };
 
-TEST_F(AsyncTest, should_async_receive_pong_msg_when_send_ping_to_async_sut)
+TEST_F(AsyncTest, shoud_stop_dates_and_sut_when_send_terminate_msg)
+{
+    commander.send([this](FAKE(Terminate)& terminate)
+            {
+            });
+
+    commander.recv([this](const FAKE(Terminate)& terminate)
+            {
+            });
+}
+
+TEST_F(AsyncTest, should_receive_pong_msg_when_send_ping_to_async_sut)
 {
     commander.send([this](FAKE(Ping)& ping)
             {
@@ -115,6 +150,14 @@ TEST_F(AsyncTest, should_async_receive_pong_msg_when_send_ping_to_async_sut)
     commander.recv([this](const FAKE(Pong)& pong)
             {
                 ASSERT_EQ(PAYLOAD, pong.reply);
+            });
+
+    commander.send([this](FAKE(Terminate)& terminate)
+            {
+            });
+
+    commander.recv([this](const FAKE(Terminate)& terminate)
+            {
             });
 }
 

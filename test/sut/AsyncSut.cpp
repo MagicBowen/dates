@@ -4,25 +4,31 @@
 SUT_NS_BEGIN
 
 AsyncSut::AsyncSut()
-: client(5001), t([this]{run();})
+: client(5001), t(new std::thread([this]{run();}))
 {
+}
+
+AsyncSut::~AsyncSut()
+{
+    t->join();
 }
 
 void AsyncSut::run()
 {
-    static U8 buffer[1024] = {0};
+    U8 buffer[1024] = {0};
 
     while(true)
     {
-        S16 r = client.receive(buffer, 1024);
-        if(r > 0)
-        {
-            SutBase::receive(((Header*)buffer)->id, buffer, r);
-        }
+        S32 r = client.receive(buffer, 1024);
+
+        if(r <= 0) break;
+
+        Status status = SutBase::receive(((Header*)buffer)->id, buffer, r);
+        if(status != SUCCESS) break;
     }
 }
 
-void AsyncSut::send(const EventId, const void* data, const U32 length)
+void AsyncSut::doSend(const void* data, const U32 length)
 {
     client.send("127.0.0.1", 5002, data, length);
 }

@@ -8,7 +8,7 @@ SUT_NS_BEGIN
 struct SyncSut : SutBase
 {
 private:
-    OVERRIDE(void send(const EventId, const void* data, const U32 length));
+    OVERRIDE(void doSend(const void* data, const U32 length));
 };
 
 SUT_NS_END

@@ -16,19 +16,34 @@ namespace
 }
 
 //////////////////////////////////////////////////////////
-void SutBase::receive(const EventId id, const void* data, const U32 length)
+Status SutBase::receive(const EventId id, const void* data, const U32 length)
 {
+    INFO_LOG("SUT recv msg[%d]", id);
+
     switch(id)
     {
     case EVENT_HELLO:
         handleHello(cast_event<Hello>(data));
-        break;
+        return SUCCESS;
     case EVENT_PING:
         handlePing(cast_event<Ping>(data));
+        return SUCCESS;
+    case EVENT_TERMINATE:
+        handleTerminate(cast_event<Terminate>(data));
         break;
     default:
-        ERR_LOG("SUT received unrecognized event(%d)", id);
+        ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);
     }
+
+    return FAILURE;
+}
+
+void SutBase::send(const EventId id, const void* data, const U32 length)
+{
+    INFO_LOG("SUT send msg[%d]", id);
+
+    ((Header*)data)->id = id;
+    doSend(data, length);
 }
 
 //////////////////////////////////////////////////////////
@@ -37,7 +52,6 @@ void SutBase::handleHello(const Hello& event)
     if(strcmp(event.data, "Hey!") != 0)  return;
 
     Hello rsp;
-    rsp.header.id = EVENT_HELLO;
     strcpy(rsp.data, "Who are you?");
     send(EVENT_HELLO, &rsp, sizeof(rsp));
 }
@@ -46,9 +60,14 @@ void SutBase::handleHello(const Hello& event)
 void SutBase::handlePing(const Ping& event)
 {
     Pong pong;
-    pong.header.id = EVENT_PONG;
     pong.reply = event.request;
     send(EVENT_PONG, &pong, sizeof(pong));
+}
+
+//////////////////////////////////////////////////////////
+void SutBase::handleTerminate(const Terminate& event)
+{
+    send(EVENT_TERMINATE, &event, sizeof(event));
 }
 
 SUT_NS_END

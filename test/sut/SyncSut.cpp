@@ -1,4 +1,5 @@
 #include "sut/SyncSut.h"
+#include "sut/Events.h"
 #include "details/RawMsg.h"
 #include "details/DatesReceiver.h"
 
@@ -6,9 +7,9 @@ USING_DATES_NS
 
 SUT_NS_BEGIN
 
-void SyncSut::send(const EventId id, const void* data, const U32 length)
+void SyncSut::doSend(const void* data, const U32 length)
 {
-    DatesReceiver::recv(id, RawMsg(length, (U8*)data));
+    DatesReceiver::recv(((Header*)data)->id, *(new RawMsg(length, (U8*)data)));
 }
 
 SUT_NS_END

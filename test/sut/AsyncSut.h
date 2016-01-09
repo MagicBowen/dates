@@ -4,21 +4,23 @@
 #include "sut/SutBase.h"
 #include "base/UdpClient.h"
 #include <thread>
+#include <memory>
 
 SUT_NS_BEGIN
 
 struct AsyncSut : SutBase
 {
     AsyncSut();
+    ~AsyncSut();
 
 private:
     void run();
 
 private:
-    OVERRIDE(void send(const EventId, const void* data, const U32 length));
+    OVERRIDE(void doSend(const void* data, const U32 length));
 
 private:
-    std::thread t;
+    std::unique_ptr<std::thread> t;
     UdpClient client;
 };
 

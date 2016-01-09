@@ -67,13 +67,14 @@ namespace
             consumer.consume(*(msg->second));
 
             msgs.erase(msg);
+            delete msg->second;
         }
 
     private:
         std::map<MsgId, const RawMsg*> msgs;
         std::condition_variable cond;
         std::mutex mutex;
-        U32 waitSeconds{0};
+        U32 waitSeconds{5};
     };
 }
 

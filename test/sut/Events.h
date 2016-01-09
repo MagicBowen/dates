@@ -10,6 +10,7 @@ SUT_NS_BEGIN
 const EventId EVENT_HELLO = 0;
 const EventId EVENT_PING = 1;
 const EventId EVENT_PONG = 2;
+const EventId EVENT_TERMINATE = 3;
 
 struct Header
 {
@@ -32,6 +33,11 @@ struct Pong
 {
     Header header;
     U32 reply;
+};
+
+struct Terminate
+{
+    Header header;
 };
 
 SUT_NS_END

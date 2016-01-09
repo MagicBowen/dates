@@ -57,8 +57,8 @@ struct FakeSystemDetail : private FakeSystemBase
                           static_cast<FAKER&>(*this),
                           checker);
 
-        FakeSystemBase::onMsgRecv(Msg::getName(), Msg::getId());
         MsgQueue::getInstance().consume(consumer);
+        FakeSystemBase::onMsgRecv(Msg::getName(), Msg::getId());
     }
 
     template<typename BUILDER>
@@ -69,8 +69,8 @@ struct FakeSystemDetail : private FakeSystemBase
         Msg msg;
         static_cast<FAKER&>(*this).build(builder, msg);
 
-        FakeSystemBase::send(Msg::getId(), sizeof(Msg), &msg);
         FakeSystemBase::onMsgSend(Msg::getName(), Msg::getId());
+        FakeSystemBase::send(Msg::getId(), sizeof(Msg), &msg);
     }
 };
 

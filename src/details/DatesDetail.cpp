@@ -4,7 +4,6 @@
 #include "details/DatesReceiver.h"
 #include "details/DatesSender.h"
 #include "details/MsgQueue.h"
-#include <memory>
 #include <thread>
 
 DATES_NS_BEGIN
@@ -13,15 +12,23 @@ namespace
 {
     DEF_SINGLETON(DatesDetail)
     {
-        void run(const Sender& sender, const Receiver* receiver)
+        ~DatesDetail()
+        {
+            terminateThread();
+        }
+
+        void syncRun(const Sender& sender)
+        {
+            this->sender = sender;
+        }
+
+        void asyncRun(const Sender& sender, const Receiver& receiver)
         {
             this->sender = sender;
             this->receiver = receiver;
 
-            if(__notnull__(receiver))
-            {
-                t.reset(new std::thread([this]{while(true){(*(this->receiver))();}}));
-            }
+            if(__notnull__(t)) terminateThread();
+            t = new std::thread([=]{this->receiver();});
         }
 
         void recv(const MsgId id, const RawMsg& msg)
@@ -35,9 +42,17 @@ namespace
         }
 
     private:
+        void terminateThread()
+        {
+            t->join();
+            delete t;
+            t = __null_ptr__;
+        }
+
+    private:
         Sender sender;
-        const Receiver* receiver{__null_ptr__};
-        std::unique_ptr<std::thread> t;
+        Receiver receiver;
+        std::thread* t{__null_ptr__};
     };
 }
 
@@ -53,14 +68,14 @@ void DatesReceiver::recv(const MsgId id, const RawMsg& msg)
 
 void DatesFrame::syncRun(const Sender& sender)
 {
-    DatesDetail::getInstance().run(sender, __null_ptr__);
+    MsgQueue::getInstance().setWaitTime(0);
+    DatesDetail::getInstance().syncRun(sender);
 }
 
 void DatesFrame::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
 {
     MsgQueue::getInstance().setWaitTime(waitTime);
-    DatesDetail::getInstance().run(sender, &receiver);
+    DatesDetail::getInstance().asyncRun(sender, receiver);
 }
 
 DATES_NS_END
-

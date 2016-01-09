@@ -3,22 +3,28 @@
 
 #include "EventId.h"
 #include "base/Role.h"
+#include "base/Status.h"
 
 SUT_NS_BEGIN
 
 struct Hello;
 struct Ping;
+struct Terminate;
 
 DEFINE_ROLE(SutBase)
 {
-    void receive(const EventId, const void* data, const U32 length);
+    Status receive(const EventId, const void* data, const U32 length);
+
+private:
+    void send(const EventId, const void* data, const U32 length);
 
 private:
     void handleHello(const Hello&);
     void handlePing(const Ping&);
+    void handleTerminate(const Terminate&);
 
 private:
-    ABSTRACT(void send(const EventId, const void* data, const U32 length));
+    ABSTRACT(void doSend(const void* data, const U32 length));
 };
 
 
