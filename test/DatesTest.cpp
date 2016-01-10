@@ -100,27 +100,31 @@ struct AsyncTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::asyncRun(
-                    [this](const Event& event)
-                    {
-                        U8* data = static_cast<U8*>(event.getMsg());
-                        ((Header*)data)->id = event.getEventId();
-                        client.send(SUT_ADDR, SUT_PORT, data, event.getLength());
-                    },
-                    [this]()
-                    {
-                        while(true)
-                        {
-                            auto msg = new U8[MAX_MSG_LENGTH];
+        DatesFrame::asyncRun([this](const Event& event){asyncSend(event);},
+                             [this](){asyncRecv();});
+    }
 
-                            S32 r = client.receive(msg, MAX_MSG_LENGTH);
-                            if(r <= 0) break;
+private:
+    void asyncSend(const Event& event)
+    {
+        U8* data = static_cast<U8*>(event.getMsg());
+        ((Header*)data)->id = event.getEventId();
+        client.send(SUT_ADDR, SUT_PORT, data, event.getLength());
+    }
 
-                            EventId id = ((Header*)msg)->id;
-                            DatesReceiver::recv(Event(id, (U32)r, msg));
-                            if(EVENT_TERMINATE == id) return;
-                        }
-                    });
+    void asyncRecv()
+    {
+        while(true)
+        {
+            auto msg = new U8[MAX_MSG_LENGTH];
+
+            S32 r = client.receive(msg, MAX_MSG_LENGTH);
+            if(r <= 0) break;
+
+            EventId id = ((Header*)msg)->id;
+            DatesReceiver::recv(Event(id, (U32)r, msg));
+            if(EVENT_TERMINATE == id) return;
+        }
     }
 
 protected:
