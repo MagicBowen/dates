@@ -11,8 +11,10 @@ TO DO LSIT:
 - [x]: asyn receive test
 - [x]: thread destory
 - [x]: wait timer config
-- [ ]: msg refact, non-copy
-- [ ]: msg refact, msg id ?
+- [x]: msg refact, non-copy
+- [ ]: refact EventQueue, seperate sync and async; async decorate sync queue;
+- [ ]: using DCI to govenment the dependency;
+- [ ]: msg refact; msg to system method has been injected in; 
 - [ ]: multi fake system: duplicate msg id; Address of system;
 - [ ]: decouple from test framework;
 - [ ]: integrate with msgcc
