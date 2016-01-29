@@ -13,7 +13,7 @@ struct AsyncMsgQueue : MsgQueue
     AsyncMsgQueue(const U32 waitSeconds);
 
 private:
-    OVERRIDE(void insert(RawMsg&));
+    OVERRIDE(void insert(const RawMsg&));
     OVERRIDE(void consume(const MsgConsumer&));
     OVERRIDE(void clear());
 

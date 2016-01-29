@@ -2,7 +2,7 @@
 #define H05B2224D_B926_4FC0_A936_67B52B8A98DE
 
 #include "base/BaseTypes.h"
-#include "base/EventId.h"
+#include "details/MsgId.h"
 #include "details/FakeMsgDetail.h"
 #include "details/FakeName.h"
 
@@ -16,7 +16,7 @@ struct FAKE(MSG) : FakeMsgDetail<MSG>       \
     {                                       \
         return #MSG;                        \
     }                                       \
-    static EventId getId()                  \
+    static MsgId getId()                    \
     {                                       \
         return ID;                          \
     }

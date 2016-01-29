@@ -35,6 +35,10 @@ private:                                            \
     {                                               \
         return #SYSTEM;                             \
     }                                               \
+    DECL_ROLE(MsgQueue)                             \
+    {                                               \
+        return DatesFrame::getMsgQueue();           \
+    }                                               \
 public:
 
 #define __def_fake_sys_end                          };

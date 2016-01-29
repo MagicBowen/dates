@@ -3,8 +3,9 @@
 #include "base/NullPtr.h"
 #include "details/DatesReceiver.h"
 #include "details/DatesSender.h"
-#include "details/EventQueue.h"
+#include "details/AsyncMsgQueue.h"
 #include <thread>
+#include <memory>
 
 DATES_NS_BEGIN
 
@@ -20,25 +21,32 @@ namespace
         void syncRun(const Sender& sender)
         {
             this->sender = sender;
+            msgQueue.reset(new SyncMsgQueue());
         }
 
-        void asyncRun(const Sender& sender, const Receiver& receiver)
+        void asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
         {
             this->sender = sender;
             this->receiver = receiver;
 
             if(__notnull__(t)) terminateThread();
             t = new std::thread([=]{this->receiver();});
+            msgQueue.reset(new AsyncMsgQueue(waitTime));
         }
 
-        void recv(const Event& event)
+        void recv(const RawMsg& msg)
         {
-            EventQueue::getInstance().insert(event);
+            msgQueue->insert(msg);
         }
 
-        void send(const Event& event)
+        void send(const RawMsg& msg)
         {
-            sender(event);
+            sender(msg);
+        }
+
+        MsgQueue& getMsgQueue()
+        {
+            return *msgQueue;
         }
 
     private:
@@ -53,29 +61,33 @@ namespace
         Sender sender;
         Receiver receiver;
         std::thread* t{__null_ptr__};
+        std::unique_ptr<MsgQueue> msgQueue;
     };
 }
 
-void DatesSender::send(const Event& event)
+void DatesSender::send(const RawMsg& msg)
 {
-    DatesDetail::getInstance().send(event);
+    DatesDetail::getInstance().send(msg);
 }
 
-void DatesReceiver::recv(const Event& event)
+void DatesReceiver::recv(const RawMsg& msg)
 {
-    DatesDetail::getInstance().recv(event);
+    DatesDetail::getInstance().recv(msg);
 }
 
 void DatesFrame::syncRun(const Sender& sender)
 {
-    EventQueue::getInstance().setWaitTime(0);
     DatesDetail::getInstance().syncRun(sender);
 }
 
 void DatesFrame::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
 {
-    EventQueue::getInstance().setWaitTime(waitTime);
-    DatesDetail::getInstance().asyncRun(sender, receiver);
+    DatesDetail::getInstance().asyncRun(sender, receiver, waitTime);
+}
+
+MsgQueue& DatesFrame::getMsgQueue()
+{
+    return DatesDetail::getInstance().getMsgQueue();
 }
 
 DATES_NS_END

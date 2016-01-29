@@ -3,13 +3,13 @@
 
 #include "details/dates.h"
 
-struct Event;
-
 DATES_NS_BEGIN
+
+struct RawMsg;
 
 struct DatesReceiver
 {
-    static void recv(const Event&);
+    static void recv(const RawMsg&);
 };
 
 DATES_NS_END

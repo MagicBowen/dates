@@ -3,18 +3,19 @@
 
 #include <sut/sut.h>
 #include "base/BaseTypes.h"
-#include "base/EventId.h"
+#include "details/MsgId.h"
 
+USING_DATES_NS
 SUT_NS_BEGIN
 
-const EventId EVENT_HELLO = 0;
-const EventId EVENT_PING = 1;
-const EventId EVENT_PONG = 2;
-const EventId EVENT_TERMINATE = 3;
+const MsgId EVENT_HELLO = 0;
+const MsgId EVENT_PING = 1;
+const MsgId EVENT_PONG = 2;
+const MsgId EVENT_TERMINATE = 3;
 
 struct Header
 {
-    EventId id;
+    MsgId id;
 };
 
 struct Hello

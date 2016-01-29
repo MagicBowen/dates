@@ -2,23 +2,28 @@
 #define H4E17EE64_DFD7_4626_8E68_BFEE787FF603
 
 #include "details/dates.h"
-#include "base/BaseTypes.h"
+#include "details/MsgId.h"
 
 DATES_NS_BEGIN
 
 struct RawMsg
 {
-    RawMsg(void* msg, U32 length)
-    : msg(msg), length(length)
+    RawMsg(MsgId id, void* msg, U32 length)
+    : id(id), msg(msg), length(length)
     {
     }
 
-    void* getMsg()
+    MsgId getId() const
+    {
+        return id;
+    }
+
+    void* getMsg() const
     {
         return msg;
     }
 
-    U32 getlength() const
+    U32 getLength() const
     {
         return length;
     }
@@ -26,6 +31,7 @@ struct RawMsg
 private:
     void* msg;
     U32   length;
+    MsgId id;
 };
 
 DATES_NS_END

@@ -16,7 +16,7 @@ namespace
 }
 
 //////////////////////////////////////////////////////////
-Status SutBase::receive(const EventId id, const void* data, const U32 length)
+Status SutBase::receive(const MsgId id, const void* data, const U32 length)
 {
     INFO_LOG("SUT recv msg[%d]", id);
 
@@ -38,7 +38,7 @@ Status SutBase::receive(const EventId id, const void* data, const U32 length)
     return FAILURE;
 }
 
-void SutBase::send(const EventId id, const void* data, const U32 length)
+void SutBase::send(const MsgId id, const void* data, const U32 length)
 {
     INFO_LOG("SUT send msg[%d]", id);
 

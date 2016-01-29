@@ -4,7 +4,12 @@
 
 DATES_NS_BEGIN
 
-RawMsg* SyncMsgQueue::findBy(const MsgConsumer& consumer) const
+SyncMsgQueue::~SyncMsgQueue()
+{
+    clear();
+}
+
+const RawMsg* SyncMsgQueue::findBy(const MsgConsumer& consumer) const
 {
     for(auto& msg : msgs)
     {
@@ -15,21 +20,35 @@ RawMsg* SyncMsgQueue::findBy(const MsgConsumer& consumer) const
 
 void SyncMsgQueue::consume(const MsgConsumer& consumer)
 {
-    auto msg = findBy(consumer);
+    auto msgIterator = msgs.begin();
 
-    if(__null(msg)) return consumer.onError();
+    for(auto msgIterator = msgs.begin(); msgIterator != msgs.end(); ++msgIterator)
+    {
+        if(consumer.isMatch(*msgIterator))
+        {
+            msgs.erase(msgIterator);
+            break;
+        }
+    }
 
-    consumer.consume(*msg);
-    msgs.remove(*msg);
+    if(msgs.end() == msgIterator) return consumer.onError();
+
+    consumer.consume(*msgIterator);
+    delete [] msgIterator->getMsg();
 }
 
-void SyncMsgQueue::insert(RawMsg& msg)
+void SyncMsgQueue::insert(const RawMsg& msg)
 {
     msgs.push_back(msg);
 }
 
 void SyncMsgQueue::clear()
 {
+    for(auto msg : msgs)
+    {
+        delete [] msg.getMsg();
+    }
+
     msgs.clear();
 }
 

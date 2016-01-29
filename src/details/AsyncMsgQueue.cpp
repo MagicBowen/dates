@@ -9,7 +9,7 @@ AsyncMsgQueue::AsyncMsgQueue(const U32 waitSeconds)
 {
 }
 
-void AsyncMsgQueue::insert(RawMsg& msg)
+void AsyncMsgQueue::insert(const RawMsg& msg)
 {
     SYNCHRONIZED(mutex)
     {

@@ -2,10 +2,11 @@
 #define H3A33B15A_5386_4FF3_BB06_DA8484CB59C0
 
 #include "details/FakeSystemBase.h"
-#include "details/EventQueue.h"
-#include "details/EventConsumer.h"
+#include "details/MsgConsumer.h"
+#include "details/RawMsg.h"
 #include "base/FunctionTraits.h"
-#include "base/Event.h"
+#include "details/MsgQueue.h"
+#include "base/Role.h"
 
 DATES_NS_BEGIN
 
@@ -18,10 +19,10 @@ struct FakeSystemDetail : private FakeSystemBase
     {
         typedef ARG_TYPE(CHECKER) Msg;
 
-        struct Consumer: EventConsumer
+        struct Consumer: MsgConsumer
         {
             Consumer(const char* msgName,
-                     const EventId id,
+                     const MsgId id,
                      FAKER& sys,
                      const CHECKER& checker)
             : msgName(msgName)
@@ -31,23 +32,24 @@ struct FakeSystemDetail : private FakeSystemBase
             {}
 
         private:
-            OVERRIDE(EventId getId() const)
+            OVERRIDE(bool isMatch(const RawMsg& rawMsg) const)
             {
-                return id;
+                return id == rawMsg.getId();
             }
-            OVERRIDE(void consume(const Event& event) const)
+
+            OVERRIDE(void consume(const RawMsg& rawMsg) const)
             {
-                auto msg = *reinterpret_cast<const Msg*>(event.getMsg());
+                auto msg = *reinterpret_cast<const Msg*>(rawMsg.getMsg());
                 sys.check(checker, msg);
             }
-            OVERRIDE(void onTimeOut() const)
+            OVERRIDE(void onError() const)
             {
                 sys.onTimeOut(msgName);
             }
 
         private:
             const char* msgName;
-            const EventId id;
+            const MsgId id;
             FAKER& sys;
             const CHECKER& checker;
         };
@@ -57,7 +59,7 @@ struct FakeSystemDetail : private FakeSystemBase
                           static_cast<FAKER&>(*this),
                           checker);
 
-        EventQueue::getInstance().consume(consumer);
+        ROLE(MsgQueue).consume(consumer);
         FakeSystemBase::onMsgRecv(Msg::getName(), Msg::getId());
     }
 
@@ -70,8 +72,11 @@ struct FakeSystemDetail : private FakeSystemBase
         static_cast<FAKER&>(*this).build(builder, msg);
 
         FakeSystemBase::onMsgSend(Msg::getName(), Msg::getId());
-        FakeSystemBase::send(Event(Msg::getId(), sizeof(Msg), &msg));
+        FakeSystemBase::send(RawMsg(Msg::getId(), &msg, sizeof(Msg)));
     }
+
+private:
+    USE_ROLE(MsgQueue);
 };
 
 DATES_NS_END

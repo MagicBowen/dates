@@ -13,10 +13,10 @@ TO DO LSIT:
 - [x]: wait timer config
 - [x]: msg refact, non-copy
 - [ ]: refact EventQueue, seperate sync and async; async decorate sync queue;
-- [ ]: multi fake system: duplicate msg id; seperate system;
-- [ ]: inject matcher to system! matcher can combind freely;
 - [ ]: using DCI to govenment the dependency;
 - [ ]: msg memory government; 
+- [ ]: multi fake system: duplicate msg id; seperate system;
+- [ ]: inject matcher to system! matcher can combind freely;
 - [ ]: decouple from test framework;
 - [ ]: integrate with msgcc
 - [ ]: tutorial

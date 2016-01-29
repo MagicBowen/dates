@@ -2,16 +2,18 @@
 #define HE1281468_B42A_49BF_A7CE_BD21C0D881D7
 
 #include "details/MsgQueue.h"
+#include "details/RawMsg.h"
 #include <list>
 
 DATES_NS_BEGIN
 
 struct SyncMsgQueue : MsgQueue
 {
-    RawMsg* findBy(const MsgConsumer&) const;
+    const RawMsg* findBy(const MsgConsumer&) const;
+    ~SyncMsgQueue();
 
 public:
-    OVERRIDE(void insert(RawMsg&));
+    OVERRIDE(void insert(const RawMsg&));
     OVERRIDE(void consume(const MsgConsumer&));
     OVERRIDE(void clear());
 

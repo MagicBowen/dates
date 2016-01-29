@@ -6,8 +6,8 @@
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/DatesReceiver.h"
-#include "base/Event.h"
-#include "base/EventId.h"
+#include "details/MsgId.h"
+#include "details/RawMsg.h"
 #include "definition.h"
 #include <string>
 
@@ -54,9 +54,9 @@ struct SyncTest : public testing::Test
     void SetUp()
     {
         DatesFrame::syncRun(
-                    [this](const Event& event)
+                    [this](const RawMsg& msg)
                     {
-                        sut.receive(event.getEventId(), event.getMsg(), event.getLength());
+                        sut.receive(msg.getId(), msg.getMsg(), msg.getLength());
                     });
     }
 
@@ -100,16 +100,16 @@ struct AsyncTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::asyncRun([this](const Event& event){asyncSend(event);},
+        DatesFrame::asyncRun([this](const RawMsg& msg){asyncSend(msg);},
                              [this](){asyncRecv();});
     }
 
 private:
-    void asyncSend(const Event& event)
+    void asyncSend(const RawMsg& msg)
     {
-        U8* data = static_cast<U8*>(event.getMsg());
-        ((Header*)data)->id = event.getEventId();
-        client.send(SUT_ADDR, SUT_PORT, data, event.getLength());
+        U8* data = static_cast<U8*>(msg.getMsg());
+        ((Header*)data)->id = msg.getId();
+        client.send(SUT_ADDR, SUT_PORT, data, msg.getLength());
     }
 
     void asyncRecv()
@@ -121,8 +121,8 @@ private:
             S32 r = client.receive(msg, MAX_MSG_LENGTH);
             if(r <= 0) break;
 
-            EventId id = ((Header*)msg)->id;
-            DatesReceiver::recv(Event(id, (U32)r, msg));
+            MsgId id = ((Header*)msg)->id;
+            DatesReceiver::recv(RawMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }
