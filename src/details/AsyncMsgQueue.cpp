@@ -24,7 +24,7 @@ void AsyncMsgQueue::consume(const MsgConsumer& consumer)
     {
         bool result = cond.wait_for(LOCKER(mutex).getLocker(),
                       std::chrono::seconds(waitSeconds),
-                      [&](){return __notnull__(msgs.findBy(consumer));});
+                      [&](){return msgs.satisfy(consumer);});
 
         msgs.consume(consumer);
     }
@@ -36,6 +36,11 @@ void AsyncMsgQueue::clear()
     {
         msgs.clear();
     }
+}
+
+bool AsyncMsgQueue::isEmpty() const
+{
+    return msgs.isEmpty();
 }
 
 DATES_NS_END

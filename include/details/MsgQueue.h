@@ -14,6 +14,7 @@ DEFINE_ROLE(MsgQueue)
     ABSTRACT(void insert(const RawMsg&));
     ABSTRACT(void consume(const MsgConsumer&));
     ABSTRACT(void clear());
+    ABSTRACT(bool isEmpty() const);
 };
 
 DATES_NS_END

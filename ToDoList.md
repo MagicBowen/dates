@@ -12,9 +12,10 @@ TO DO LSIT:
 - [x]: thread destory
 - [x]: wait timer config
 - [x]: msg refact, non-copy
-- [ ]: refact EventQueue, seperate sync and async; async decorate sync queue;
-- [ ]: using DCI to govenment the dependency;
+- [x ]: refact EventQueue, seperate sync and async; async decorate sync queue;
 - [ ]: msg memory government; 
+- [ ]: using DCI to govenment the dependency;
+- [ ]: thread terminate gentally;
 - [ ]: multi fake system: duplicate msg id; seperate system;
 - [ ]: inject matcher to system! matcher can combind freely;
 - [ ]: decouple from test framework;

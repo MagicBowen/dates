@@ -9,32 +9,39 @@ SyncMsgQueue::~SyncMsgQueue()
     clear();
 }
 
-const RawMsg* SyncMsgQueue::findBy(const MsgConsumer& consumer) const
+bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
 {
     for(auto& msg : msgs)
     {
-        if(consumer.isMatch(msg))  return &msg;
+        if(consumer.isMatch(msg))  return true;
     }
-    return __null_ptr__;
+    return false;
+}
+
+namespace
+{
+    template<typename Msgs>
+    void doConsume( Msgs& msgs
+                  , typename Msgs::iterator& msg
+                  , const MsgConsumer& consumer)
+    {
+        consumer.consume(*msg);
+        msgs.erase(msg);
+        delete [] msg->getMsg();
+    }
 }
 
 void SyncMsgQueue::consume(const MsgConsumer& consumer)
 {
-    auto msgIterator = msgs.begin();
-
-    for(auto msgIterator = msgs.begin(); msgIterator != msgs.end(); ++msgIterator)
+    for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
     {
-        if(consumer.isMatch(*msgIterator))
+        if(consumer.isMatch(*msg))
         {
-            msgs.erase(msgIterator);
-            break;
+            return doConsume(msgs, msg, consumer);
         }
     }
 
-    if(msgs.end() == msgIterator) return consumer.onError();
-
-    consumer.consume(*msgIterator);
-    delete [] msgIterator->getMsg();
+    return consumer.onError();
 }
 
 void SyncMsgQueue::insert(const RawMsg& msg)
@@ -50,6 +57,11 @@ void SyncMsgQueue::clear()
     }
 
     msgs.clear();
+}
+
+bool SyncMsgQueue::isEmpty() const
+{
+    return msgs.empty();
 }
 
 DATES_NS_END

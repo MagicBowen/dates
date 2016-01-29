@@ -16,6 +16,7 @@ private:
     OVERRIDE(void insert(const RawMsg&));
     OVERRIDE(void consume(const MsgConsumer&));
     OVERRIDE(void clear());
+    OVERRIDE(bool isEmpty() const);
 
 private:
     SyncMsgQueue msgs;

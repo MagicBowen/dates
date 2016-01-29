@@ -9,13 +9,14 @@ DATES_NS_BEGIN
 
 struct SyncMsgQueue : MsgQueue
 {
-    const RawMsg* findBy(const MsgConsumer&) const;
+    bool satisfy(const MsgConsumer&) const;
     ~SyncMsgQueue();
 
 public:
     OVERRIDE(void insert(const RawMsg&));
     OVERRIDE(void consume(const MsgConsumer&));
     OVERRIDE(void clear());
+    OVERRIDE(bool isEmpty() const);
 
 private:
     std::list<RawMsg> msgs;
