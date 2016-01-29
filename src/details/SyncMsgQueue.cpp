@@ -4,20 +4,6 @@
 
 DATES_NS_BEGIN
 
-SyncMsgQueue::~SyncMsgQueue()
-{
-    clear();
-}
-
-bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
-{
-    for(auto& msg : msgs)
-    {
-        if(consumer.expected(msg))  return true;
-    }
-    return false;
-}
-
 namespace
 {
     template<typename Msgs>
@@ -35,13 +21,22 @@ void SyncMsgQueue::consumedBy(const MsgConsumer& consumer)
 {
     for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
     {
-        if(consumer.expected(*msg))
+        if(consumer.expect(*msg))
         {
             return doConsume(msgs, msg, consumer);
         }
     }
 
     return consumer.onError();
+}
+
+bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
+{
+    for(auto& msg : msgs)
+    {
+        if(consumer.expect(msg))  return true;
+    }
+    return false;
 }
 
 void SyncMsgQueue::insert(const RawMsg& msg)
@@ -62,6 +57,11 @@ void SyncMsgQueue::clear()
 bool SyncMsgQueue::isEmpty() const
 {
     return msgs.empty();
+}
+
+SyncMsgQueue::~SyncMsgQueue()
+{
+    clear();
 }
 
 DATES_NS_END

@@ -8,7 +8,7 @@ DATES_NS_BEGIN
 
 struct RawMsg
 {
-    RawMsg(MsgId id, void* msg, U32 length)
+    RawMsg(MsgId id, U8* msg, U32 length)
     : id(id), msg(msg), length(length)
     {
     }
@@ -18,7 +18,7 @@ struct RawMsg
         return id;
     }
 
-    void* getMsg() const
+    U8* getMsg() const
     {
         return msg;
     }
@@ -29,7 +29,7 @@ struct RawMsg
     }
 
 private:
-    void* msg;
+    U8*   msg;
     U32   length;
     MsgId id;
 };

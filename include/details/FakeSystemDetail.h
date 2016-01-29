@@ -32,7 +32,7 @@ struct FakeSystemDetail : private FakeSystemBase
             {}
 
         private:
-            OVERRIDE(bool expected(const RawMsg& rawMsg) const)
+            OVERRIDE(bool expect(const RawMsg& rawMsg) const)
             {
                 return id == rawMsg.getId();
             }
@@ -72,7 +72,7 @@ struct FakeSystemDetail : private FakeSystemBase
         static_cast<FAKER&>(*this).build(builder, msg);
 
         FakeSystemBase::onMsgSend(Msg::getName(), Msg::getId());
-        FakeSystemBase::send(RawMsg(Msg::getId(), &msg, sizeof(Msg)));
+        FakeSystemBase::send(RawMsg(Msg::getId(), (U8*)(&msg), sizeof(Msg)));
     }
 
 private:
