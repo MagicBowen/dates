@@ -10,7 +10,7 @@ struct RawMsg;
 
 DEFINE_ROLE(MsgConsumer)
 {
-    ABSTRACT(bool isMatch(const RawMsg&) const);
+    ABSTRACT(bool expected(const RawMsg&) const);
     ABSTRACT(void consume(const RawMsg&) const);
     ABSTRACT(void onError() const);
 };

@@ -12,7 +12,7 @@ struct MsgConsumer;
 DEFINE_ROLE(MsgQueue)
 {
     ABSTRACT(void insert(const RawMsg&));
-    ABSTRACT(void consume(const MsgConsumer&));
+    ABSTRACT(void consumedBy(const MsgConsumer&));
     ABSTRACT(void clear());
     ABSTRACT(bool isEmpty() const);
 };

@@ -32,7 +32,7 @@ struct FakeSystemDetail : private FakeSystemBase
             {}
 
         private:
-            OVERRIDE(bool isMatch(const RawMsg& rawMsg) const)
+            OVERRIDE(bool expected(const RawMsg& rawMsg) const)
             {
                 return id == rawMsg.getId();
             }
@@ -59,7 +59,7 @@ struct FakeSystemDetail : private FakeSystemBase
                           static_cast<FAKER&>(*this),
                           checker);
 
-        ROLE(MsgQueue).consume(consumer);
+        ROLE(MsgQueue).consumedBy(consumer);
         FakeSystemBase::onMsgRecv(Msg::getName(), Msg::getId());
     }
 

@@ -18,7 +18,7 @@ void AsyncMsgQueue::insert(const RawMsg& msg)
     }
 }
 
-void AsyncMsgQueue::consume(const MsgConsumer& consumer)
+void AsyncMsgQueue::consumedBy(const MsgConsumer& consumer)
 {
     SYNCHRONIZED(mutex)
     {
@@ -26,7 +26,7 @@ void AsyncMsgQueue::consume(const MsgConsumer& consumer)
                       std::chrono::seconds(waitSeconds),
                       [&](){return msgs.satisfy(consumer);});
 
-        msgs.consume(consumer);
+        msgs.consumedBy(consumer);
     }
 }
 

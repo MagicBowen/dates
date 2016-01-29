@@ -13,7 +13,7 @@ bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
 {
     for(auto& msg : msgs)
     {
-        if(consumer.isMatch(msg))  return true;
+        if(consumer.expected(msg))  return true;
     }
     return false;
 }
@@ -31,11 +31,11 @@ namespace
     }
 }
 
-void SyncMsgQueue::consume(const MsgConsumer& consumer)
+void SyncMsgQueue::consumedBy(const MsgConsumer& consumer)
 {
     for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
     {
-        if(consumer.isMatch(*msg))
+        if(consumer.expected(*msg))
         {
             return doConsume(msgs, msg, consumer);
         }
