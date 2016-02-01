@@ -2,6 +2,7 @@
 #define H05B2224D_B926_4FC0_A936_67B52B8A98DD
 
 #include "details/FakeSystemDetail.h"
+#include "details/FakeSystemInfo.h"
 #include <functional>
 
 DATES_NS_BEGIN
@@ -29,16 +30,15 @@ void build(const BUILDER_TYPE(FAKE(MSG))& builder,  \
 ////////////////////////////////////////////////////////
 #define __def_fake_sys_begin(SYSTEM)                \
 struct FAKE(SYSTEM) : FakeSystemDetail<FAKE(SYSTEM)>\
+                    , private FakeSystemInfo        \
 {                                                   \
+    FAKE(SYSTEM)() : FakeSystemInfo(#SYSTEM){}      \
 private:                                            \
-    OVERRIDE(const char* getName() const)           \
-    {                                               \
-        return #SYSTEM;                             \
-    }                                               \
     DECL_ROLE(MsgQueue)                             \
     {                                               \
         return DatesFrame::getMsgQueue();           \
     }                                               \
+    IMPL_ROLE(FakeSystemInfo);                      \
 public:
 
 #define __def_fake_sys_end                          };

@@ -9,8 +9,9 @@
 DATES_NS_BEGIN
 
 struct RawMsg;
+struct FakeSystemInfo;
 
-DEFINE_ROLE(FakeSystemBase)
+DEFINE_ROLE(MsgActionListner)
 {
     void onTimeOut(const char* msgName) const;
     void onMsgSend(const char* msgName, const MsgId) const;
@@ -18,7 +19,7 @@ DEFINE_ROLE(FakeSystemBase)
     void send(const RawMsg&) const;
 
 private:
-    ABSTRACT(const char* getName() const);
+    USE_ROLE(FakeSystemInfo);
 };
 
 DATES_NS_END

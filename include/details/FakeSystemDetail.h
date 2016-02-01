@@ -1,7 +1,7 @@
 #ifndef H3A33B15A_5386_4FF3_BB06_DA8484CB59C0
 #define H3A33B15A_5386_4FF3_BB06_DA8484CB59C0
 
-#include "details/FakeSystemBase.h"
+#include <details/MsgActionListner.h>
 #include "details/MsgConsumer.h"
 #include "details/RawMsg.h"
 #include "base/FunctionTraits.h"
@@ -12,7 +12,7 @@ DATES_NS_BEGIN
 
 ////////////////////////////////////////////////////////
 template<typename FAKER>
-struct FakeSystemDetail : private FakeSystemBase
+struct FakeSystemDetail : private MsgActionListner
 {
     template<typename CHECKER>
     void recv(const CHECKER& checker)
@@ -60,7 +60,7 @@ struct FakeSystemDetail : private FakeSystemBase
                           checker);
 
         ROLE(MsgQueue).consumedBy(consumer);
-        FakeSystemBase::onMsgRecv(Msg::getName(), Msg::getId());
+        MsgActionListner::onMsgRecv(Msg::getName(), Msg::getId());
     }
 
     template<typename BUILDER>
@@ -71,8 +71,8 @@ struct FakeSystemDetail : private FakeSystemBase
         Msg msg;
         static_cast<FAKER&>(*this).build(builder, msg);
 
-        FakeSystemBase::onMsgSend(Msg::getName(), Msg::getId());
-        FakeSystemBase::send(RawMsg(Msg::getId(), (U8*)(&msg), sizeof(Msg)));
+        MsgActionListner::onMsgSend(Msg::getName(), Msg::getId());
+        MsgActionListner::send(RawMsg(Msg::getId(), (U8*)(&msg), sizeof(Msg)));
     }
 
 private:
