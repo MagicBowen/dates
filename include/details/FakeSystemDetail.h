@@ -1,9 +1,10 @@
 #ifndef H3A33B15A_5386_4FF3_BB06_DA8484CB59C0
 #define H3A33B15A_5386_4FF3_BB06_DA8484CB59C0
 
-#include <details/MsgActionListner.h>
+#include "details/MsgActionListner.h"
 #include "details/MsgConsumer.h"
 #include "details/RawMsg.h"
+#include "details/MsgSender.h"
 #include "base/FunctionTraits.h"
 #include "details/MsgQueue.h"
 #include "base/Role.h"
@@ -72,11 +73,12 @@ struct FakeSystemDetail : private MsgActionListner
         static_cast<FAKER&>(*this).build(builder, msg);
 
         MsgActionListner::onMsgSend(Msg::getName(), Msg::getId());
-        MsgActionListner::send(RawMsg(Msg::getId(), (U8*)(&msg), sizeof(Msg)));
+        ROLE(MsgSender).sendMsg(RawMsg(Msg::getId(), (U8*)(&msg), sizeof(Msg)));
     }
 
 private:
     USE_ROLE(MsgQueue);
+    USE_ROLE(MsgSender);
 };
 
 DATES_NS_END

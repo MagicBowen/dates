@@ -3,6 +3,8 @@
 
 #include "details/FakeSystemDetail.h"
 #include "details/FakeSystemInfo.h"
+#include "details/MsgSender.h"
+#include "details/DatesSender.h"
 #include <functional>
 
 DATES_NS_BEGIN
@@ -27,10 +29,20 @@ void build(const BUILDER_TYPE(FAKE(MSG))& builder,  \
     builder(msg);                                   \
 }
 
+struct FakeMsgSender : MsgSender
+{
+private:
+    OVERRIDE(void sendMsg(const RawMsg& msg) const)
+    {
+        DatesSender::send(msg);
+    }
+};
+
 ////////////////////////////////////////////////////////
 #define __def_fake_sys_begin(SYSTEM)                \
 struct FAKE(SYSTEM) : FakeSystemDetail<FAKE(SYSTEM)>\
                     , private FakeSystemInfo        \
+                    , private FakeMsgSender         \
 {                                                   \
     FAKE(SYSTEM)() : FakeSystemInfo(#SYSTEM){}      \
 private:                                            \
@@ -39,6 +51,7 @@ private:                                            \
         return DatesFrame::getMsgQueue();           \
     }                                               \
     IMPL_ROLE(FakeSystemInfo);                      \
+    IMPL_ROLE(MsgSender);                           \
 public:
 
 #define __def_fake_sys_end                          };
