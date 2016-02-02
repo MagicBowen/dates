@@ -12,19 +12,20 @@ TO DO LSIT:
 - [x]: thread destory
 - [x]: wait timer config
 - [x]: msg refact, non-copy
-- [x ]: refact EventQueue, seperate sync and async; async decorate sync queue;
+- [x]: refact EventQueue, seperate sync and async; async decorate sync queue;
 - [x]: msg memory government: only MsgQueue assume that all RawMsg in it hold a heap memory;
 - [x]: system refact: use object name as sys name;
 - [x]: System refact: inject msg sender which is impl by date frame;
 - [x]: System refact: inject msg receiver which is impl by msgQueue;
 - [x]: System refact: refact, common code depency goverment;
-- [ ]: use factory to create DateFrame 
-- [ ]: System refact: use factory to create fake system; 
-- [ ]: using DCI to govenment the dependency;
-- [ ]: RawMsg memory government: Dates Msg Allocator;
+- [x]: use factory to create DateFrame 
+- [ ]: use functional programming to eliminate the small wrapper class;
+- [ ]: RawMsg memory government:
+- [ ]: separate the sync and async; folder refact!
+- [ ]: separate the sync and async test, add test case;
 - [ ]: thread terminate gentally;
-- [ ]: multi fake system: duplicate msg id; seperate system;
-- [ ]: inject matcher to system! matcher can combind freely;
+- [ ]: System refact: use factory to create fake system; 
+- [ ]: promote the usability!
 - [ ]: integrate with msgcc
 - [ ]: decouple from test framework;
 - [ ]: tutorial

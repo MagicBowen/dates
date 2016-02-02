@@ -29,10 +29,10 @@ namespace
 
     struct FakeMsgUtilsImpl : FakeMsgUtils
     {
-        FakeMsgUtilsImpl(const char* name, DatesFrame& dates)
-        : queue(dates.ROLE(MsgQueue))
+        FakeMsgUtilsImpl(const char* name, DatesFrame& frame)
+        : queue(frame.ROLE(MsgQueue))
         , listener(new FakeMsgListener(name))
-        , sender(new FakeMsgSender(dates.ROLE(DatesSender)))
+        , sender(new FakeMsgSender(frame.ROLE(DatesSender)))
         {
         }
 
@@ -48,8 +48,8 @@ namespace
     };
 }
 
-FakeSystem::FakeSystem(const char* name, DatesFrame& dates)
-: msgUtils(new FakeMsgUtilsImpl(name, dates))
+FakeSystem::FakeSystem(const char* name, DatesFrame& frame)
+: msgUtils(new FakeMsgUtilsImpl(name, frame))
 {
 }
 
