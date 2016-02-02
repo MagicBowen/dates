@@ -21,19 +21,21 @@ namespace
     struct FakeMsgUtilsImpl : FakeMsgUtils
     {
         FakeMsgUtilsImpl(const char* name)
-        : queue(DatesFrame::getMsgQueue())
-        , listener(new FakeMsgListener(name))
+        : listener(new FakeMsgListener(name))
         , sender(new FakeMsgSender())
         {
         }
 
     private:
-        IMPL_ROLE_WITH_OBJ(MsgQueue,    queue);
+        DECL_ROLE(MsgQueue)
+        {
+            return DatesFrame::getMsgQueue();
+        }
+
         IMPL_ROLE_WITH_OBJ(MsgListener, *listener);
         IMPL_ROLE_WITH_OBJ(MsgSender,   *sender);
 
     private:
-        MsgQueue& queue;
         std::unique_ptr<MsgListener> listener;
         std::unique_ptr<MsgSender> sender;
     };
