@@ -9,12 +9,12 @@ DATES_NS_BEGIN
 
 struct SyncMsgQueue : MsgQueue
 {
-    bool satisfy(const MsgConsumer&) const;
+    bool satisfy(const MsgMatcher&) const;
     ~SyncMsgQueue();
 
 public:
     OVERRIDE(void insert(const RawMsg&));
-    OVERRIDE(void consumedBy(const MsgConsumer&));
+    OVERRIDE(bool fetch(const MsgMatcher&, RawMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);
 

@@ -1,5 +1,5 @@
-#ifndef H1DB8EC07_D721_4F43_BDAC_3313686E2B20
-#define H1DB8EC07_D721_4F43_BDAC_3313686E2B20
+#ifndef H41376541_41EB_4431_98EA_7FA140ECF56E
+#define H41376541_41EB_4431_98EA_7FA140ECF56E
 
 #include "details/dates.h"
 #include "base/Role.h"
@@ -10,7 +10,7 @@ struct RawMsg;
 
 DEFINE_ROLE(MsgSender)
 {
-    ABSTRACT(void sendMsg(const RawMsg&) const);
+    ABSTRACT(void send(const RawMsg&) const);
 };
 
 DATES_NS_END

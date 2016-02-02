@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "sut/msgs.h"
 #include "FakeMsg.h"
-#include "FakeSystem.h"
+#include <FakeSystem.h>
 #include "DatesFrame.h"
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
@@ -29,23 +29,23 @@ namespace
         }
     __def_fake_msg_end
 
-    __def_fake_sys_begin(Neighbor)
-        __could_send(Hello);
-        __could_recv(Hello);
-    __def_fake_sys_end
+//    __def_fake_sys_begin(Neighbor)
+//        __could_send(Hello);
+//        __could_recv(Hello);
+//    __def_fake_sys_end
 
     /////////////////////////////////////////////////////
     __def_fake_msg(EVENT_PING,      Ping);
     __def_fake_msg(EVENT_PONG,      Pong);
     __def_fake_msg(EVENT_TERMINATE, Terminate);
 
-    __def_fake_sys_begin(Commander)
-        __could_send(Ping);
-        __could_recv(Pong);
-        __could_send(Terminate);
-        __could_recv(Terminate);
-    __def_fake_sys_end
-
+//    __def_fake_sys_begin(Commander)
+//        __could_send(Ping);
+//        __could_recv(Pong);
+//        __could_send(Terminate);
+//        __could_recv(Terminate);
+//    __def_fake_sys_end
+//
 }
 
 /////////////////////////////////////////////////////////
@@ -61,8 +61,8 @@ struct SyncTest : public testing::Test
     }
 
 protected:
-    FakeNeighbor neighbor;
-    FakeCommander commander;
+    FakeSystem neighbor{"neighbor"};
+    FakeSystem commander{"commander"};
     SyncSut sut;
 };
 
@@ -128,7 +128,7 @@ private:
     }
 
 protected:
-    FakeCommander commander;
+    FakeSystem commander{"commander"};
     const U32 PAYLOAD{1};
 
     // Normally, the ASYNC_SUT should be global,

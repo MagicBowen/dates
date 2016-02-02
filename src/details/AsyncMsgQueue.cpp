@@ -18,16 +18,18 @@ void AsyncMsgQueue::insert(const RawMsg& msg)
     }
 }
 
-void AsyncMsgQueue::consumedBy(const MsgConsumer& consumer)
+bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, RawMsg& msg)
 {
     SYNCHRONIZED(mutex)
     {
         bool result = cond.wait_for(LOCKER(mutex).getLocker(),
                       std::chrono::seconds(waitSeconds),
-                      [&](){return msgs.satisfy(consumer);});
+                      [&](){return msgs.satisfy(matcher);});
 
-        msgs.consumedBy(consumer);
+        return msgs.fetch(matcher, msg);
     }
+
+    return false;
 }
 
 void AsyncMsgQueue::clear()

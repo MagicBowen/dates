@@ -7,9 +7,9 @@
 DATES_NS_BEGIN
 
 template<typename MSG>
-struct FakeMsgDetail : MSG
+struct FakeMsgBase : MSG
 {
-    FakeMsgDetail()
+    FakeMsgBase()
     {
         reset();
     }

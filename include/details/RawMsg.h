@@ -3,30 +3,20 @@
 
 #include "details/dates.h"
 #include "details/MsgId.h"
+#include "base/NullPtr.h"
 
 DATES_NS_BEGIN
 
 struct RawMsg
 {
-    RawMsg(MsgId id, U8* msg, U32 length)
-    : id(id), msg(msg), length(length)
-    {
-    }
+    RawMsg();
+    RawMsg(MsgId, U8* msg, U32 length);
 
-    MsgId getId() const
-    {
-        return id;
-    }
+    void update(MsgId, U8* msg, U32 length);
 
-    U8* getMsg() const
-    {
-        return msg;
-    }
-
-    U32 getLength() const
-    {
-        return length;
-    }
+    MsgId getId() const;
+    U8* getMsg() const;
+    U32 getLength() const;
 
 private:
     U8*   msg;

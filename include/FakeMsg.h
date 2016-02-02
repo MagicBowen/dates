@@ -3,14 +3,14 @@
 
 #include "base/BaseTypes.h"
 #include "details/MsgId.h"
-#include "details/FakeMsgDetail.h"
+#include "details/FakeMsgBase.h"
 #include "details/FakeName.h"
 
 DATES_NS_BEGIN
 
 ////////////////////////////////////////////////////////
 #define __def_fake_msg_begin(ID, MSG)       \
-struct FAKE(MSG) : FakeMsgDetail<MSG>       \
+struct FAKE(MSG) : FakeMsgBase<MSG>         \
 {                                           \
     static const char* getName()            \
     {                                       \

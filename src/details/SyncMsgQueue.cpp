@@ -1,40 +1,13 @@
 #include "details/SyncMsgQueue.h"
-#include "details/MsgConsumer.h"
 #include "base/NullPtr.h"
 
 DATES_NS_BEGIN
 
-namespace
-{
-    template<typename Msgs>
-    void doConsume( Msgs& msgs
-                  , typename Msgs::iterator& msg
-                  , const MsgConsumer& consumer)
-    {
-        consumer.consume(*msg);
-        msgs.erase(msg);
-        delete [] msg->getMsg();
-    }
-}
-
-void SyncMsgQueue::consumedBy(const MsgConsumer& consumer)
-{
-    for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
-    {
-        if(consumer.expect(*msg))
-        {
-            return doConsume(msgs, msg, consumer);
-        }
-    }
-
-    return consumer.onError();
-}
-
-bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
+bool SyncMsgQueue::satisfy(const MsgMatcher& matcher) const
 {
     for(auto& msg : msgs)
     {
-        if(consumer.expect(msg))  return true;
+        if(matcher(msg))  return true;
     }
     return false;
 }
@@ -42,6 +15,21 @@ bool SyncMsgQueue::satisfy(const MsgConsumer& consumer) const
 void SyncMsgQueue::insert(const RawMsg& msg)
 {
     msgs.push_back(msg);
+}
+
+bool SyncMsgQueue::fetch(const MsgMatcher& match, RawMsg& result)
+{
+    for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
+    {
+        if(match(*msg))
+        {
+            result.update(msg->getId(), msg->getMsg(), msg->getLength());
+            msgs.erase(msg);
+            return true;;
+        }
+    }
+
+    return false;
 }
 
 void SyncMsgQueue::clear()

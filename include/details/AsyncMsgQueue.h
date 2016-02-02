@@ -14,7 +14,7 @@ struct AsyncMsgQueue : MsgQueue
 
 private:
     OVERRIDE(void insert(const RawMsg&));
-    OVERRIDE(void consumedBy(const MsgConsumer&));
+    OVERRIDE(bool fetch(const MsgMatcher&, RawMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);
 
