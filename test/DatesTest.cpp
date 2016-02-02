@@ -2,11 +2,13 @@
 #include "sut/msgs.h"
 #include "FakeMsg.h"
 #include "FakeSystem.h"
-#include "DatesUtils.h"
+#include <DatesFactory.h>
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/MsgId.h"
 #include "details/RawMsg.h"
+#include "details/DatesFrame.h"
+#include "details/DatesReceiver.h"
 #include "definition.h"
 #include <string>
 
@@ -50,18 +52,24 @@ namespace
 /////////////////////////////////////////////////////////
 struct SyncTest : public testing::Test
 {
-    void SetUp()
+    SyncTest()
+    : dates(DatesFactory::createSyncFrame([this](const RawMsg& msg){syncSend(msg);}))
+    , neighbor("neighbor", *dates)
+    , commander("commander", *dates)
+    , sut(dates->ROLE(DatesReceiver))
     {
-        DatesUtils::syncRun(
-                    [this](const RawMsg& msg)
-                    {
-                        sut.receive(msg.getId(), msg.getMsg(), msg.getLength());
-                    });
+    }
+
+private:
+    void syncSend(const RawMsg& msg)
+    {
+        sut.receive(msg.getId(), msg.getMsg(), msg.getLength());
     }
 
 protected:
-    FakeSystem neighbor{"neighbor"};
-    FakeSystem commander{"commander"};
+    std::unique_ptr<DatesFrame> dates;
+    FakeSystem neighbor;
+    FakeSystem commander;
     SyncSut sut;
 };
 
@@ -94,13 +102,14 @@ TEST_F(SyncTest, should_receive_pong_msg_when_send_ping_to_sync_sut)
 }
 
 
-/////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////
 struct AsyncTest : public testing::Test
 {
-    void SetUp()
+    AsyncTest()
+    : dates(DatesFactory::createAsyncFrame([this](const RawMsg& msg){asyncSend(msg);},
+                                      [this](){asyncRecv();}))
+    , commander("commander", *dates)
     {
-        DatesUtils::asyncRun([this](const RawMsg& msg){asyncSend(msg);},
-                             [this](){asyncRecv();});
     }
 
 private:
@@ -121,13 +130,14 @@ private:
             if(r <= 0) break;
 
             MsgId id = ((Header*)msg)->id;
-            DatesUtils::recv(RawMsg(id, msg, (U32)r));
+            dates->ROLE(DatesReceiver).recv(RawMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }
 
 protected:
-    FakeSystem commander{"commander"};
+    std::unique_ptr<DatesFrame> dates;
+    FakeSystem commander;
     const U32 PAYLOAD{1};
 
     // Normally, the ASYNC_SUT should be global,
