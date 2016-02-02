@@ -21,6 +21,7 @@ TO DO LSIT:
 - [ ]: use factory to create DateFrame 
 - [ ]: System refact: use factory to create fake system; 
 - [ ]: using DCI to govenment the dependency;
+- [ ]: RawMsg memory government: Dates Msg Allocator;
 - [ ]: thread terminate gentally;
 - [ ]: multi fake system: duplicate msg id; seperate system;
 - [ ]: inject matcher to system! matcher can combind freely;

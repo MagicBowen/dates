@@ -1,9 +1,8 @@
 #include "FakeSystem.h"
-#include "DatesFrame.h"
+#include "DatesUtils.h"
 #include "details/FakeMsgListener.h"
 #include "details/FakeMsgUtils.h"
 #include "details/MsgSender.h"
-#include "details/DatesSender.h"
 
 DATES_NS_BEGIN
 
@@ -14,7 +13,7 @@ namespace
     private:
         OVERRIDE(void send(const RawMsg& msg) const)
         {
-            return DatesSender::send(msg);
+            return DatesUtils::send(msg);
         }
     };
 
@@ -29,7 +28,7 @@ namespace
     private:
         DECL_ROLE(MsgQueue)
         {
-            return DatesFrame::getMsgQueue();
+            return DatesUtils::getMsgQueue();
         }
 
         IMPL_ROLE_WITH_OBJ(MsgListener, *listener);

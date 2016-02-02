@@ -20,6 +20,7 @@ RawMsg& FakeMsgUtils::recvMsg(const char* msgName, const MsgId id) const
         ROLE(MsgListener).onMsgMiss(msgName, id);
     }
 
+    // TODO: msg should be clear! re-design!!!
     return msg;
 }
 

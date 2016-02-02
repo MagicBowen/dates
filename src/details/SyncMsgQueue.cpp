@@ -1,5 +1,4 @@
 #include "details/SyncMsgQueue.h"
-#include "base/NullPtr.h"
 
 DATES_NS_BEGIN
 

@@ -13,10 +13,12 @@ struct RawMsg;
 using Sender = std::function<void (const RawMsg&)>;
 using Receiver = std::function<void ()>;
 
-struct DatesFrame
+struct DatesUtils
 {
     static void syncRun(const Sender&);
     static void asyncRun(const Sender&, const Receiver&, const U32 waitTime = 5);
+    static void recv(const RawMsg&);
+    static void send(const RawMsg&);
     static MsgQueue& getMsgQueue();
 };
 

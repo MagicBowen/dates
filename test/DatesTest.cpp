@@ -1,11 +1,10 @@
 #include "gtest/gtest.h"
 #include "sut/msgs.h"
 #include "FakeMsg.h"
-#include <FakeSystem.h>
-#include "DatesFrame.h"
+#include "FakeSystem.h"
+#include "DatesUtils.h"
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
-#include "details/DatesReceiver.h"
 #include "details/MsgId.h"
 #include "details/RawMsg.h"
 #include "definition.h"
@@ -53,7 +52,7 @@ struct SyncTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::syncRun(
+        DatesUtils::syncRun(
                     [this](const RawMsg& msg)
                     {
                         sut.receive(msg.getId(), msg.getMsg(), msg.getLength());
@@ -100,7 +99,7 @@ struct AsyncTest : public testing::Test
 {
     void SetUp()
     {
-        DatesFrame::asyncRun([this](const RawMsg& msg){asyncSend(msg);},
+        DatesUtils::asyncRun([this](const RawMsg& msg){asyncSend(msg);},
                              [this](){asyncRecv();});
     }
 
@@ -122,7 +121,7 @@ private:
             if(r <= 0) break;
 
             MsgId id = ((Header*)msg)->id;
-            DatesReceiver::recv(RawMsg(id, msg, (U32)r));
+            DatesUtils::recv(RawMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }

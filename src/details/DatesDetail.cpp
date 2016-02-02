@@ -1,4 +1,4 @@
-#include "DatesFrame.h"
+#include <DatesUtils.h>
 #include "base/Singleton.h"
 #include "base/NullPtr.h"
 #include "details/DatesReceiver.h"
@@ -65,27 +65,27 @@ namespace
     };
 }
 
-void DatesSender::send(const RawMsg& msg)
+void DatesUtils::send(const RawMsg& msg)
 {
     DatesDetail::getInstance().send(msg);
 }
 
-void DatesReceiver::recv(const RawMsg& msg)
+void DatesUtils::recv(const RawMsg& msg)
 {
     DatesDetail::getInstance().recv(msg);
 }
 
-void DatesFrame::syncRun(const Sender& sender)
+void DatesUtils::syncRun(const Sender& sender)
 {
     DatesDetail::getInstance().syncRun(sender);
 }
 
-void DatesFrame::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
+void DatesUtils::asyncRun(const Sender& sender, const Receiver& receiver, const U32 waitTime)
 {
     DatesDetail::getInstance().asyncRun(sender, receiver, waitTime);
 }
 
-MsgQueue& DatesFrame::getMsgQueue()
+MsgQueue& DatesUtils::getMsgQueue()
 {
     return DatesDetail::getInstance().getMsgQueue();
 }
