@@ -8,7 +8,7 @@ DATES_NS_BEGIN
 
 struct RawMsg;
 
-DEFINE_ROLE(MsgUtils)
+DEFINE_ROLE(MsgTransit)
 {
     ABSTRACT(void sendMsg(const char* msgName, const RawMsg&) const);
     ABSTRACT(RawMsg& recvMsg(const char* msgName, const MsgId id) const);

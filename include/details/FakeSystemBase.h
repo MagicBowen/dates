@@ -1,7 +1,7 @@
 #ifndef HDE682FC9_BB65_4707_BCBE_0BA478552648
 #define HDE682FC9_BB65_4707_BCBE_0BA478552648
 
-#include "details/MsgUtils.h"
+#include <details/MsgTransit.h>
 #include "details/RawMsg.h"
 #include "base/FunctionTraits.h"
 #include <functional>
@@ -15,7 +15,7 @@ DEFINE_ROLE(FakeSystemBase)
     void recv(const CHECKER& checker)
     {
         using MSG = ARG_TYPE(CHECKER);
-        RawMsg& msg = ROLE(MsgUtils).recvMsg(MSG::getName(), MSG::getId());
+        RawMsg& msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
         checker(msg.castTo<MSG>());
         delete [] msg.getMsg();
     }
@@ -26,11 +26,11 @@ DEFINE_ROLE(FakeSystemBase)
         using MSG = ARG_TYPE(BUILDER);
         std::unique_ptr<MSG> msg(new MSG());
         builder(*msg);
-        ROLE(MsgUtils).sendMsg(MSG::getName(), RawMsg(MSG::getId(), (U8*)(msg.get()), sizeof(MSG)));
+        ROLE(MsgTransit).sendMsg(MSG::getName(), RawMsg(MSG::getId(), (U8*)(msg.get()), sizeof(MSG)));
     }
 
 private:
-    USE_ROLE(MsgUtils);
+    USE_ROLE(MsgTransit);
 };
 
 DATES_NS_END

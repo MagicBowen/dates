@@ -1,7 +1,7 @@
 #ifndef HBA112C56_26EB_45E0_90C4_A258C273470C
 #define HBA112C56_26EB_45E0_90C4_A258C273470C
 
-#include "details/MsgUtils.h"
+#include "details/MsgTransit.h"
 
 DATES_NS_BEGIN
 
@@ -9,7 +9,7 @@ struct MsgQueue;
 struct MsgListener;
 struct MsgSender;
 
-struct FakeMsgUtils : MsgUtils
+struct FakeMsgTransit : MsgTransit
 {
 private:
     OVERRIDE(void sendMsg(const char* msgName, const RawMsg&) const);

@@ -1,7 +1,7 @@
 #include "FakeSystem.h"
 #include <DatesFactory.h>
 #include "details/FakeMsgListener.h"
-#include "details/FakeMsgUtils.h"
+#include <details/FakeMsgTransit.h>
 #include "details/MsgSender.h"
 #include <details/Runtime.h>
 #include "details/DatesSender.h"
@@ -27,9 +27,9 @@ namespace
         DatesSender& sender;
     };
 
-    struct FakeMsgUtilsImpl : FakeMsgUtils
+    struct FakeMsgTransitImpl : FakeMsgTransit
     {
-        FakeMsgUtilsImpl(const char* name, Runtime& frame)
+        FakeMsgTransitImpl(const char* name, Runtime& frame)
         : queue(frame.ROLE(MsgQueue))
         , listener(new FakeMsgListener(name))
         , sender(new FakeMsgSender(frame.ROLE(DatesSender)))
@@ -49,7 +49,7 @@ namespace
 }
 
 FakeSystem::FakeSystem(const char* name, Runtime& frame)
-: msgUtils(new FakeMsgUtilsImpl(name, frame))
+: msgUtils(new FakeMsgTransitImpl(name, frame))
 {
 }
 

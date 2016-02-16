@@ -1,4 +1,4 @@
-#include "details/FakeMsgUtils.h"
+#include <details/FakeMsgTransit.h>
 #include "details/MsgQueue.h"
 #include "details/MsgListener.h"
 #include "details/MsgSender.h"
@@ -7,7 +7,7 @@
 
 DATES_NS_BEGIN
 
-RawMsg& FakeMsgUtils::recvMsg(const char* msgName, const MsgId id) const
+RawMsg& FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
 {
     static RawMsg msg;
 
@@ -24,7 +24,7 @@ RawMsg& FakeMsgUtils::recvMsg(const char* msgName, const MsgId id) const
     return msg;
 }
 
-void FakeMsgUtils::sendMsg(const char* msgName, const RawMsg& msg) const
+void FakeMsgTransit::sendMsg(const char* msgName, const RawMsg& msg) const
 {
     ROLE(MsgListener).onMsgSend(msgName, msg.getId());
     ROLE(MsgSender).send(msg);
