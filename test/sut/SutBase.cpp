@@ -1,19 +1,10 @@
 #include "sut/SutBase.h"
+#include "details/MsgCast.h"
 #include "base/log.h"
 #include "msgs.h"
 #include <string.h>
 
 SUT_NS_BEGIN
-
-//////////////////////////////////////////////////////////
-namespace
-{
-    template<typename DEST>
-    const DEST& cast_event(const void *data)
-    {
-        return *(reinterpret_cast<const DEST*>(data));
-    }
-}
 
 //////////////////////////////////////////////////////////
 Status SutBase::receive(const MsgId id, const void* data, const U32 length)
@@ -23,13 +14,13 @@ Status SutBase::receive(const MsgId id, const void* data, const U32 length)
     switch(id)
     {
     case EVENT_HELLO:
-        handleHello(cast_event<Hello>(data));
+        handleHello(msg_cast<Hello>(data));
         return SUCCESS;
     case EVENT_PING:
-        handlePing(cast_event<Ping>(data));
+        handlePing(msg_cast<Ping>(data));
         return SUCCESS;
     case EVENT_TERMINATE:
-        handleTerminate(cast_event<Terminate>(data));
+        handleTerminate(msg_cast<Terminate>(data));
         break;
     default:
         ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);

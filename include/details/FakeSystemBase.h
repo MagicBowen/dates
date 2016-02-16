@@ -16,7 +16,7 @@ DEFINE_ROLE(FakeSystemBase)
     {
         using MSG = ARG_TYPE(CHECKER);
         RawMsg& msg = ROLE(MsgUtils).recvMsg(MSG::getName(), MSG::getId());
-        checker(*reinterpret_cast<const MSG*>(msg.getMsg()));
+        checker(msg.castTo<MSG>());
         delete [] msg.getMsg();
     }
 
