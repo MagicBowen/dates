@@ -5,11 +5,11 @@
 
 DATES_NS_BEGIN
 
-struct DatesFrame;
+struct Runtime;
 
 struct FakeSystem : FakeSystemBase
 {
-    FakeSystem(const char* name, DatesFrame&);
+    FakeSystem(const char* name, Runtime&);
 
 private:
     IMPL_ROLE_WITH_OBJ(MsgUtils, *msgUtils);

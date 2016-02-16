@@ -3,7 +3,7 @@
 #include "details/FakeMsgListener.h"
 #include "details/FakeMsgUtils.h"
 #include "details/MsgSender.h"
-#include "details/DatesFrame.h"
+#include <details/Runtime.h>
 #include "details/DatesSender.h"
 
 DATES_NS_BEGIN
@@ -29,7 +29,7 @@ namespace
 
     struct FakeMsgUtilsImpl : FakeMsgUtils
     {
-        FakeMsgUtilsImpl(const char* name, DatesFrame& frame)
+        FakeMsgUtilsImpl(const char* name, Runtime& frame)
         : queue(frame.ROLE(MsgQueue))
         , listener(new FakeMsgListener(name))
         , sender(new FakeMsgSender(frame.ROLE(DatesSender)))
@@ -48,7 +48,7 @@ namespace
     };
 }
 
-FakeSystem::FakeSystem(const char* name, DatesFrame& frame)
+FakeSystem::FakeSystem(const char* name, Runtime& frame)
 : msgUtils(new FakeMsgUtilsImpl(name, frame))
 {
 }

@@ -10,7 +10,7 @@ struct DatesSender;
 struct DatesReceiver;
 struct MsgQueue;
 
-DEFINE_ROLE(DatesFrame)
+DEFINE_ROLE(Runtime)
 {
     HAS_ROLE(DatesSender);
     HAS_ROLE(DatesReceiver);

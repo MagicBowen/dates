@@ -1,7 +1,7 @@
 #include "DatesFactory.h"
 #include "details/SyncMsgQueue.h"
 #include "details/AsyncMsgQueue.h"
-#include "details/DatesFrame.h"
+#include "details/Runtime.h"
 #include "details/DatesSender.h"
 #include "details/DatesReceiver.h"
 #include "base/NullPtr.h"
@@ -11,6 +11,7 @@ DATES_NS_BEGIN
 
 namespace
 {
+    ///////////////////////////////////////////////////////////
     struct DatesSenderImpl : DatesSender
     {
         DatesSenderImpl(const DatesFactory::Sender& sender)
@@ -28,6 +29,7 @@ namespace
         DatesFactory::Sender sender;
     };
 
+    ///////////////////////////////////////////////////////////
     struct DatesReceiverImpl : DatesReceiver
     {
     private:
@@ -40,13 +42,14 @@ namespace
         USE_ROLE(MsgQueue);
     };
 
-    struct SyncDatesFrame : DatesFrame
-                          , private DatesSenderImpl
-                          , private DatesReceiverImpl
-                          , private SyncMsgQueue
+    ///////////////////////////////////////////////////////////
+    struct SyncDatesRuntime : Runtime
+                            , private DatesSenderImpl
+                            , private DatesReceiverImpl
+                            , private SyncMsgQueue
 
     {
-        SyncDatesFrame(const DatesFactory::Sender& sender)
+        SyncDatesRuntime(const DatesFactory::Sender& sender)
         : DatesSenderImpl(sender)
         {
         }
@@ -57,12 +60,13 @@ namespace
         IMPL_ROLE(MsgQueue);
     };
 
-    struct AsyncDatesFrame : DatesFrame
-                           , private DatesSenderImpl
-                           , private DatesReceiverImpl
-                           , private AsyncMsgQueue
+    ///////////////////////////////////////////////////////////
+    struct AsyncDatesRuntime : Runtime
+                             , private DatesSenderImpl
+                             , private DatesReceiverImpl
+                             , private AsyncMsgQueue
     {
-        AsyncDatesFrame(const DatesFactory::Sender& sender, const U32 waitSeconds)
+        AsyncDatesRuntime(const DatesFactory::Sender& sender, const U32 waitSeconds)
         : DatesSenderImpl(sender), AsyncMsgQueue(waitSeconds)
         {
         }
@@ -73,7 +77,7 @@ namespace
             t = new std::thread(receiver);
         }
 
-        ~AsyncDatesFrame()
+        ~AsyncDatesRuntime()
         {
             terminateThread();
         }
@@ -81,9 +85,12 @@ namespace
     private:
         void terminateThread()
         {
-            t->join();
-            delete t;
-            t = __null_ptr__;
+            if(__notnull__(t))
+            {
+                t->join();
+                delete t;
+                t = __null_ptr__;
+            }
         }
 
     private:
@@ -96,19 +103,21 @@ namespace
     };
 }
 
-DatesFactory::DatesFramePtr DatesFactory::createSyncFrame(const Sender& sender)
+///////////////////////////////////////////////////////////
+DatesRuntime DatesFactory::createSyncRuntime(const Sender& sender)
 {
-    return std::unique_ptr<DatesFrame>(new SyncDatesFrame(sender));
+    return DatesRuntime(new SyncDatesRuntime(sender));
 }
 
-DatesFactory::DatesFramePtr DatesFactory::createAsyncFrame(const Sender& sender,
-                                                      const Receiver& receiver,
-                                                      const U32 waitSeconds)
+///////////////////////////////////////////////////////////
+DatesRuntime DatesFactory::createAsyncRuntime( const Sender& sender
+                                             , const Receiver& receiver
+                                             , const U32 waitSeconds)
 {
-    auto dates = new AsyncDatesFrame(sender, waitSeconds);
+    auto dates = new AsyncDatesRuntime(sender, waitSeconds);
     dates->run(receiver);
 
-    return std::unique_ptr<DatesFrame>(dates);
+    return DatesRuntime(dates);
 }
 
 

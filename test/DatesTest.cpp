@@ -7,7 +7,7 @@
 #include "sut/AsyncSut.h"
 #include "details/MsgId.h"
 #include "details/RawMsg.h"
-#include "details/DatesFrame.h"
+#include <details/Runtime.h>
 #include "details/DatesReceiver.h"
 #include "definition.h"
 #include <string>
@@ -40,10 +40,10 @@ namespace
 struct SyncTest : public testing::Test
 {
     SyncTest()
-    : frame(DatesFactory::createSyncFrame([this](const RawMsg& msg){syncSend(msg);}))
-    , neighbor("neighbor", *frame)
-    , commander("commander", *frame)
-    , sut(frame->ROLE(DatesReceiver))
+    : runtime(DatesFactory::createSyncRuntime([this](const RawMsg& msg){syncSend(msg);}))
+    , neighbor("neighbor", *runtime)
+    , commander("commander", *runtime)
+    , sut(runtime->ROLE(DatesReceiver))
     {
     }
 
@@ -54,7 +54,7 @@ private:
     }
 
 protected:
-    std::unique_ptr<DatesFrame> frame;
+    DatesRuntime runtime;
     FakeSystem neighbor;
     FakeSystem commander;
     SyncSut sut;
@@ -93,9 +93,9 @@ TEST_F(SyncTest, should_receive_pong_msg_when_send_ping_to_sync_sut)
 struct AsyncTest : public testing::Test
 {
     AsyncTest()
-    : dates(DatesFactory::createAsyncFrame([this](const RawMsg& msg){asyncSend(msg);},
+    : runtime(DatesFactory::createAsyncRuntime([this](const RawMsg& msg){asyncSend(msg);},
                                       [this](){asyncRecv();}))
-    , commander("commander", *dates)
+    , commander("commander", *runtime)
     {
     }
 
@@ -117,7 +117,7 @@ private:
             if(r <= 0) break;
 
             MsgId id = ((Header*)msg)->id;
-            dates->ROLE(DatesReceiver).recv(RawMsg(id, msg, (U32)r));
+            runtime->ROLE(DatesReceiver).recv(RawMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }
@@ -128,7 +128,7 @@ protected:
     UdpClient client{DATES_ADDR, DATES_PORT};
     AsyncSut sut;
 
-    std::unique_ptr<DatesFrame> dates;
+    DatesRuntime runtime;
     FakeSystem commander;
     const U32 PAYLOAD{1};
 };
