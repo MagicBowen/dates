@@ -123,14 +123,14 @@ private:
     }
 
 protected:
+    // XXX: the udp client should be initialed before dates frame;
+    // bcz the dates run receiving thread which using the udp client!
+    UdpClient client{DATES_ADDR, DATES_PORT};
+    AsyncSut sut;
+
     std::unique_ptr<DatesFrame> dates;
     FakeSystem commander;
     const U32 PAYLOAD{1};
-
-    // Normally, the ASYNC_SUT should be global,
-    // and terminated once after all tests completed!
-    UdpClient client{DATES_ADDR, DATES_PORT};
-    AsyncSut sut;
 };
 
 TEST_F(AsyncTest, shoud_stop_dates_and_sut_when_send_terminate_msg)
