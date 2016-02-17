@@ -6,9 +6,9 @@
 DATES_NS_BEGIN
 
 template<typename MSG>
-const MSG& msg_cast(const void *data)
+MSG& msg_cast(const void *data)
 {
-    return *(reinterpret_cast<const MSG*>(data));
+    return *(reinterpret_cast<MSG*>(const_cast<void*>(data)));
 }
 
 DATES_NS_END

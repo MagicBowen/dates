@@ -7,11 +7,13 @@
 
 DATES_NS_BEGIN
 
-TaggedMsg& FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
+TaggedMsg FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
 {
-    static TaggedMsg msg;
+    TaggedMsg msg;
 
-    if(ROLE(MsgQueue).fetch([=](const TaggedMsg& msg){return id == msg.getId();}, msg))
+    auto matcher = [id](const TaggedMsg& msg){return id == msg.getId();};
+
+    if(ROLE(MsgQueue).fetch(matcher, msg))
     {
         ROLE(MsgListener).onMsgRecv(msgName, id);
     }
@@ -20,8 +22,7 @@ TaggedMsg& FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
         ROLE(MsgListener).onMsgMiss(msgName, id);
     }
 
-    // TODO: msg should be clear! re-design!!!
-    return msg;
+    return std::move(msg);
 }
 
 void FakeMsgTransit::sendMsg(const char* msgName, const TaggedMsg& msg) const

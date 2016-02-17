@@ -16,13 +16,18 @@ void SyncMsgQueue::insert(const TaggedMsg& msg)
     msgs.push_back(msg);
 }
 
+void SyncMsgQueue::insert(TaggedMsg&& msg)
+{
+    msgs.push_back(std::move(msg));
+}
+
 bool SyncMsgQueue::fetch(const MsgMatcher& match, TaggedMsg& result)
 {
     for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
     {
         if(match(*msg))
         {
-            result.update(msg->getId(), msg->getMsg(), msg->getLength());
+            result = std::move(*msg);
             msgs.erase(msg);
             return true;;
         }
@@ -33,12 +38,7 @@ bool SyncMsgQueue::fetch(const MsgMatcher& match, TaggedMsg& result)
 
 void SyncMsgQueue::clear()
 {
-    for(auto msg : msgs)
-    {
-        delete [] msg.getMsg();
-    }
-
-    msgs.clear();
+     msgs.clear();
 }
 
 bool SyncMsgQueue::isEmpty() const

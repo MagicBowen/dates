@@ -2,6 +2,7 @@
 #define H05CB1DAE_F659_4AB7_B2C1_E200271883CA
 
 #include "details/FakeSystemBase.h"
+#include <memory>
 
 DATES_NS_BEGIN
 

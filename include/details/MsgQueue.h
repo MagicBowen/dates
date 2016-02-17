@@ -11,6 +11,7 @@ struct TaggedMsg;
 DEFINE_ROLE(MsgQueue)
 {
     ABSTRACT(void insert(const TaggedMsg&));
+    ABSTRACT(void insert(TaggedMsg&&));
     ABSTRACT(bool fetch(const MsgMatcher&, TaggedMsg&));
     ABSTRACT(void clear());
     ABSTRACT(bool isEmpty() const);

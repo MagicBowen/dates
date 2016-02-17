@@ -11,7 +11,7 @@ struct TaggedMsg;
 DEFINE_ROLE(MsgTransit)
 {
     ABSTRACT(void sendMsg(const char* msgName, const TaggedMsg&) const);
-    ABSTRACT(TaggedMsg& recvMsg(const char* msgName, const MsgId id) const);
+    ABSTRACT(TaggedMsg recvMsg(const char* msgName, const MsgId id) const);
 };
 
 DATES_NS_END

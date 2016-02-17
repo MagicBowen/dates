@@ -14,6 +14,7 @@ struct SyncMsgQueue : MsgQueue
 
 public:
     OVERRIDE(void insert(const TaggedMsg&));
+    OVERRIDE(void insert(TaggedMsg&&));
     OVERRIDE(bool fetch(const MsgMatcher&, TaggedMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);

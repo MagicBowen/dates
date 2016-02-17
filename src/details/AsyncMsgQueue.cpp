@@ -9,13 +9,23 @@ AsyncMsgQueue::AsyncMsgQueue(const U32 waitSeconds)
 {
 }
 
-void AsyncMsgQueue::insert(const TaggedMsg& msg)
+template<typename T> void AsyncMsgQueue::doInsert(T&& msg)
 {
     SYNCHRONIZED(mutex)
     {
-        msgs.insert(msg);
+        msgs.insert(std::forward<T>(msg));
         cond.notify_one();
     }
+}
+
+void AsyncMsgQueue::insert(const TaggedMsg& msg)
+{
+    doInsert(msg);
+}
+
+void AsyncMsgQueue::insert(TaggedMsg&& msg)
+{
+    doInsert(std::move(msg));
 }
 
 bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, TaggedMsg& msg)

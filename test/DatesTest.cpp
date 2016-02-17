@@ -2,13 +2,13 @@
 #include "sut/msgs.h"
 #include "FakeMsg.h"
 #include "FakeSystem.h"
-#include <DatesFactory.h>
+#include "DatesFactory.h"
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/MsgId.h"
-#include <details/TaggedMsg.h>
-#include <details/Runtime.h>
-#include <details/MsgReceiver.h>
+#include "details/TaggedMsg.h"
+#include "details/Runtime.h"
+#include "details/MsgQueue.h"
 #include "definition.h"
 #include <string>
 
@@ -43,7 +43,7 @@ struct SyncTest : public testing::Test
     : runtime(DatesFactory::createSyncRuntime([this](const TaggedMsg& msg){syncSend(msg);}))
     , neighbor("neighbor", *runtime)
     , commander("commander", *runtime)
-    , sut(runtime->ROLE(MsgReceiver))
+    , sut(runtime->ROLE(MsgQueue))
     {
     }
 
@@ -111,13 +111,15 @@ private:
     {
         while(true)
         {
-            auto msg = new U8[MAX_MSG_LENGTH];
+            TaggedMsg msg(MAX_MSG_LENGTH);
 
-            S32 r = client.receive(msg, MAX_MSG_LENGTH);
+            S32 r = client.receive(msg.getMsg(), msg.getLength());
             if(r <= 0) break;
 
-            MsgId id = ((Header*)msg)->id;
-            runtime->ROLE(MsgReceiver).recv(TaggedMsg(id, msg, (U32)r));
+            MsgId id = ((Header*)(msg.getMsg()))->id;
+            msg.update(id, (size_t)r);
+            runtime->ROLE(MsgQueue).insert(std::move(msg));
+
             if(EVENT_TERMINATE == id) return;
         }
     }

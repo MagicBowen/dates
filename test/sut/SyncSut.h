@@ -4,19 +4,19 @@
 #include "sut/SutBase.h"
 #include "details/dates.h"
 
-DATES_FWD_DECL(MsgReceiver);
+DATES_FWD_DECL(MsgQueue);
 
 SUT_NS_BEGIN
 
 struct SyncSut : SutBase
 {
-    SyncSut(MsgReceiver&);
+    SyncSut(MsgQueue&);
 
 private:
     OVERRIDE(void doSend(const void* data, const U32 length));
 
 private:
-    MsgReceiver& receiver;
+    MsgQueue& msgQueue;
 };
 
 SUT_NS_END

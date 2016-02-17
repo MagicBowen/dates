@@ -3,7 +3,6 @@
 #include "details/AsyncMsgQueue.h"
 #include "details/Runtime.h"
 #include "details/MsgSender.h"
-#include "details/MsgReceiver.h"
 #include "base/NullPtr.h"
 #include <thread>
 
@@ -15,7 +14,6 @@ namespace
     template<typename MSG_QUEUE>
     struct GenericRuntime : Runtime
                           , private MsgSender
-                          , private MsgReceiver
                           , protected MSG_QUEUE
     {
         template<typename... Paras>
@@ -30,17 +28,11 @@ namespace
             sender(msg);
         }
 
-        OVERRIDE(void recv(const TaggedMsg& msg))
-        {
-            return ROLE(MsgQueue).insert(msg);
-        }
-
     private:
         DatesFactory::Sender sender;
 
     private:
         IMPL_ROLE(MsgSender);
-        IMPL_ROLE(MsgReceiver);
         IMPL_ROLE(MsgQueue);
     };
 

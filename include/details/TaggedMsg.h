@@ -1,33 +1,70 @@
-#ifndef H4E17EE64_DFD7_4626_8E68_BFEE787FF603
-#define H4E17EE64_DFD7_4626_8E68_BFEE787FF603
+#ifndef H8AFB07B2_FC75_4148_BE41_0DD0D8496FD2
+#define H8AFB07B2_FC75_4148_BE41_0DD0D8496FD2
 
 #include "details/MsgId.h"
 #include "details/MsgCast.h"
-#include "base/NullPtr.h"
+#include <stddef.h>
+#include <utility>
 
 DATES_NS_BEGIN
 
 struct TaggedMsg
 {
     TaggedMsg();
-    TaggedMsg(MsgId, U8* msg, U32 length);
+    TaggedMsg(size_t length);
+    TaggedMsg(MsgId id, size_t length);
 
-    void update(MsgId, U8* msg, U32 length);
+    TaggedMsg(const TaggedMsg&);
+    TaggedMsg(TaggedMsg&&);
 
-    MsgId getId() const;
-    U32 getLength() const;
-    U8* getMsg() const;
+    ~TaggedMsg();
+
+    template<typename T>
+    TaggedMsg& operator=(T&& rhs)
+    {
+        if(this != &rhs)
+        {
+            copyFrom(std::forward<T>(rhs));
+        }
+
+        return *this;
+    }
 
     template<typename MSG>
-    const MSG& castTo() const
+    MSG& castTo() const
     {
-        return msg_cast<MSG>(msg);
+        return msg_cast<MSG>(data);
+    }
+
+    void update(MsgId id, size_t length)
+    {
+        this->id = id;
+        this->length = length;
+    }
+
+    MsgId getId() const
+    {
+        return id;
+    }
+
+    U8* getMsg() const
+    {
+        return data;
+    }
+
+    size_t getLength() const
+    {
+        return length;
     }
 
 private:
-    U8*   msg;
-    U32   length;
+    void copyFrom(const TaggedMsg&);
+    void copyFrom(TaggedMsg&&);
+
+private:
     MsgId id;
+    size_t length;
+    U8* data;
 };
 
 DATES_NS_END

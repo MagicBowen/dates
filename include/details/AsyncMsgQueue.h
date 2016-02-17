@@ -14,9 +14,13 @@ struct AsyncMsgQueue : MsgQueue
 
 private:
     OVERRIDE(void insert(const TaggedMsg&));
+    OVERRIDE(void insert(TaggedMsg&&));
     OVERRIDE(bool fetch(const MsgMatcher&, TaggedMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);
+
+private:
+    template<typename T> void doInsert(T&&);
 
 private:
     SyncMsgQueue msgs;

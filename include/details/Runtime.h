@@ -7,13 +7,11 @@
 DATES_NS_BEGIN
 
 struct MsgSender;
-struct MsgReceiver;
 struct MsgQueue;
 
 DEFINE_ROLE(Runtime)
 {
     HAS_ROLE(MsgSender);
-    HAS_ROLE(MsgReceiver);
     HAS_ROLE(MsgQueue);
 };
 

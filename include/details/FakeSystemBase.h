@@ -1,11 +1,9 @@
 #ifndef HDE682FC9_BB65_4707_BCBE_0BA478552648
 #define HDE682FC9_BB65_4707_BCBE_0BA478552648
 
-#include <details/MsgTransit.h>
-#include <details/TaggedMsg.h>
+#include "details/MsgTransit.h"
+#include "details/TaggedMsg.h"
 #include "base/FunctionTraits.h"
-#include <functional>
-#include <memory>
 
 DATES_NS_BEGIN
 
@@ -15,18 +13,17 @@ DEFINE_ROLE(FakeSystemBase)
     void recv(const CHECKER& checker)
     {
         using MSG = ARG_TYPE(CHECKER);
-        TaggedMsg& msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
+        TaggedMsg msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
         checker(msg.castTo<MSG>());
-        delete [] msg.getMsg();
     }
 
     template<typename BUILDER>
     void send(const BUILDER& builder)
     {
         using MSG = ARG_TYPE(BUILDER);
-        std::unique_ptr<MSG> msg(new MSG());
-        builder(*msg);
-        ROLE(MsgTransit).sendMsg(MSG::getName(), TaggedMsg(MSG::getId(), (U8*)(msg.get()), sizeof(MSG)));
+        TaggedMsg msg(MSG::getId(), sizeof(MSG));
+        builder(msg.castTo<MSG>());
+        ROLE(MsgTransit).sendMsg(MSG::getName(), msg);
     }
 
 private:
