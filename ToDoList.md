@@ -19,7 +19,7 @@ TO DO LSIT:
 - [x]: System refact: inject msg receiver which is impl by msgQueue;
 - [x]: System refact: refact, common code depency goverment;
 - [x]: use factory to create runtime 
-- [ ]: RawMsg memory government:
+- [x]: RawMsg memory government:
 - [ ]: separate the sync and async; folder refact!
 - [ ]: separate the sync and async test, add test case;
 - [ ]: thread terminate gentally;

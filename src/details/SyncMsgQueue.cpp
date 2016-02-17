@@ -11,17 +11,17 @@ bool SyncMsgQueue::satisfy(const MsgMatcher& matcher) const
     return false;
 }
 
-void SyncMsgQueue::insert(const TaggedMsg& msg)
+void SyncMsgQueue::insert(const RawMsg& msg)
 {
     msgs.push_back(msg);
 }
 
-void SyncMsgQueue::insert(TaggedMsg&& msg)
+void SyncMsgQueue::insert(RawMsg&& msg)
 {
     msgs.push_back(std::move(msg));
 }
 
-bool SyncMsgQueue::fetch(const MsgMatcher& match, TaggedMsg& result)
+bool SyncMsgQueue::fetch(const MsgMatcher& match, RawMsg& result)
 {
     for(auto msg = msgs.begin(); msg != msgs.end(); ++msg)
     {

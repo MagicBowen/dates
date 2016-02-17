@@ -18,17 +18,17 @@ template<typename T> void AsyncMsgQueue::doInsert(T&& msg)
     }
 }
 
-void AsyncMsgQueue::insert(const TaggedMsg& msg)
+void AsyncMsgQueue::insert(const RawMsg& msg)
 {
     doInsert(msg);
 }
 
-void AsyncMsgQueue::insert(TaggedMsg&& msg)
+void AsyncMsgQueue::insert(RawMsg&& msg)
 {
     doInsert(std::move(msg));
 }
 
-bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, TaggedMsg& msg)
+bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, RawMsg& msg)
 {
     SYNCHRONIZED(mutex)
     {

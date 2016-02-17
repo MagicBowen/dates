@@ -8,19 +8,19 @@
 
 DATES_NS_BEGIN
 
-struct TaggedMsg
+struct RawMsg
 {
-    TaggedMsg();
-    TaggedMsg(size_t length);
-    TaggedMsg(MsgId id, size_t length);
+    RawMsg();
+    RawMsg(size_t length);
+    RawMsg(MsgId id, size_t length);
 
-    TaggedMsg(const TaggedMsg&);
-    TaggedMsg(TaggedMsg&&);
+    RawMsg(const RawMsg&);
+    RawMsg(RawMsg&&);
 
-    ~TaggedMsg();
+    ~RawMsg();
 
     template<typename T>
-    TaggedMsg& operator=(T&& rhs)
+    RawMsg& operator=(T&& rhs)
     {
         if(this != &rhs)
         {
@@ -58,8 +58,8 @@ struct TaggedMsg
     }
 
 private:
-    void copyFrom(const TaggedMsg&);
-    void copyFrom(TaggedMsg&&);
+    void copyFrom(const RawMsg&);
+    void copyFrom(RawMsg&&);
 
 private:
     MsgId id;

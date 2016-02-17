@@ -1,31 +1,30 @@
-#include <details/TaggedMsg.h>
+#include "details/RawMsg.h"
 #include "base/NullPtr.h"
 #include <string.h>
 
 DATES_NS_BEGIN
 
-TaggedMsg::TaggedMsg()
+RawMsg::RawMsg()
 : id(0)
 , length(0)
 , data(__null_ptr__)
 {
 }
 
-TaggedMsg::TaggedMsg(size_t length)
+RawMsg::RawMsg(size_t length)
 : id(0)
 , length(length)
 , data(new U8[length])
 {
-
 }
 
-TaggedMsg::TaggedMsg(MsgId id, size_t length)
-: TaggedMsg(length)
+RawMsg::RawMsg(MsgId id, size_t length)
+: RawMsg(length)
 {
     this->id = id;
 }
 
-void TaggedMsg::copyFrom(const TaggedMsg& other)
+void RawMsg::copyFrom(const RawMsg& other)
 {
     id = other.id;
     length = other.length;
@@ -33,7 +32,7 @@ void TaggedMsg::copyFrom(const TaggedMsg& other)
     memcpy(data, other.data, other.length);
 }
 
-void TaggedMsg::copyFrom(TaggedMsg&& other)
+void RawMsg::copyFrom(RawMsg&& other)
 {
     id = other.id;
     length = other.length;
@@ -41,17 +40,17 @@ void TaggedMsg::copyFrom(TaggedMsg&& other)
     other.data = __null_ptr__;
 }
 
-TaggedMsg::TaggedMsg(const TaggedMsg& other)
+RawMsg::RawMsg(const RawMsg& other)
 {
     copyFrom(other);
 }
 
-TaggedMsg::TaggedMsg(TaggedMsg&& other)
+RawMsg::RawMsg(RawMsg&& other)
 {
     copyFrom(std::move(other));
 }
 
-TaggedMsg::~TaggedMsg()
+RawMsg::~RawMsg()
 {
     if(__notnull__(data))
     {

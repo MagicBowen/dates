@@ -2,7 +2,7 @@
 #define HDE682FC9_BB65_4707_BCBE_0BA478552648
 
 #include "details/MsgTransit.h"
-#include "details/TaggedMsg.h"
+#include "details/RawMsg.h"
 #include "base/FunctionTraits.h"
 
 DATES_NS_BEGIN
@@ -13,7 +13,7 @@ DEFINE_ROLE(FakeSystemBase)
     void recv(const CHECKER& checker)
     {
         using MSG = ARG_TYPE(CHECKER);
-        TaggedMsg msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
+        RawMsg msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
         checker(msg.castTo<MSG>());
     }
 
@@ -21,7 +21,7 @@ DEFINE_ROLE(FakeSystemBase)
     void send(const BUILDER& builder)
     {
         using MSG = ARG_TYPE(BUILDER);
-        TaggedMsg msg(MSG::getId(), sizeof(MSG));
+        RawMsg msg(MSG::getId(), sizeof(MSG));
         builder(msg.castTo<MSG>());
         ROLE(MsgTransit).sendMsg(MSG::getName(), msg);
     }

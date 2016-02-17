@@ -23,7 +23,7 @@ namespace
         }
 
     private:
-        OVERRIDE(void send(const TaggedMsg& msg))
+        OVERRIDE(void send(const RawMsg& msg))
         {
             sender(msg);
         }

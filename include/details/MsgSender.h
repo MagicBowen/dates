@@ -6,11 +6,11 @@
 
 DATES_NS_BEGIN
 
-struct TaggedMsg;
+struct RawMsg;
 
 DEFINE_ROLE(MsgSender)
 {
-    ABSTRACT(void send(const TaggedMsg&));
+    ABSTRACT(void send(const RawMsg&));
 };
 
 DATES_NS_END

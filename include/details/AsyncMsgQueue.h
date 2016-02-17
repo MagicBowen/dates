@@ -13,9 +13,9 @@ struct AsyncMsgQueue : MsgQueue
     AsyncMsgQueue(const U32 waitSeconds);
 
 private:
-    OVERRIDE(void insert(const TaggedMsg&));
-    OVERRIDE(void insert(TaggedMsg&&));
-    OVERRIDE(bool fetch(const MsgMatcher&, TaggedMsg&));
+    OVERRIDE(void insert(const RawMsg&));
+    OVERRIDE(void insert(RawMsg&&));
+    OVERRIDE(bool fetch(const MsgMatcher&, RawMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);
 

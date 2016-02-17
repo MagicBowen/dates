@@ -12,8 +12,8 @@ struct MsgSender;
 struct FakeMsgTransit : MsgTransit
 {
 private:
-    OVERRIDE(void sendMsg(const char* msgName, const TaggedMsg&) const);
-    OVERRIDE(TaggedMsg recvMsg(const char* msgName, const MsgId) const);
+    OVERRIDE(void sendMsg(const char* msgName, const RawMsg&) const);
+    OVERRIDE(RawMsg recvMsg(const char* msgName, const MsgId) const);
 
 private:
     USE_ROLE(MsgQueue);

@@ -2,7 +2,7 @@
 #define HE1281468_B42A_49BF_A7CE_BD21C0D881D7
 
 #include "details/MsgQueue.h"
-#include <details/TaggedMsg.h>
+#include "details/RawMsg.h"
 #include <list>
 
 DATES_NS_BEGIN
@@ -13,14 +13,14 @@ struct SyncMsgQueue : MsgQueue
     ~SyncMsgQueue();
 
 public:
-    OVERRIDE(void insert(const TaggedMsg&));
-    OVERRIDE(void insert(TaggedMsg&&));
-    OVERRIDE(bool fetch(const MsgMatcher&, TaggedMsg&));
+    OVERRIDE(void insert(const RawMsg&));
+    OVERRIDE(void insert(RawMsg&&));
+    OVERRIDE(bool fetch(const MsgMatcher&, RawMsg&));
     OVERRIDE(void clear());
     OVERRIDE(bool isEmpty() const);
 
 private:
-    std::list<TaggedMsg> msgs;
+    std::list<RawMsg> msgs;
 };
 
 DATES_NS_END

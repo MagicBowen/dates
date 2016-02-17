@@ -2,16 +2,16 @@
 #include "details/MsgQueue.h"
 #include "details/MsgListener.h"
 #include "details/MsgSender.h"
-#include <details/TaggedMsg.h>
+#include "details/RawMsg.h"
 #include "base/NullPtr.h"
 
 DATES_NS_BEGIN
 
-TaggedMsg FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
+RawMsg FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
 {
-    TaggedMsg msg;
+    RawMsg msg;
 
-    auto matcher = [id](const TaggedMsg& msg){return id == msg.getId();};
+    auto matcher = [id](const RawMsg& msg){return id == msg.getId();};
 
     if(ROLE(MsgQueue).fetch(matcher, msg))
     {
@@ -25,7 +25,7 @@ TaggedMsg FakeMsgTransit::recvMsg(const char* msgName, const MsgId id) const
     return std::move(msg);
 }
 
-void FakeMsgTransit::sendMsg(const char* msgName, const TaggedMsg& msg) const
+void FakeMsgTransit::sendMsg(const char* msgName, const RawMsg& msg) const
 {
     ROLE(MsgListener).onMsgSend(msgName, msg.getId());
     ROLE(MsgSender).send(msg);

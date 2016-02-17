@@ -1,6 +1,6 @@
 #include "sut/SyncSut.h"
 #include "sut/msgs.h"
-#include "details/TaggedMsg.h"
+#include "details/RawMsg.h"
 #include "details/MsgQueue.h"
 #include <string.h>
 
@@ -13,7 +13,7 @@ SyncSut::SyncSut(MsgQueue& msgQueue)
 
 void SyncSut::doSend(const void* data, const U32 length)
 {
-    TaggedMsg msg(((Header*)data)->id, length);
+    RawMsg msg(((Header*)data)->id, length);
     memcpy(msg.getMsg(), data, length);
     msgQueue.insert(std::move(msg));
 }

@@ -6,12 +6,12 @@
 
 DATES_NS_BEGIN
 
-struct TaggedMsg;
+struct RawMsg;
 
 DEFINE_ROLE(MsgTransit)
 {
-    ABSTRACT(void sendMsg(const char* msgName, const TaggedMsg&) const);
-    ABSTRACT(TaggedMsg recvMsg(const char* msgName, const MsgId id) const);
+    ABSTRACT(void sendMsg(const char* msgName, const RawMsg&) const);
+    ABSTRACT(RawMsg recvMsg(const char* msgName, const MsgId id) const);
 };
 
 DATES_NS_END

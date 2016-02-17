@@ -6,13 +6,13 @@
 
 DATES_NS_BEGIN
 
-struct TaggedMsg;
+struct RawMsg;
 
 DEFINE_ROLE(MsgQueue)
 {
-    ABSTRACT(void insert(const TaggedMsg&));
-    ABSTRACT(void insert(TaggedMsg&&));
-    ABSTRACT(bool fetch(const MsgMatcher&, TaggedMsg&));
+    ABSTRACT(void insert(const RawMsg&));
+    ABSTRACT(void insert(RawMsg&&));
+    ABSTRACT(bool fetch(const MsgMatcher&, RawMsg&));
     ABSTRACT(void clear());
     ABSTRACT(bool isEmpty() const);
 };
