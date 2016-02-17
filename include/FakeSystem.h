@@ -12,10 +12,10 @@ struct FakeSystem : FakeSystemBase
     FakeSystem(const char* name, Runtime&);
 
 private:
-    IMPL_ROLE_WITH_OBJ(MsgTransit, *msgUtils);
+    IMPL_ROLE_WITH_OBJ(MsgTransit, *msgTransit);
 
 private:
-    std::unique_ptr<MsgTransit> msgUtils;
+    std::unique_ptr<MsgTransit> msgTransit;
 };
 
 DATES_NS_END

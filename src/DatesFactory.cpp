@@ -66,15 +66,12 @@ namespace
                              , private DatesReceiverImpl
                              , private AsyncMsgQueue
     {
-        AsyncDatesRuntime(const DatesFactory::Sender& sender, const U32 waitSeconds)
+        AsyncDatesRuntime( const DatesFactory::Sender& sender
+                         , const DatesFactory::Receiver& receiver
+                         , const U32 waitSeconds)
         : DatesSenderImpl(sender), AsyncMsgQueue(waitSeconds)
         {
-        }
-
-        void run(const DatesFactory::Receiver& receiver)
-        {
-            if(__notnull__(t)) return;
-            t = new std::thread(receiver);
+            run(receiver);
         }
 
         ~AsyncDatesRuntime()
@@ -83,6 +80,12 @@ namespace
         }
 
     private:
+        void run(const DatesFactory::Receiver& receiver)
+        {
+            if(__notnull__(t)) return;
+            t = new std::thread(receiver);
+        }
+
         void terminateThread()
         {
             if(__notnull__(t))
@@ -114,10 +117,7 @@ DatesRuntime DatesFactory::createAsyncRuntime( const Sender& sender
                                              , const Receiver& receiver
                                              , const U32 waitSeconds)
 {
-    auto dates = new AsyncDatesRuntime(sender, waitSeconds);
-    dates->run(receiver);
-
-    return DatesRuntime(dates);
+    return DatesRuntime(new AsyncDatesRuntime(sender, receiver, waitSeconds));
 }
 
 

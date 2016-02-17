@@ -28,28 +28,28 @@ namespace
     };
 
     struct FakeMsgTransitImpl : FakeMsgTransit
+                              , private FakeMsgListener
+                              , private FakeMsgSender
     {
-        FakeMsgTransitImpl(const char* name, Runtime& frame)
-        : queue(frame.ROLE(MsgQueue))
-        , listener(new FakeMsgListener(name))
-        , sender(new FakeMsgSender(frame.ROLE(DatesSender)))
+        FakeMsgTransitImpl(const char* name, Runtime& runtime)
+        : FakeMsgListener(name)
+        , FakeMsgSender(runtime.ROLE(DatesSender))
+        , runtime(runtime)
         {
         }
 
     private:
-        IMPL_ROLE_WITH_OBJ(MsgQueue, queue);
-        IMPL_ROLE_WITH_OBJ(MsgListener, *listener);
-        IMPL_ROLE_WITH_OBJ(MsgSender,   *sender);
+        IMPL_ROLE(MsgSender);
+        IMPL_ROLE(MsgListener);
+        IMPL_ROLE_WITH_OBJ(MsgQueue, runtime.ROLE(MsgQueue));
 
     private:
-        MsgQueue& queue;
-        std::unique_ptr<MsgListener> listener;
-        std::unique_ptr<MsgSender> sender;
+        Runtime& runtime;
     };
 }
 
-FakeSystem::FakeSystem(const char* name, Runtime& frame)
-: msgUtils(new FakeMsgTransitImpl(name, frame))
+FakeSystem::FakeSystem(const char* name, Runtime& runtime)
+: msgTransit(new FakeMsgTransitImpl(name, runtime))
 {
 }
 
