@@ -2,8 +2,8 @@
 #include "details/SyncMsgQueue.h"
 #include "details/AsyncMsgQueue.h"
 #include "details/Runtime.h"
-#include "details/DatesSender.h"
-#include "details/DatesReceiver.h"
+#include "details/MsgSender.h"
+#include "details/MsgReceiver.h"
 #include "base/NullPtr.h"
 #include <thread>
 
@@ -12,10 +12,15 @@ DATES_NS_BEGIN
 namespace
 {
     ///////////////////////////////////////////////////////////
-    struct DatesSenderImpl : DatesSender
+    template<typename MSG_QUEUE>
+    struct GenericRuntime : Runtime
+                          , private MsgSender
+                          , private MsgReceiver
+                          , protected MSG_QUEUE
     {
-        DatesSenderImpl(const DatesFactory::Sender& sender)
-        : sender(sender)
+        template<typename... Paras>
+        GenericRuntime(const DatesFactory::Sender& sender, Paras... paras)
+        : sender(sender), MSG_QUEUE(paras...)
         {
         }
 
@@ -25,53 +30,36 @@ namespace
             sender(msg);
         }
 
-    private:
-        DatesFactory::Sender sender;
-    };
-
-    ///////////////////////////////////////////////////////////
-    struct DatesReceiverImpl : DatesReceiver
-    {
-    private:
         OVERRIDE(void recv(const RawMsg& msg))
         {
             return ROLE(MsgQueue).insert(msg);
         }
 
     private:
-        USE_ROLE(MsgQueue);
-    };
-
-    ///////////////////////////////////////////////////////////
-    struct SyncDatesRuntime : Runtime
-                            , private DatesSenderImpl
-                            , private DatesReceiverImpl
-                            , private SyncMsgQueue
-
-    {
-        SyncDatesRuntime(const DatesFactory::Sender& sender)
-        : DatesSenderImpl(sender)
-        {
-        }
+        DatesFactory::Sender sender;
 
     private:
-        IMPL_ROLE(DatesSender);
-        IMPL_ROLE(DatesReceiver);
+        IMPL_ROLE(MsgSender);
+        IMPL_ROLE(MsgReceiver);
         IMPL_ROLE(MsgQueue);
     };
 
     ///////////////////////////////////////////////////////////
-    struct AsyncDatesRuntime : Runtime
-                             , private DatesSenderImpl
-                             , private DatesReceiverImpl
-                             , private AsyncMsgQueue
+    using SyncDatesRuntime = GenericRuntime<SyncMsgQueue>;
+
+    ///////////////////////////////////////////////////////////
+    struct AsyncDatesRuntime : GenericRuntime<AsyncMsgQueue>
     {
         AsyncDatesRuntime( const DatesFactory::Sender& sender
-                         , const DatesFactory::Receiver& receiver
                          , const U32 waitSeconds)
-        : DatesSenderImpl(sender), AsyncMsgQueue(waitSeconds)
+        : GenericRuntime<AsyncMsgQueue>(sender, waitSeconds)
         {
-            run(receiver);
+        }
+
+        void run(const DatesFactory::Receiver& receiver)
+        {
+            if(__notnull__(t)) return;
+            t = new std::thread(receiver);
         }
 
         ~AsyncDatesRuntime()
@@ -80,12 +68,6 @@ namespace
         }
 
     private:
-        void run(const DatesFactory::Receiver& receiver)
-        {
-            if(__notnull__(t)) return;
-            t = new std::thread(receiver);
-        }
-
         void terminateThread()
         {
             if(__notnull__(t))
@@ -95,11 +77,6 @@ namespace
                 t = __null_ptr__;
             }
         }
-
-    private:
-        IMPL_ROLE(DatesSender);
-        IMPL_ROLE(DatesReceiver);
-        IMPL_ROLE(MsgQueue);
 
     private:
         std::thread* t{__null_ptr__};
@@ -117,8 +94,11 @@ DatesRuntime DatesFactory::createAsyncRuntime( const Sender& sender
                                              , const Receiver& receiver
                                              , const U32 waitSeconds)
 {
-    return DatesRuntime(new AsyncDatesRuntime(sender, receiver, waitSeconds));
-}
+    auto runtime = new AsyncDatesRuntime(sender, waitSeconds);
 
+    runtime->run(receiver);
+
+    return DatesRuntime(runtime);
+}
 
 DATES_NS_END

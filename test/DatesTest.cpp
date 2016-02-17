@@ -8,7 +8,7 @@
 #include "details/MsgId.h"
 #include "details/RawMsg.h"
 #include <details/Runtime.h>
-#include "details/DatesReceiver.h"
+#include <details/MsgReceiver.h>
 #include "definition.h"
 #include <string>
 
@@ -43,7 +43,7 @@ struct SyncTest : public testing::Test
     : runtime(DatesFactory::createSyncRuntime([this](const RawMsg& msg){syncSend(msg);}))
     , neighbor("neighbor", *runtime)
     , commander("commander", *runtime)
-    , sut(runtime->ROLE(DatesReceiver))
+    , sut(runtime->ROLE(MsgReceiver))
     {
     }
 
@@ -117,7 +117,7 @@ private:
             if(r <= 0) break;
 
             MsgId id = ((Header*)msg)->id;
-            runtime->ROLE(DatesReceiver).recv(RawMsg(id, msg, (U32)r));
+            runtime->ROLE(MsgReceiver).recv(RawMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }

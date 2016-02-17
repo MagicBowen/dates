@@ -8,7 +8,7 @@ DATES_NS_BEGIN
 
 struct RawMsg;
 
-DEFINE_ROLE(DatesReceiver)
+DEFINE_ROLE(MsgReceiver)
 {
     ABSTRACT(void recv(const RawMsg&));
 };

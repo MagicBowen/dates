@@ -10,7 +10,7 @@ struct RawMsg;
 
 DEFINE_ROLE(MsgSender)
 {
-    ABSTRACT(void send(const RawMsg&) const);
+    ABSTRACT(void send(const RawMsg&));
 };
 
 DATES_NS_END

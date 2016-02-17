@@ -1,12 +1,12 @@
 #include "sut/SyncSut.h"
 #include "sut/msgs.h"
 #include "details/RawMsg.h"
-#include "details/DatesReceiver.h"
+#include <details/MsgReceiver.h>
 #include <string.h>
 
 SUT_NS_BEGIN
 
-SyncSut::SyncSut(DatesReceiver& receiver)
+SyncSut::SyncSut(MsgReceiver& receiver)
 : receiver(receiver)
 {
 }

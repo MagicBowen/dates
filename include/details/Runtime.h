@@ -6,14 +6,14 @@
 
 DATES_NS_BEGIN
 
-struct DatesSender;
-struct DatesReceiver;
+struct MsgSender;
+struct MsgReceiver;
 struct MsgQueue;
 
 DEFINE_ROLE(Runtime)
 {
-    HAS_ROLE(DatesSender);
-    HAS_ROLE(DatesReceiver);
+    HAS_ROLE(MsgSender);
+    HAS_ROLE(MsgReceiver);
     HAS_ROLE(MsgQueue);
 };
 
