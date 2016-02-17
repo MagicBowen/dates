@@ -2,7 +2,7 @@
 #define HDE682FC9_BB65_4707_BCBE_0BA478552648
 
 #include <details/MsgTransit.h>
-#include "details/RawMsg.h"
+#include <details/TaggedMsg.h>
 #include "base/FunctionTraits.h"
 #include <functional>
 #include <memory>
@@ -15,7 +15,7 @@ DEFINE_ROLE(FakeSystemBase)
     void recv(const CHECKER& checker)
     {
         using MSG = ARG_TYPE(CHECKER);
-        RawMsg& msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
+        TaggedMsg& msg = ROLE(MsgTransit).recvMsg(MSG::getName(), MSG::getId());
         checker(msg.castTo<MSG>());
         delete [] msg.getMsg();
     }
@@ -26,7 +26,7 @@ DEFINE_ROLE(FakeSystemBase)
         using MSG = ARG_TYPE(BUILDER);
         std::unique_ptr<MSG> msg(new MSG());
         builder(*msg);
-        ROLE(MsgTransit).sendMsg(MSG::getName(), RawMsg(MSG::getId(), (U8*)(msg.get()), sizeof(MSG)));
+        ROLE(MsgTransit).sendMsg(MSG::getName(), TaggedMsg(MSG::getId(), (U8*)(msg.get()), sizeof(MSG)));
     }
 
 private:

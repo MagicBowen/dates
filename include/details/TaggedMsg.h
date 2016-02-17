@@ -7,10 +7,10 @@
 
 DATES_NS_BEGIN
 
-struct RawMsg
+struct TaggedMsg
 {
-    RawMsg();
-    RawMsg(MsgId, U8* msg, U32 length);
+    TaggedMsg();
+    TaggedMsg(MsgId, U8* msg, U32 length);
 
     void update(MsgId, U8* msg, U32 length);
 

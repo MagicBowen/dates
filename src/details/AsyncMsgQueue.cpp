@@ -9,7 +9,7 @@ AsyncMsgQueue::AsyncMsgQueue(const U32 waitSeconds)
 {
 }
 
-void AsyncMsgQueue::insert(const RawMsg& msg)
+void AsyncMsgQueue::insert(const TaggedMsg& msg)
 {
     SYNCHRONIZED(mutex)
     {
@@ -18,7 +18,7 @@ void AsyncMsgQueue::insert(const RawMsg& msg)
     }
 }
 
-bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, RawMsg& msg)
+bool AsyncMsgQueue::fetch(const MsgMatcher& matcher, TaggedMsg& msg)
 {
     SYNCHRONIZED(mutex)
     {

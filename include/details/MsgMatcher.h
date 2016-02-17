@@ -6,9 +6,9 @@
 
 DATES_NS_BEGIN
 
-struct RawMsg;
+struct TaggedMsg;
 
-using MsgMatcher = std::function<bool (const RawMsg&)>;
+using MsgMatcher = std::function<bool (const TaggedMsg&)>;
 
 DATES_NS_END
 

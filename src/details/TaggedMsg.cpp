@@ -1,36 +1,36 @@
-#include "details/RawMsg.h"
+#include <details/TaggedMsg.h>
 #include "base/NullPtr.h"
 
 DATES_NS_BEGIN
 
-RawMsg::RawMsg()
+TaggedMsg::TaggedMsg()
 : msg(__null_ptr__), length(0), id()
 {
 }
 
-RawMsg::RawMsg(MsgId id, U8* msg, U32 length)
+TaggedMsg::TaggedMsg(MsgId id, U8* msg, U32 length)
 : id(id), msg(msg), length(length)
 {
 }
 
-void RawMsg::update(MsgId id, U8* msg, U32 length)
+void TaggedMsg::update(MsgId id, U8* msg, U32 length)
 {
     this->id = id;
     this->msg = msg;
     this->length = length;
 }
 
-MsgId RawMsg::getId() const
+MsgId TaggedMsg::getId() const
 {
     return id;
 }
 
-U8* RawMsg::getMsg() const
+U8* TaggedMsg::getMsg() const
 {
     return msg;
 }
 
-U32 RawMsg::getLength() const
+U32 TaggedMsg::getLength() const
 {
     return length;
 }

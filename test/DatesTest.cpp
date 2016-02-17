@@ -6,7 +6,7 @@
 #include "sut/SyncSut.h"
 #include "sut/AsyncSut.h"
 #include "details/MsgId.h"
-#include "details/RawMsg.h"
+#include <details/TaggedMsg.h>
 #include <details/Runtime.h>
 #include <details/MsgReceiver.h>
 #include "definition.h"
@@ -40,7 +40,7 @@ namespace
 struct SyncTest : public testing::Test
 {
     SyncTest()
-    : runtime(DatesFactory::createSyncRuntime([this](const RawMsg& msg){syncSend(msg);}))
+    : runtime(DatesFactory::createSyncRuntime([this](const TaggedMsg& msg){syncSend(msg);}))
     , neighbor("neighbor", *runtime)
     , commander("commander", *runtime)
     , sut(runtime->ROLE(MsgReceiver))
@@ -48,7 +48,7 @@ struct SyncTest : public testing::Test
     }
 
 private:
-    void syncSend(const RawMsg& msg)
+    void syncSend(const TaggedMsg& msg)
     {
         sut.receive(msg.getId(), msg.getMsg(), msg.getLength());
     }
@@ -93,14 +93,14 @@ TEST_F(SyncTest, should_receive_pong_msg_when_send_ping_to_sync_sut)
 struct AsyncTest : public testing::Test
 {
     AsyncTest()
-    : runtime(DatesFactory::createAsyncRuntime([this](const RawMsg& msg){asyncSend(msg);},
+    : runtime(DatesFactory::createAsyncRuntime([this](const TaggedMsg& msg){asyncSend(msg);},
                                       [this](){asyncRecv();}))
     , commander("commander", *runtime)
     {
     }
 
 private:
-    void asyncSend(const RawMsg& msg)
+    void asyncSend(const TaggedMsg& msg)
     {
         U8* data = static_cast<U8*>(msg.getMsg());
         ((Header*)data)->id = msg.getId();
@@ -117,7 +117,7 @@ private:
             if(r <= 0) break;
 
             MsgId id = ((Header*)msg)->id;
-            runtime->ROLE(MsgReceiver).recv(RawMsg(id, msg, (U32)r));
+            runtime->ROLE(MsgReceiver).recv(TaggedMsg(id, msg, (U32)r));
             if(EVENT_TERMINATE == id) return;
         }
     }

@@ -25,12 +25,12 @@ namespace
         }
 
     private:
-        OVERRIDE(void send(const RawMsg& msg))
+        OVERRIDE(void send(const TaggedMsg& msg))
         {
             sender(msg);
         }
 
-        OVERRIDE(void recv(const RawMsg& msg))
+        OVERRIDE(void recv(const TaggedMsg& msg))
         {
             return ROLE(MsgQueue).insert(msg);
         }

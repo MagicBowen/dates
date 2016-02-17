@@ -7,11 +7,11 @@
 
 DATES_NS_BEGIN
 
-struct RawMsg;
+struct TaggedMsg;
 
 struct DatesFactory
 {
-    using Sender = std::function<void (const RawMsg&)>;
+    using Sender = std::function<void (const TaggedMsg&)>;
     using Receiver = std::function<void ()>;
 
     static DatesRuntime createSyncRuntime(const Sender&);
