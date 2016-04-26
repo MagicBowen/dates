@@ -20,7 +20,8 @@ TO DO LSIT:
 - [x]: System refact: refact, common code depency goverment;
 - [x]: use factory to create runtime 
 - [x]: RawMsg memory government:
-- [ ]: separate the sync and async; folder refact!
+- [x]: separate the sync and async; folder refact!
+- [x]: refact the include folder for publish!
 - [ ]: separate the sync and async test, add test case;
 - [ ]: thread terminate gentally;
 - [ ]: System refact: use factory to create fake system; 

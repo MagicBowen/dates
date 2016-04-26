@@ -1,11 +1,6 @@
-include_directories("${GTEST_ROOT}/include"
-                                     "${CMAKE_CURRENT_SOURCE_DIR}")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}"
+                                       "${CMAKE_CURRENT_SOURCE_DIR}/sut/include")
 
-link_directories("${GTEST_ROOT}/lib")
-
-file(GLOB_RECURSE files *.cpp)
-
-add_executable(dates_test ${files})
-
-target_link_libraries(dates_test dates gtest pthread)
+add_subdirectory("sut")
+add_subdirectory("testcase")
 
