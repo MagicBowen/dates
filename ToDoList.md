@@ -1,4 +1,5 @@
-TO DO LSIT:
+TO DO LIST:
+
 ***
 
 - [x]: bii-code
@@ -22,11 +23,10 @@ TO DO LSIT:
 - [x]: RawMsg memory government:
 - [x]: separate the sync and async; folder refact!
 - [x]: refact the include folder for publish!
+- [x]: thread terminate gentally;
 - [ ]: separate the sync and async test, add test case;
-- [ ]: thread terminate gentally;
 - [ ]: System refact: use factory to create fake system; 
 - [ ]: promote the usability!
 - [ ]: integrate with msgcc
-- [ ]: decouple from test framework;
 - [ ]: tutorial
 
