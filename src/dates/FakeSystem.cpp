@@ -1,8 +1,8 @@
 #include <dates/FakeSystem.h>
-#include <extend/fake/FakeMsgListener.h>
-#include <extend/fake/FakeMsgTransit.h>
-#include <core/MsgSender.h>
-#include <core/Runtime.h>
+#include <dates/extend/fake/FakeMsgListener.h>
+#include <dates/extend/fake/FakeMsgTransit.h>
+#include <dates/core/MsgSender.h>
+#include <dates/core/Runtime.h>
 
 DATES_NS_BEGIN
 

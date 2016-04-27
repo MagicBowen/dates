@@ -1,12 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "core/Runtime.h"
-#include "core/MsgQueue.h"
+#include <dates/core/Runtime.h>
+#include <dates/core/MsgQueue.h>
 
+#include <dates/Dates.h>
 #include <dates/FakeMsg.h>
 #include <dates/FakeSystem.h>
-#include <dates/factory/DatesAsyncFactory.h>
-#include <dates/factory/DatesSyncFactory.h>
 
 #include <sut/include/common/config.h>
 #include <sut/include/common/Msgs.h>

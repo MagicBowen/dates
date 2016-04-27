@@ -1,9 +1,9 @@
-#include <extend/fake/FakeMsgTransit.h>
-#include <core/MsgQueue.h>
-#include <core/MsgListener.h>
-#include <core/MsgSender.h>
-#include <core/RawMsg.h>
-#include "base/NullPtr.h"
+#include <dates/extend/fake/FakeMsgTransit.h>
+#include <dates/core/MsgQueue.h>
+#include <dates/core/MsgListener.h>
+#include <dates/core/MsgSender.h>
+#include <dates/core/RawMsg.h>
+#include <dates/base/NullPtr.h>
 
 DATES_NS_BEGIN
 

@@ -1,10 +1,10 @@
 #ifndef HDC088B47_6642_44DC_9C7F_82CAF7DDA4D2
 #define HDC088B47_6642_44DC_9C7F_82CAF7DDA4D2
 
-#include "base/BaseTypes.h"
-#include <extend/usings/DatesRuntime.h>
-#include <extend/usings/DatesSender.h>
-#include <extend/usings/DatesReceiver.h>
+#include <dates/base/BaseTypes.h>
+#include <dates/extend/usings/DatesRuntime.h>
+#include <dates/extend/usings/DatesSender.h>
+#include <dates/extend/usings/DatesReceiver.h>
 
 DATES_NS_BEGIN
 

@@ -1,9 +1,9 @@
 #ifndef H05B2224D_B926_4FC0_A936_67B52B8A98DE
 #define H05B2224D_B926_4FC0_A936_67B52B8A98DE
 
-#include "base/BaseTypes.h"
-#include "base/MsgId.h"
-#include <core/FakeMsgBase.h>
+#include <dates/base/BaseTypes.h>
+#include <dates/base/MsgId.h>
+#include <dates/core/FakeMsgBase.h>
 #include <dates/FakeName.h>
 
 DATES_NS_BEGIN

@@ -2,7 +2,7 @@
 #define H454A7D46_0360_4776_A923_E98CF3108421
 
 #include <common/SutBase.h>
-#include "core/dates.h"
+#include <dates/core/dates.h>
 
 DATES_FWD_DECL(MsgQueue);
 

@@ -1,7 +1,7 @@
 #include <sync/SyncSut.h>
 #include <common/Msgs.h>
-#include "core/RawMsg.h"
-#include "core/MsgQueue.h"
+#include <dates/core/RawMsg.h>
+#include <dates/core/MsgQueue.h>
 #include <string.h>
 
 SUT_NS_BEGIN

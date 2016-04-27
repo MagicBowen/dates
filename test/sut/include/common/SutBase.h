@@ -2,9 +2,9 @@
 #define H1BE6A19E_9E50_4436_A8C8_A78E6EAFA10B
 
 #include <common/sut.h>
-#include "base/MsgId.h"
-#include "base/Role.h"
-#include "base/Status.h"
+#include <dates/base/MsgId.h>
+#include <dates/base/Role.h>
+#include <dates/base/Status.h>
 
 USING_DATES_NS
 SUT_NS_BEGIN
