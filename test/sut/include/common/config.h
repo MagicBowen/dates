@@ -11,4 +11,6 @@
 #define DATES_ADDR "127.0.0.1"
 #define DATES_PORT ((U16)5002)
 
+#define UDP_RECV_TIMEOUT_SECONDS ((U32)5)
+
 #endif

@@ -5,7 +5,8 @@
 SUT_NS_BEGIN
 
 AsyncSut::AsyncSut()
-: client(SUT_ADDR, SUT_PORT), t(new std::thread([this]{run();}))
+: client(SUT_ADDR, SUT_PORT, UDP_RECV_TIMEOUT_SECONDS)
+, t(new std::thread([this]{run();}))
 {
 }
 

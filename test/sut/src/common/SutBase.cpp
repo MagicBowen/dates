@@ -21,7 +21,7 @@ Status SutBase::receive(const MsgId id, const void* data, const U32 length)
         return SUCCESS;
     case EVENT_TERMINATE:
         handleTerminate(msg_cast<Terminate>(data));
-        break;
+        return SUCCESS;
     default:
         ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);
     }

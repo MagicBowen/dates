@@ -5,11 +5,17 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
-UdpClient::UdpClient(const char* ip, const U16 port)
+UdpClient::UdpClient(const char* ip, const U16 port, const U32 waitSeconds)
 : servAddr(ip, port)
 {
     servSocket = socket(PF_INET, SOCK_DGRAM, 0);
     bind(servSocket, (struct sockaddr *)&servAddr.getAddr(), sizeof(sockaddr_in));
+
+    if(0 != waitSeconds)
+    {
+        struct timeval timeout={waitSeconds, 0};
+        setsockopt(servSocket,SOL_SOCKET,SO_RCVTIMEO,(char*)&timeout,sizeof(struct timeval));
+    }
 }
 
 UdpClient::~UdpClient()
