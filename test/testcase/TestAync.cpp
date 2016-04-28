@@ -3,19 +3,30 @@
 #include "dates/core/MsgQueue.h"
 #include "dates/factory/DatesAsyncFactory.h"
 #include "dates/FakeSystem.h"
+#include <dates/FakeMsg.h>
 #include "sut/include/common/config.h"
 #include "sut/include/async/AsyncSut.h"
-#include "FakeMsgs.h"
+#include "sut/include/async/AsyncMsgs.h"
+#include <async/Invalid.h>
+
+USING_DATES_NS
+USING_SUT_NS
 
 /////////////////////////////////////////////////////////
 namespace
 {
-    void updateMsgIdOnSend(const RawMsg& msg)
+    __def_fake_msg(EVENT_ACCESS_REQ,      AccessReq);
+    __def_fake_msg(EVENT_ACCESS_RSP,      AccessRsp);
+    __def_fake_msg(EVENT_SUB_CFG,         CfgReq);
+    __def_fake_msg(EVENT_SUB_RSP,         CfgRsp);
+
+
+    void updateMsgId(const RawMsg& msg)
     {
         ((Header*)msg.getMsg())->id = msg.getId();
     }
 
-    void updateMsgInfoOnRecv(const size_t length, RawMsg& msg)
+    void updateMsgInfo(const size_t length, RawMsg& msg)
     {
         MsgId id = ((Header*)(msg.getMsg()))->id;
         msg.update(id, length);
@@ -33,14 +44,15 @@ struct AsyncTest : public testing::Test
                                                      {
                                                          asyncRecv();
                                                      }))
-    , commander("commander", *runtime)
+    , visitor("Visitor", *runtime)
+    , subSystem("Sub-System", *runtime)
     {
     }
 
 private:
     void asyncSend(const RawMsg& msg)
     {
-        updateMsgIdOnSend(msg);
+        updateMsgId(msg);
         client.send(SUT_ADDR, SUT_PORT, msg.getMsg(), msg.getLength());
     }
 
@@ -53,7 +65,7 @@ private:
             S32 r = client.receive(msg.getMsg(), msg.getLength());
             if(r <= 0) break;
 
-            updateMsgInfoOnRecv(r, msg);
+            updateMsgInfo(r, msg);
 
             runtime->ROLE(MsgQueue).insert(std::move(msg));
         }
@@ -67,31 +79,69 @@ protected:
     AsyncSut sut;
 
     DatesRuntime runtime;
-    FakeSystem commander;
+    FakeSystem visitor;
+    FakeSystem subSystem;
 
-    const U32 PAYLOAD{0xabcd};
+    const U32 CAPABILITY{0xabcd};
 };
 
-TEST_F(AsyncTest, shoud_stop_dates_and_sut_when_send_terminate_msg)
+TEST_F(AsyncTest, shoud_rsp_success_to_visitor_when_sub_system_rsp_ok)
 {
-    commander.send(DUMMY_SEND_MSG(Terminate));
+    visitor.send([this](FAKE(AccessReq)& req)
+            {
+                req.capability = CAPABILITY;
+            });
 
-    commander.recv(DUMMY_RECV_MSG(Terminate));
+    subSystem.recv([this](const FAKE(CfgReq)& cfg)
+            {
+                ASSERT_EQ(CAPABILITY, cfg.capability);
+            });
+
+    subSystem.send([](FAKE(CfgRsp)& rsp)
+            {
+                rsp.result = SUCCESS;
+            });
+
+    visitor.recv([](const FAKE(AccessRsp)& rsp)
+            {
+                ASSERT_EQ(SUCCESS, rsp.result);
+            });
 }
 
-TEST_F(AsyncTest, should_receive_pong_msg_when_send_ping_to_async_sut)
+TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_sub_system_rsp_fail)
 {
-    commander.send([this](FAKE(Ping)& ping)
+    visitor.send([this](FAKE(AccessReq)& req)
             {
-                ping.request = PAYLOAD;
+                req.capability = CAPABILITY;
             });
 
-    commander.recv([this](const FAKE(Pong)& pong)
+    subSystem.recv([this](const FAKE(CfgReq)& cfg)
             {
-                ASSERT_EQ(PAYLOAD, pong.reply);
+                ASSERT_EQ(CAPABILITY, cfg.capability);
             });
 
-    commander.send(DUMMY_SEND_MSG(Terminate));
+    subSystem.send([this](FAKE(CfgRsp)& rsp)
+            {
+                rsp.result = FAILURE;
+            });
 
-    commander.recv(DUMMY_RECV_MSG(Terminate));
+    visitor.recv([this](const FAKE(AccessRsp)& rsp)
+            {
+                ASSERT_EQ(FAILURE, rsp.result);
+            });
+}
+
+TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_recv_invalid_capability)
+{
+    visitor.send([this](FAKE(AccessReq)& req)
+            {
+                req.capability = INVALID_CAPABILITY;
+            });
+
+    visitor.recv([this](const FAKE(AccessRsp)& rsp)
+            {
+                ASSERT_EQ(FAILURE, rsp.result);
+            });
+
+    ASSERT_TRUE(runtime->ROLE(MsgQueue).isEmpty());
 }

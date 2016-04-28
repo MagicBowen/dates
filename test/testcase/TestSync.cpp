@@ -2,9 +2,33 @@
 #include "dates/core/Runtime.h"
 #include "dates/factory/DatesSyncFactory.h"
 #include "dates/FakeSystem.h"
+#include <dates/FakeMsg.h>
 #include "sut/include/common/config.h"
 #include "sut/include/sync/SyncSut.h"
-#include "FakeMsgs.h"
+#include <sut/include/sync/SyncMsgs.h>
+#include <string.h>
+
+USING_DATES_NS
+USING_SUT_NS
+
+namespace
+{
+    __def_fake_msg_begin(EVENT_HELLO, Hello)
+        void fill(const char* words)
+        {
+            strcpy(data, words);
+        }
+
+        const char* getWords() const
+        {
+            return data;
+        }
+    __def_fake_msg_end
+
+    __def_fake_msg(EVENT_PING,      Ping);
+    __def_fake_msg(EVENT_PONG,      Pong);
+    __def_fake_msg(EVENT_TERMINATE, Terminate);
+}
 
 /////////////////////////////////////////////////////////////////////
 struct SyncTest : public testing::Test

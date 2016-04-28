@@ -26,7 +26,7 @@ TO DO LIST:
 - [x]: thread terminate gentally;
 - [ ]: separate the sync and async test, add test case;
 - [ ]: System refact: use factory to create fake system; 
+- [ ]: integrate with msgcc, promote the extendable of fake system for msg;
 - [ ]: promote the usability!
-- [ ]: integrate with msgcc
 - [ ]: tutorial
 

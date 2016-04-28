@@ -1,6 +1,10 @@
 #include <async/AsyncSut.h>
-#include <common/Msgs.h>
+#include <async/AsyncMsgs.h>
 #include <common/config.h>
+#include <dates/base/log.h>
+#include <dates/base/MsgCast.h>
+#include <string.h>
+#include <async/Invalid.h>
 
 SUT_NS_BEGIN
 
@@ -25,9 +29,59 @@ void AsyncSut::run()
 
         if(r <= 0) break;
 
-        Status status = SutBase::receive(((Header*)buffer)->id, buffer, r);
+        Status status = AsyncSut::receive(((Header*)buffer)->id, buffer, r);
         if(status != SUCCESS) break;
     }
+}
+
+Status AsyncSut::receive(const MsgId id, const void* data, const U32 length)
+{
+    INFO_LOG("SUT recv msg[%d]", id);
+
+    switch(id)
+    {
+    case EVENT_ACCESS_REQ:
+        handle(msg_cast<AccessReq>(data));
+        return SUCCESS;
+    case EVENT_SUB_RSP:
+        handle(msg_cast<CfgRsp>(data));
+        return SUCCESS;
+    default:
+        ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);
+    }
+
+    return FAILURE;
+}
+
+void AsyncSut::handle(const AccessReq& event)
+{
+    if(event.capability == INVALID_CAPABILITY)
+    {
+        AccessRsp rsp;
+        rsp.result = FAILURE;
+        send(EVENT_ACCESS_RSP, &rsp, sizeof(rsp));
+    }
+    else
+    {
+        CfgReq cfg;
+        cfg.capability = event.capability;
+        send(EVENT_SUB_CFG, &cfg, sizeof(cfg));
+    }
+}
+
+void AsyncSut::handle(const CfgRsp& event)
+{
+    AccessRsp rsp;
+    rsp.result = event.result;
+    send(EVENT_ACCESS_RSP, &rsp, sizeof(rsp));
+}
+
+void AsyncSut::send(const MsgId id, const void* data, const U32 length)
+{
+    INFO_LOG("SUT send msg[%d]", id);
+
+    ((Header*)data)->id = id;
+    doSend(data, length);
 }
 
 void AsyncSut::doSend(const void* data, const U32 length)
