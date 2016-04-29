@@ -146,10 +146,7 @@ TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_recv_invalid_capability)
 
 TEST_F(AsyncTest, shoud_be_in_correct_state_of_the_msg_queue)
 {
-    visitor.send([this](FAKE(AccessReq)& req)
-            {
-                req.capability = INVALID_CAPABILITY;
-            });
+    visitor.send(DUMMY_SEND_MSG(AccessReq));
 
     sleep(UDP_RECV_TIMEOUT_SECONDS);
 
