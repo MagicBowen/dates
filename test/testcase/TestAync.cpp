@@ -3,11 +3,11 @@
 #include "dates/core/MsgQueue.h"
 #include "dates/factory/DatesAsyncFactory.h"
 #include "dates/FakeSystem.h"
-#include <dates/FakeMsg.h>
+#include "dates/FakeMsg.h"
 #include "sut/include/common/config.h"
 #include "sut/include/async/AsyncSut.h"
 #include "sut/include/async/AsyncMsgs.h"
-#include <async/Invalid.h>
+#include "sut/include/async/Invalid.h"
 
 USING_DATES_NS
 USING_SUT_NS

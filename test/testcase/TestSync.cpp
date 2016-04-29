@@ -1,12 +1,12 @@
 #include "gtest/gtest.h"
 #include "dates/core/Runtime.h"
 #include "dates/factory/DatesSyncFactory.h"
-#include <dates/core/MsgQueue.h>
+#include "dates/core/MsgQueue.h"
 #include "dates/FakeSystem.h"
-#include <dates/FakeMsg.h>
+#include "dates/FakeMsg.h"
 #include "sut/include/common/config.h"
 #include "sut/include/sync/SyncSut.h"
-#include <sut/include/sync/SyncMsgs.h>
+#include "sut/include/sync/SyncMsgs.h"
 #include <string.h>
 
 USING_DATES_NS
