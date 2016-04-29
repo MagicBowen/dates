@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 #include "dates/core/Runtime.h"
 #include "dates/factory/DatesSyncFactory.h"
+#include <dates/core/MsgQueue.h>
 #include "dates/FakeSystem.h"
 #include <dates/FakeMsg.h>
 #include "sut/include/common/config.h"
@@ -88,3 +89,15 @@ TEST_F(SyncTest, should_receive_pong_msg_when_send_ping_to_sync_sut)
                 ASSERT_EQ(PAYLOAD, pong.reply);
             });
 }
+
+TEST_F(SyncTest, shoud_be_in_correct_state_of_the_msg_queue)
+{
+    commander.send(DUMMY_SEND_MSG(Ping));
+
+    ASSERT_FALSE(runtime->ROLE(MsgQueue).isEmpty());
+
+    runtime->ROLE(MsgQueue).clear();
+
+    ASSERT_TRUE(runtime->ROLE(MsgQueue).isEmpty());
+}
+

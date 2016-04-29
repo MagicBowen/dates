@@ -142,6 +142,22 @@ TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_recv_invalid_capability)
             {
                 ASSERT_EQ(FAILURE, rsp.result);
             });
+}
+
+TEST_F(AsyncTest, shoud_be_in_correct_state_of_the_msg_queue)
+{
+    visitor.send([this](FAKE(AccessReq)& req)
+            {
+                req.capability = INVALID_CAPABILITY;
+            });
+
+    sleep(UDP_RECV_TIMEOUT_SECONDS);
+
+    ASSERT_FALSE(runtime->ROLE(MsgQueue).isEmpty());
+
+    runtime->ROLE(MsgQueue).clear();
 
     ASSERT_TRUE(runtime->ROLE(MsgQueue).isEmpty());
 }
+
+
