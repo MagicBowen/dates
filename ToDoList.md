@@ -24,7 +24,7 @@ TO DO LIST:
 - [x]: separate the sync and async; folder refact!
 - [x]: refact the include folder for publish!
 - [x]: thread terminate gentally;
-- [ ]: separate the sync and async test, add test case;
+- [x]: separate the sync and async test, add test case;
 - [ ]: System refact: use factory to create fake system; 
 - [ ]: integrate with msgcc, promote the extendable of fake system for msg;
 - [ ]: promote the usability!
