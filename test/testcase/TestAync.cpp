@@ -2,8 +2,8 @@
 #include "dates/core/Runtime.h"
 #include "dates/core/MsgQueue.h"
 #include "dates/factory/DatesAsyncFactory.h"
-#include "dates/FakeSystem.h"
-#include "dates/FakeMsg.h"
+#include "dates/FakeSystemHelper.h"
+#include <dates/FakeMsgHelper.h>
 #include "sut/include/common/config.h"
 #include "sut/include/async/AsyncSut.h"
 #include "sut/include/async/AsyncMsgs.h"
@@ -20,6 +20,15 @@ namespace
     __def_fake_msg(EVENT_SUB_CFG,         CfgReq);
     __def_fake_msg(EVENT_SUB_RSP,         CfgRsp);
 
+    __def_fake_system_begin(Visitor)
+        __could_send(AccessReq)
+        __could_recv(AccessRsp)
+    __def_fake_system_end
+
+    __def_fake_system_begin(SubSystem)
+        __could_recv(CfgReq)
+        __could_send(CfgRsp)
+    __def_fake_system_end
 
     void updateMsgId(const RawMsg& msg)
     {
@@ -44,8 +53,8 @@ struct AsyncTest : public testing::Test
                                                      {
                                                          asyncRecv();
                                                      }))
-    , visitor("Visitor", *runtime)
-    , subSystem("Sub-System", *runtime)
+    , visitor(*runtime)
+    , subSystem(*runtime)
     {
     }
 
@@ -79,8 +88,8 @@ protected:
     AsyncSut sut;
 
     DatesRuntime runtime;
-    FakeSystem visitor;
-    FakeSystem subSystem;
+    FAKE(Visitor) visitor;
+    FAKE(SubSystem) subSystem;
 
     const U32 CAPABILITY{0xabcd};
 };

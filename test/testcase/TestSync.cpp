@@ -2,8 +2,8 @@
 #include "dates/core/Runtime.h"
 #include "dates/factory/DatesSyncFactory.h"
 #include "dates/core/MsgQueue.h"
-#include "dates/FakeSystem.h"
-#include "dates/FakeMsg.h"
+#include <dates/extend/fake/FakeSystem.h>
+#include <dates/FakeMsgHelper.h>
 #include "sut/include/common/config.h"
 #include "sut/include/sync/SyncSut.h"
 #include "sut/include/sync/SyncMsgs.h"
@@ -100,4 +100,3 @@ TEST_F(SyncTest, shoud_be_in_correct_state_of_the_msg_queue)
 
     ASSERT_TRUE(runtime->ROLE(MsgQueue).isEmpty());
 }
-
