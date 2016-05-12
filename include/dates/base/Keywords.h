@@ -6,7 +6,6 @@
 
 #define ABSTRACT(...) virtual __VA_ARGS__ = 0
 
-
 #if __SUPPORT_VIRTUAL_OVERRIDE
 #   define OVERRIDE(...) virtual __VA_ARGS__ override
 #else

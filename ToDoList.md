@@ -26,6 +26,7 @@ TO DO LIST:
 - [x]: thread terminate gentally;
 - [x]: separate the sync and async test, add test case;
 - [x]: System refact:inital strick system; 
+- [x]: indenpendent the infra; elimate the basetypes; 
 - [ ]: integrate with msgcc, promote the extendable of fake system for msg;
 - [ ]: promote the usability!
 - [ ]: refact the test for tutorial;
