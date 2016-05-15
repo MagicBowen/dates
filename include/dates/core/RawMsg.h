@@ -1,8 +1,8 @@
 #ifndef H8AFB07B2_FC75_4148_BE41_0DD0D8496FD2
 #define H8AFB07B2_FC75_4148_BE41_0DD0D8496FD2
 
-#include <dates/base/MsgId.h>
-#include <dates/base/MsgCast.h>
+#include <dates/core/MsgId.h>
+#include <dates/core/MsgCast.h>
 #include <stddef.h>
 #include <utility>
 

@@ -3,7 +3,7 @@
 #include <dates/core/MsgListener.h>
 #include <dates/core/MsgSender.h>
 #include <dates/core/RawMsg.h>
-#include <dates/base/NullPtr.h>
+#include <ccinfra/core/NullPtr.h>
 
 DATES_NS_BEGIN
 

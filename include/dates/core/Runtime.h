@@ -2,7 +2,7 @@
 #define HA242D5BE_DC7B_4C30_BC85_4418AF9F474F
 
 #include <dates/core/dates.h>
-#include <dates/base/Role.h>
+#include <ccinfra/dci/Role.h>
 
 DATES_NS_BEGIN
 

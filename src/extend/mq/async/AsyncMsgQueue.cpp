@@ -1,6 +1,6 @@
 #include <dates/extend/mq/async/AsyncMsgQueue.h>
-#include <dates/base/Synchronization.h>
-#include <dates/base/NullPtr.h>
+#include <ccinfra/concurrency/Synchronization.h>
+#include <ccinfra/core/NullPtr.h>
 
 DATES_NS_BEGIN
 

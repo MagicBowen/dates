@@ -2,7 +2,7 @@
 #include <sync/SyncMsgs.h>
 #include <dates/core/RawMsg.h>
 #include <dates/core/MsgQueue.h>
-#include <dates/base/log.h>
+#include <ccinfra/log/log.h>
 #include <string.h>
 
 SUT_NS_BEGIN

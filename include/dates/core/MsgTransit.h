@@ -1,8 +1,8 @@
 #ifndef HB33CBBF0_243C_42AD_838D_479AEDCD891F
 #define HB33CBBF0_243C_42AD_838D_479AEDCD891F
 
-#include <dates/base/MsgId.h>
-#include <dates/base/Role.h>
+#include <dates/core/MsgId.h>
+#include <ccinfra/dci/Role.h>
 
 DATES_NS_BEGIN
 

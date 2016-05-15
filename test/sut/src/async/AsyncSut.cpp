@@ -1,8 +1,8 @@
 #include <async/AsyncSut.h>
 #include <async/AsyncMsgs.h>
 #include <common/config.h>
-#include <dates/base/log.h>
-#include <dates/base/MsgCast.h>
+#include <ccinfra/log/log.h>
+#include <dates/core/MsgCast.h>
 #include <string.h>
 #include <async/Invalid.h>
 

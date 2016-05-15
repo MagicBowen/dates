@@ -1,7 +1,7 @@
 #ifndef H0CFBEC72_C874_4887_858D_40807921BB23
 #define H0CFBEC72_C874_4887_858D_40807921BB23
 
-#include <dates/base/BaseTypes.h>
+#include <ccinfra/base/BaseTypes.h>
 
 #define MAX_MSG_LENGTH ((U32)1024)
 

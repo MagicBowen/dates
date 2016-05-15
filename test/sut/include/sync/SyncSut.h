@@ -3,8 +3,8 @@
 
 #include <common/sut.h>
 #include <dates/core/dates.h>
-#include <dates/base/MsgId.h>
-#include <dates/base/Status.h>
+#include <dates/core/MsgId.h>
+#include <ccinfra/base/Status.h>
 
 USING_DATES_NS
 DATES_FWD_DECL(MsgQueue);

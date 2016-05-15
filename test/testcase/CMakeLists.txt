@@ -5,7 +5,7 @@ link_directories("${GTEST_ROOT}/lib")
 
 file(GLOB_RECURSE files *.h *.cpp)
 
-add_executable(dates_test ${files})
+add_executable(dates-test ${files})
 
-target_link_libraries(dates_test dates sut gtest pthread)
+target_link_libraries(dates-test dates sut gtest pthread ccinfra)
 

@@ -2,8 +2,8 @@
 #define HE88AAE58_7D7F_4533_9909_AF9C0360C0AC
 
 #include <common/sut.h>
-#include <dates/base/BaseTypes.h>
-#include <dates/base/MsgId.h>
+#include <ccinfra/base/BaseTypes.h>
+#include <dates/core/MsgId.h>
 
 USING_DATES_NS
 SUT_NS_BEGIN

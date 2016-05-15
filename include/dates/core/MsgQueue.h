@@ -2,7 +2,7 @@
 #define H8B4936B8_C0B2_4383_976B_302534D2E657
 
 #include <dates/core/MsgMatcher.h>
-#include <dates/base/Role.h>
+#include <ccinfra/dci/Role.h>
 
 DATES_NS_BEGIN
 

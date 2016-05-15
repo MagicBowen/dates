@@ -1,6 +1,6 @@
-#include <dates/base/log.h>
-#include <dates/base/BaseTypes.h>
-#include <dates/base/NullPtr.h>
+#include <ccinfra/log/log.h>
+#include <ccinfra/base/BaseTypes.h>
+#include <ccinfra/core/NullPtr.h>
 #include <stdarg.h>
 #include <string.h>
 #include <stdio.h>

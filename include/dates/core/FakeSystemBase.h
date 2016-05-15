@@ -3,7 +3,7 @@
 
 #include <dates/core/MsgTransit.h>
 #include <dates/core/RawMsg.h>
-#include <dates/base/FunctionTraits.h>
+#include <ccinfra/functional/FunctionTraits.h>
 
 DATES_NS_BEGIN
 

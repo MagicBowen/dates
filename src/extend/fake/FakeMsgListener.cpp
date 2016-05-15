@@ -1,5 +1,5 @@
 #include <dates/extend/fake/FakeMsgListener.h>
-#include <dates/base/log.h>
+#include <ccinfra/log/log.h>
 
 DATES_NS_BEGIN
 

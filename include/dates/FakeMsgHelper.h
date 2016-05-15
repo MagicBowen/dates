@@ -1,8 +1,8 @@
 #ifndef H05B2224D_B926_4FC0_A936_67B52B8A98DE
 #define H05B2224D_B926_4FC0_A936_67B52B8A98DE
 
-#include <dates/base/BaseTypes.h>
-#include <dates/base/MsgId.h>
+#include <ccinfra/base/BaseTypes.h>
+#include <dates/core/MsgId.h>
 #include <dates/extend/fake/FakeMsg.h>
 #include <dates/extend/fake/FakeName.h>
 

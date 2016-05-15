@@ -1,7 +1,7 @@
 #ifndef H13237791_6170_4524_8B9E_5D304D7EAA2A
 #define H13237791_6170_4524_8B9E_5D304D7EAA2A
 
-#include <dates/base/BaseTypes.h>
+#include <ccinfra/base/BaseTypes.h>
 #include <dates/extend/mq/sync/SyncMsgQueue.h>
 #include <condition_variable>
 #include <mutex>

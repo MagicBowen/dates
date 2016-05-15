@@ -3,8 +3,8 @@
 
 #include <common/sut.h>
 #include <async/UdpClient.h>
-#include <dates/base/MsgId.h>
-#include <dates/base/Status.h>
+#include <dates/core/MsgId.h>
+#include <ccinfra/base/Status.h>
 #include <thread>
 #include <memory>
 

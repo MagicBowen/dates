@@ -1,7 +1,7 @@
 #ifndef H05B2224D_B926_4FC0_A936_87B52B8A98DB
 #define H05B2224D_B926_4FC0_A936_87B52B8A98DB
 
-#include <dates/base/Keywords.h>
+#include <ccinfra/core/Keywords.h>
 
 /////////////////////////////////////////////////////////////////////////////
 #define ROLE(role) get##role()
