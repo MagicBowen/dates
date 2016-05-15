@@ -1,0 +1,3 @@
+[submodule "depend/ccinfra"]
+	path = depend/ccinfra
+	url = git@github.com:MagicBowen/ccinfra.git
