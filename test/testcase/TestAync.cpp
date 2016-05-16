@@ -8,6 +8,7 @@
 #include "sut/include/async/AsyncSut.h"
 #include "sut/include/async/AsyncMsgs.h"
 #include "sut/include/async/Invalid.h"
+#include "sut/include/async/MsgccImpls.h"
 
 USING_DATES_NS
 USING_SUT_NS
@@ -21,8 +22,8 @@ namespace
     __def_fake_msg(EVENT_SUB_RSP,         CfgRsp);
 
     __def_fake_system_begin(Visitor)
-        __could_send(AccessReq)
-        __could_recv(AccessRsp)
+        __msgcc_send(AccessReq)
+        __msgcc_recv(AccessRsp)
     __def_fake_system_end
 
     __def_fake_system_begin(SubSystem)

@@ -3,6 +3,7 @@
 
 #include <dates/extend/fake/FakeSystem.h>
 #include <dates/extend/fake/FakeName.h>
+#include <msgcc/Msgcc.h>
 #include <functional>
 
 DATES_NS_BEGIN
@@ -27,6 +28,27 @@ void send(const std::function<void (FAKE(MSG)&)>& builder)  \
 void recv(const std::function<void (const FAKE(MSG)&)>& checker)\
 {                                                           \
     FakeSystemBase::recv(checker);                          \
+}
+
+///////////////////////////////////////////////////////
+#define __msgcc_send(MSG)                                   \
+void send(const std::function<void (FAKE(MSG)&)>& builder)  \
+{                                                           \
+    FakeSystemBase::send([&](FAKE(MSG)& msg)                \
+                        {                                   \
+                            Msgcc<MSG>::construct(msg);     \
+                            builder(msg);                   \
+                        });                                 \
+}
+
+#define __msgcc_recv(MSG)                                   \
+void recv(const std::function<void (const FAKE(MSG)&)>& checker)\
+{                                                           \
+    FakeSystemBase::recv([&](const FAKE(MSG)& msg)          \
+                        {                                   \
+                            Msgcc<MSG>::check(msg);         \
+                            checker(msg);                   \
+                        });                                 \
 }
 
 DATES_NS_END

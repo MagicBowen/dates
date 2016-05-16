@@ -12,6 +12,7 @@ const MsgId EVENT_ACCESS_REQ = 0;
 const MsgId EVENT_ACCESS_RSP = 1;
 const MsgId EVENT_SUB_CFG = 2;
 const MsgId EVENT_SUB_RSP = 3;
+const MsgId MAX_MSG_ID = 4;
 
 struct Header
 {
