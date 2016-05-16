@@ -28,7 +28,7 @@ TO DO LIST:
 - [x]: System refact:inital strick system; 
 - [x]: indenpendent the infra; elimate the basetypes; 
 - [x]: set the infra to independent lib; 
-- [x ]: integrate with msgcc, promote the extendable of fake system for msg;
+- [x]: integrate with msgcc, promote the extendable of fake system for msg;
 - [ ]: refact the test for tutorial;
 - [ ]: tutorial
 
