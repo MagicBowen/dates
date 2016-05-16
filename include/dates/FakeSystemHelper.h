@@ -3,6 +3,7 @@
 
 #include <dates/extend/fake/FakeSystem.h>
 #include <dates/extend/fake/FakeName.h>
+#include <dates/extend/utils/Assertions.h>
 #include <msgcc/Msgcc.h>
 #include <functional>
 
@@ -46,7 +47,8 @@ void recv(const std::function<void (const FAKE(MSG)&)>& checker)\
 {                                                           \
     FakeSystemBase::recv([&](const FAKE(MSG)& msg)          \
                         {                                   \
-                            Msgcc<MSG>::check(msg);         \
+                            DATES_ASSERT(Msgcc<MSG>::check(msg),\
+                                "FakeSystem parses "#MSG" failed with msgcc!");\
                             checker(msg);                   \
                         });                                 \
 }

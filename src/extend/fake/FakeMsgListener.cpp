@@ -1,5 +1,5 @@
 #include <dates/extend/fake/FakeMsgListener.h>
-#include <ccinfra/log/log.h>
+#include <dates/extend/utils/Assertions.h>
 
 DATES_NS_BEGIN
 
@@ -10,7 +10,7 @@ FakeMsgListener::FakeMsgListener(const char* name) : sysName(name)
 void FakeMsgListener::onMsgMiss(const char* msgName, const MsgId id) const
 {
     ERR_LOG("System[%s] wait msg[%s : %d] failed!!!", sysName.c_str(), msgName, id);
-    throw("Fatal: receive msg timeout!");
+    INVOKE_FAILURE("Fatal: receive msg timeout!");
 }
 
 void FakeMsgListener::onMsgSend(const char* msgName, const MsgId id) const
