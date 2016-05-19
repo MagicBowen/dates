@@ -18,6 +18,6 @@ __msgcc_end()
 ////////////////////////////////////////////////////////////////////////////
 __msgcc_begin(AccessRsp)
     __sub_msg(Header, header)
-    __field(result, OR(EQ(FAILURE), EQ(SUCCESS)))
+    __field(result, OR(EQ(CCINFRA_FAILURE), EQ(CCINFRA_SUCCESS)))
 __msgcc_end()
 

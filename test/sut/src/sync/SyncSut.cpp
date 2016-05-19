@@ -21,18 +21,18 @@ Status SyncSut::receive(const MsgId id, const void* data, const U32 length)
     {
     case EVENT_HELLO:
         handleHello(msg_cast<Hello>(data));
-        return SUCCESS;
+        return CCINFRA_SUCCESS;
     case EVENT_PING:
         handlePing(msg_cast<Ping>(data));
-        return SUCCESS;
+        return CCINFRA_SUCCESS;
     case EVENT_TERMINATE:
         handleTerminate(msg_cast<Terminate>(data));
-        return SUCCESS;
+        return CCINFRA_SUCCESS;
     default:
         ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);
     }
 
-    return FAILURE;
+    return CCINFRA_FAILURE;
 }
 
 void SyncSut::send(const MsgId id, const void* data, const U32 length)

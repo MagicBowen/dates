@@ -30,7 +30,7 @@ void AsyncSut::run()
         if(r <= 0) break;
 
         Status status = AsyncSut::receive(((Header*)buffer)->id, buffer, r);
-        if(status != SUCCESS) break;
+        if(status != CCINFRA_SUCCESS) break;
     }
 }
 
@@ -42,15 +42,15 @@ Status AsyncSut::receive(const MsgId id, const void* data, const U32 length)
     {
     case EVENT_ACCESS_REQ:
         handle(msg_cast<AccessReq>(data));
-        return SUCCESS;
+        return CCINFRA_SUCCESS;
     case EVENT_SUB_RSP:
         handle(msg_cast<CfgRsp>(data));
-        return SUCCESS;
+        return CCINFRA_SUCCESS;
     default:
         ERR_LOG("Error: SUT recv unrecognized msg[%d]", id);
     }
 
-    return FAILURE;
+    return CCINFRA_FAILURE;
 }
 
 void AsyncSut::handle(const AccessReq& event)
@@ -58,7 +58,7 @@ void AsyncSut::handle(const AccessReq& event)
     if(event.capability == INVALID_CAPABILITY)
     {
         AccessRsp rsp;
-        rsp.result = FAILURE;
+        rsp.result = CCINFRA_FAILURE;
         send(EVENT_ACCESS_RSP, &rsp, sizeof(rsp));
     }
     else

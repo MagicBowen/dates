@@ -109,12 +109,12 @@ TEST_F(AsyncTest, shoud_rsp_success_to_visitor_when_sub_system_rsp_ok)
 
     subSystem.send([](FAKE(CfgRsp)& rsp)
             {
-                rsp.result = SUCCESS;
+                rsp.result = CCINFRA_SUCCESS;
             });
 
     visitor.recv([](const FAKE(AccessRsp)& rsp)
             {
-                ASSERT_EQ(SUCCESS, rsp.result);
+                ASSERT_EQ(CCINFRA_SUCCESS, rsp.result);
             });
 }
 
@@ -132,12 +132,12 @@ TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_sub_system_rsp_fail)
 
     subSystem.send([this](FAKE(CfgRsp)& rsp)
             {
-                rsp.result = FAILURE;
+                rsp.result = CCINFRA_FAILURE;
             });
 
     visitor.recv([this](const FAKE(AccessRsp)& rsp)
             {
-                ASSERT_EQ(FAILURE, rsp.result);
+                ASSERT_EQ(CCINFRA_FAILURE, rsp.result);
             });
 }
 
@@ -150,7 +150,7 @@ TEST_F(AsyncTest, shoud_rsp_fail_to_visitor_when_recv_invalid_capability)
 
     visitor.recv([this](const FAKE(AccessRsp)& rsp)
             {
-                ASSERT_EQ(FAILURE, rsp.result);
+                ASSERT_EQ(CCINFRA_FAILURE, rsp.result);
             });
 }
 

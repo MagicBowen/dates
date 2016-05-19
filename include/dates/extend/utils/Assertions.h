@@ -10,7 +10,7 @@ DATES_NS_BEGIN
 #define INVOKE_FAILURE(log)  throw(log)
 
 #define DATES_ASSERT(expression, log)       \
-if((expression) != SUCCESS)                 \
+if((expression) != CCINFRA_SUCCESS)         \
 {                                           \
     FATAL_LOG(log);                         \
     INVOKE_FAILURE(log);                    \
