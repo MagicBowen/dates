@@ -14,7 +14,7 @@ To learn more, visit the doc folder! You can also view the source code of tests 
 
 - Get dates
 
-dates indepent on msgcc and ccinfra, they are setted as the git submodule of dates, so you can update them in together.
+dates independs on msgcc and ccinfra, they are setted as the git submodule of dates, so you can update them together.
 
 ~~~ bash
 git clone git@github.com:MagicBowen/dates.git
