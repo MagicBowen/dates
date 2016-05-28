@@ -4,7 +4,7 @@
 
 ## Introduction
 
-`dates` is a test framework for messaged base system in C++! It afford a DSL for faking the interactive systems of the SUT(system under test) and faking the msgs between the fake systems and SUT easily!
+`dates` is a FT(functional test) framework for message based system in C++! It afford a convenient way for faking the interactive systems of the SUT(system under test) and the msgs between the fake systems and SUT! You can test your SUT in dates very easily by describing the msg content and order between the faking systems and SUT !
 
 `dates` is decoupled with any UT test framework! You can integrate dates with any C++ xUnit test framework for tests government such as  [gtest](https://github.com/google/googletest).
 
