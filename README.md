@@ -56,7 +56,7 @@ make
 ./test/dates-test
 ~~~
 
-The "~/project/gtest" should be replaced to your gtest installed path.
+The "/home/shared/gtest" should be replaced to your gtest installed path.
 
 ## Finally
 
