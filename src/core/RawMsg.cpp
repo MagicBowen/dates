@@ -1,5 +1,5 @@
 #include <dates/core/RawMsg.h>
-#include <ccinfra/core/NullPtr.h>
+#include <ccinfra/base/NullPtr.h>
 #include <string.h>
 
 DATES_NS_BEGIN

@@ -1,5 +1,5 @@
 #include <dates/extend/runtime/async/AsyncDatesRuntime.h>
-#include <ccinfra/core/NullPtr.h>
+#include <ccinfra/base/NullPtr.h>
 
 DATES_NS_BEGIN
 
