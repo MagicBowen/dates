@@ -3,6 +3,7 @@
 
 #include <dates/core/MsgId.h>
 #include <ccinfra/dci/Role.h>
+#include <ccinfra/base/Keywords.h>
 
 DATES_NS_BEGIN
 
