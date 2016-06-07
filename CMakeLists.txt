@@ -7,12 +7,12 @@ project(${PROJECT_NAME})
 message(STATUS "project: ${PROJECT_NAME}")
 
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include"
-                                      "${CMAKE_CURRENT_SOURCE_DIR}/depend/msgcc/depend/ccinfra/include"
-                                      "${CMAKE_CURRENT_SOURCE_DIR}/depend/msgcc/include")
+                                      "${CMAKE_CURRENT_SOURCE_DIR}/deps/msgcc/deps/ccinfra/include"
+                                      "${CMAKE_CURRENT_SOURCE_DIR}/deps/msgcc/include")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-invalid-offsetof -g -std=c++11")
 
-add_subdirectory("depend/msgcc")
+add_subdirectory("deps/msgcc")
 add_subdirectory("src")
 
 install(DIRECTORY include/dates DESTINATION include)
